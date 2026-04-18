@@ -1,0 +1,16 @@
+import 'package:flutter/foundation.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../sangeet/model/sangeet_model.dart';
+
+class ShareMusic extends ChangeNotifier {
+  void shareSong(Sangeet song) {
+    if (kDebugMode) {
+      print("My Share Song ${song.title}");
+    }
+    Share.share(
+      'Check out this song: ${song.title} by ${song.singerName}\nListen here: ${song.audio}',
+    );
+    notifyListeners();
+  }
+}

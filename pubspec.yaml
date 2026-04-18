@@ -1,0 +1,198 @@
+name: mahakal
+description: A new Flutter setup application for starting a project.
+
+publish_to: 'none'
+version: 2.1.1+64
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  readmore: ^3.0.0
+  wakelock_plus: ^1.2.8
+  flutter_polyline_points: ^2.0.0
+  flutter_webrtc:
+  media_kit_video: ^1.3.0
+  media_kit: ^1.1.10+1
+  media_kit_libs_ios_video: ^1.1.4
+  media_kit_libs_android_video: ^1.3.7
+  sip_ua: ^1.1.0
+  better_player_plus: ^1.0.8
+  cupertino_icons: ^1.0.6
+  get_it: ^7.6.6
+  visibility_detector: ^0.4.0
+  lottie: ^3.1.0
+  provider: ^6.0.3
+  page_animation_transition: ^1.0.0
+  expandable_bottom_sheet: ^1.1.1+1
+  connectivity_plus: ^5.0.2
+  dio: ^5.3.4
+  http: ^1.1.1
+  country_picker: ^2.0.26
+  shared_preferences: ^2.3.2
+  flutter_staggered_grid_view: ^0.7.0
+  shimmer: ^3.0.0
+  url_launcher: ^6.2.3
+  uuid: ^4.4.0
+  image_picker: ^1.0.7
+  tdk_bouncingwidget: ^1.0.4
+  rating_summary: ^1.0.2+1
+  webview_flutter: ^4.4.4
+  flutter_html: ^3.0.0-alpha.3
+  share_plus: ^10.1.4
+  package_info_plus: ^8.3.0
+  photo_view: ^0.15.0
+  flutter_callkit_incoming: ^2.5.8
+
+  # FIREBASE
+  firebase_core: ^4.0.0
+  firebase_messaging: ^16.0.0
+  firebase_auth: ^6.0.1
+  firebase_analytics: ^12.0.0
+  firebase_crashlytics: ^5.0.0
+ 
+  flutter_local_notifications: ^20.1.0
+  path_provider: ^2.1.2
+  razorpay_flutter: ^1.4.1
+  flutter_svg: ^2.0.9
+  # country_code_picker: ^3.3.0
+  # country_code_picker: ^3.4.1  # Removed due to null safety issues
+  pin_code_fields: ^8.0.1
+  google_maps_flutter: ^2.9.0
+  # google_maps_flutter:
+  geocoding: ^2.0.0
+  geolocator: ^10.1.0
+  flutter_typeahead: ^4.0.0
+  marquee: ^2.2.1
+  flutter_rating_bar: ^4.0.0
+  flutter_widget_from_html:
+  hidable: ^1.0.6
+  youtube_player_flutter: ^9.0.1
+  # youtube_player_flutter:
+  fluttertoast: ^8.2.8
+  avatar_stack: ^1.2.0
+  signature: ^5.5.0
+  screenshot: ^3.0.0
+
+
+  # Sangeet
+  flutter_hooks: ^0.20.5
+  audio_service: ^0.18.13
+  # audio_service:
+
+  # PanchangPage
+  table_calendar: ^3.1.2
+  delayed_display: ^2.0.0
+  toggle_list: ^0.3.1
+
+  permission_handler: ^11.4.0
+  flutter_downloader: ^1.11.8
+  dropdown_search: ^5.0.3
+  flutter_inappwebview: ^6.1.5
+  path: ^1.8.3
+  cached_network_image: ^3.3.1
+  http_parser: ^4.0.2
+  dotted_border: ^2.0.0+3
+  dotted_line: ^3.2.2
+  flutter_slidable: ^3.0.0
+  percent_indicator: ^4.2.4
+  just_the_tooltip: ^0.0.12
+  substring_highlight: ^1.0.33
+  card_swiper: ^3.0.1
+  emoji_picker_flutter: ^3.1.0
+  just_audio: ^0.9.36
+  file_picker: ^10.1.5
+  carousel_slider: ^5.0.0
+  webview_flutter_android: ^3.13.2
+  webview_flutter_wkwebview: ^3.10.1
+  dropdown_button2: ^2.3.9
+  icons_launcher: ^2.1.4
+  modal_bottom_sheet: ^3.0.0
+  appbar_animated:
+  syncfusion_flutter_pdfviewer: ^30.1.37
+
+  pdfx: ^2.9.2
+  # flutter_tilt: ^3.2.1
+  flutter_card_swiper: ^7.0.2
+  animated_text_kit: ^4.2.2
+  audioplayers: ^6.0.0
+  google_fonts: ^6.2.1
+  gif: ^2.3.0
+  flutter_gif: ^0.0.4
+  confetti: ^0.8.0
+  particles_flutter: ^1.0.0
+  flutter_file_downloader: ^2.1.0
+  flutter_animated_button: ^2.0.4
+  pretty_animated_buttons: ^0.0.2
+  app_links: ^6.4.0
+  socket_io_client: ^3.0.1
+  open_file: ^3.5.10
+  smooth_page_indicator: ^1.1.0
+
+
+  intl: any
+  intl_phone_field: ^3.2.0
+  video_player: any
+  chewie: any
+  html: any
+  collection: any
+  sqflite: any
+  auto_size_text: ^3.0.0
+  device_info_plus: ^11.5.0
+
+dev_dependencies:
+  flutter_lints: ^3.0.1
+  flutter_test:
+    sdk: flutter
+
+icons_launcher:
+  image_path: "assets/images/mahakal.jpeg"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/
+    - assets/hanuman_chalisa_audio/
+    - assets/mandir_images/
+    - assets/images/
+    - assets/donation/
+    - assets/images/gif/
+    - assets/images/jaap/
+    - assets/images/allcategories/
+    - assets/images/allcategories/animate/
+    - assets/images/calculator/
+    - assets/language/
+    - assets/animated/
+    - assets/lottie/
+    - assets/planet/
+    - assets/diya/
+    - assets/testImage/pooja/
+    - assets/testImage/poojabooking/
+    - assets/testImage/categories/
+    - assets/testImage/rashifall/
+    - assets/testImage/offersImage/
+    - assets/testImage/panchangImages/images/
+    - assets/testImage/panchangImages/wallpaper/
+    - assets/images/kundli_chart_images/
+    - assets/sahitya_images/
+
+  fonts:
+    - family: SF-Pro-Rounded-Regular
+      fonts:
+        - asset: assets/fonts/ubuntu/SF-Pro-Rounded-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/ubuntu/SF-Pro-Rounded-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/ubuntu/SF-Pro-Rounded-Regular.ttf
+          weight: 600
