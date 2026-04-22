@@ -8,7 +8,7 @@ class Images {
   static const String officeImage = 'assets/images/office.png';
   static const String logoImage = 'assets/images/logo.png';
   // static const String logoWithNameImage = 'assets/images/logo_with_name.png';
-  static const String appLogo = 'assets/images/mahakal.jpeg';
+  static const String appLogo = 'assets/images/mahakal.png';
   static const String logoWithNameImage = 'assets/images/mahakalLogo.gif';
   static const String logoNameImage = 'assets/images/mahakalName.png';
   static const String logoWithNameImageWhite =

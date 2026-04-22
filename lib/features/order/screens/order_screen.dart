@@ -47,7 +47,6 @@ import 'track_screens/dasrhan_track_screen.dart';
 import 'track_screens/pfd_details_page.dart';
 import 'track_screens/track_chadhava_details.dart';
 import 'track_screens/track_counselling_details.dart';
-import 'track_screens/track_offlinepooja_details.dart';
 import 'track_screens/track_order_details.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -102,14 +101,6 @@ class _OrderScreenState extends State<OrderScreen>
     // fetchEventData(userId);
     // fetchTourData(userId);
     fetchSelfDrive();
-    fetchVipOrders();
-    fetchDarshanOrders();
-    fetchAnushthanOrders();
-    fetchChadhavaOrders();
-    fetchPoojaOrders();
-    fetchPanditPoojaOrders();
-    fetchOfflinePooja();
-    fetchConsultationOrders();
     showShimmerScreen = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollToOrder(widget.orderIndex);
@@ -227,18 +218,18 @@ class _OrderScreenState extends State<OrderScreen>
         'url': AppConstants.baseUrl + AppConstants.tourOrderDetailsUrl,
         'type': 'tour',
       },
-      {
-        'url': AppConstants.baseUrl + AppConstants.donationOrderUrl,
-        'type': 'donation',
-      },
-      {
-        'url': AppConstants.baseUrl + AppConstants.orderPdfurl,
-        'type': 'kundali',
-      },
-      {
-        'url': AppConstants.baseUrl + AppConstants.orderPdfurl,
-        'type': 'kundali_milan',
-      },
+      // {
+      //   'url': AppConstants.baseUrl + AppConstants.donationOrderUrl,
+      //   'type': 'donation',
+      // },
+      // {
+      //   'url': AppConstants.baseUrl + AppConstants.orderPdfurl,
+      //   'type': 'kundali',
+      // },
+      // {
+      //   'url': AppConstants.baseUrl + AppConstants.orderPdfurl,
+      //   'type': 'kundali_milan',
+      // },
     ];
 
     try {
@@ -274,20 +265,20 @@ class _OrderScreenState extends State<OrderScreen>
                 tourModelList
                     .addAll(listData.map((e) => Tourorderlist.fromJson(e)));
                 break;
-              case 'donation':
-                donationModelList.clear();
-                donationModelList
-                    .addAll(listData.map((e) => Donation.fromJson(e)));
-                break;
-              case 'kundali':
-                pdfModelList.clear();
-                pdfModelList.addAll(listData.map((e) => Pdfdatum.fromJson(e)));
-                break;
-              case 'kundali_milan':
-                pdfMilanModelList.clear();
-                pdfMilanModelList
-                    .addAll(listData.map((e) => Pdfdatum.fromJson(e)));
-                break;
+              // case 'donation':
+              //   donationModelList.clear();
+              //   donationModelList
+              //       .addAll(listData.map((e) => Donation.fromJson(e)));
+              //   break;
+              // case 'kundali':
+              //   pdfModelList.clear();
+              //   pdfModelList.addAll(listData.map((e) => Pdfdatum.fromJson(e)));
+              //   break;
+              // case 'kundali_milan':
+              //   pdfMilanModelList.clear();
+              //   pdfMilanModelList
+              //       .addAll(listData.map((e) => Pdfdatum.fromJson(e)));
+              //   break;
             }
           });
 
@@ -579,7 +570,7 @@ class _OrderScreenState extends State<OrderScreen>
     final activityLoading = activityController.isLoading;
 
     return DefaultTabController(
-      length: 2,
+      length: 1,
       initialIndex: widget.barIndex,
       child: Scaffold(
         appBar: AppBar(
@@ -613,7 +604,7 @@ class _OrderScreenState extends State<OrderScreen>
             //         6.0) // Set the background color of the indicator
             // ),
             tabs: [
-              Tab(text: 'Products'),
+              // Tab(text: 'Products'),
               Tab(text: 'Service'),
             ],
           ),
@@ -628,85 +619,85 @@ class _OrderScreenState extends State<OrderScreen>
                       child: TabBarView(
                         children: [
                           //First tabview
-                          Column(
-                            children: [
-                              Padding(
-                                  padding: const EdgeInsets.all(
-                                      Dimensions.paddingSizeLarge),
-                                  child: Row(children: [
-                                    OrderTypeButton(
-                                        text: getTranslated('RUNNING', context),
-                                        index: 0),
-                                    const SizedBox(
-                                        width: Dimensions.paddingSizeSmall),
-                                    OrderTypeButton(
-                                        text:
-                                            getTranslated('DELIVERED', context),
-                                        index: 1),
-                                    const SizedBox(
-                                        width: Dimensions.paddingSizeSmall),
-                                    OrderTypeButton(
-                                        text:
-                                            getTranslated('CANCELED', context),
-                                        index: 2)
-                                  ])),
-                              Expanded(
-                                  child: orderController.orderModel != null
-                                      ? (orderController.orderModel!.orders !=
-                                                  null &&
-                                              orderController.orderModel!
-                                                  .orders!.isNotEmpty)
-                                          ? SingleChildScrollView(
-                                              controller: scrollController,
-                                              child: PaginatedListView(
-                                                scrollController:
-                                                    scrollController,
-                                                onPaginate:
-                                                    (int? offset) async {
-                                                  await orderController
-                                                      .getOrderList(
-                                                          offset!,
-                                                          orderController
-                                                              .selectedType);
-                                                },
-                                                totalSize: orderController
-                                                    .orderModel?.totalSize,
-                                                offset: orderController
-                                                            .orderModel
-                                                            ?.offset !=
-                                                        null
-                                                    ? int.parse(orderController
-                                                        .orderModel!.offset!)
-                                                    : 1,
-                                                itemView: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  itemCount: orderController
-                                                      .orderModel
-                                                      ?.orders!
-                                                      .length,
-                                                  padding:
-                                                      const EdgeInsets.all(0),
-                                                  itemBuilder: (context,
-                                                          index) =>
-                                                      OrderWidget(
-                                                          orderModel:
-                                                              orderController
-                                                                      .orderModel
-                                                                      ?.orders![
-                                                                  index]),
-                                                ),
-                                              ),
-                                            )
-                                          : const NoInternetOrDataScreenWidget(
-                                              isNoInternet: false,
-                                              icon: Images.noOrder,
-                                              message: 'no_order_found',
-                                            )
-                                      : const OrderShimmerWidget())
-                            ],
-                          ),
+                          // Column(
+                          //   children: [
+                          //     Padding(
+                          //         padding: const EdgeInsets.all(
+                          //             Dimensions.paddingSizeLarge),
+                          //         child: Row(children: [
+                          //           OrderTypeButton(
+                          //               text: getTranslated('RUNNING', context),
+                          //               index: 0),
+                          //           const SizedBox(
+                          //               width: Dimensions.paddingSizeSmall),
+                          //           OrderTypeButton(
+                          //               text:
+                          //                   getTranslated('DELIVERED', context),
+                          //               index: 1),
+                          //           const SizedBox(
+                          //               width: Dimensions.paddingSizeSmall),
+                          //           OrderTypeButton(
+                          //               text:
+                          //                   getTranslated('CANCELED', context),
+                          //               index: 2)
+                          //         ])),
+                          //     Expanded(
+                          //         child: orderController.orderModel != null
+                          //             ? (orderController.orderModel!.orders !=
+                          //                         null &&
+                          //                     orderController.orderModel!
+                          //                         .orders!.isNotEmpty)
+                          //                 ? SingleChildScrollView(
+                          //                     controller: scrollController,
+                          //                     child: PaginatedListView(
+                          //                       scrollController:
+                          //                           scrollController,
+                          //                       onPaginate:
+                          //                           (int? offset) async {
+                          //                         await orderController
+                          //                             .getOrderList(
+                          //                                 offset!,
+                          //                                 orderController
+                          //                                     .selectedType);
+                          //                       },
+                          //                       totalSize: orderController
+                          //                           .orderModel?.totalSize,
+                          //                       offset: orderController
+                          //                                   .orderModel
+                          //                                   ?.offset !=
+                          //                               null
+                          //                           ? int.parse(orderController
+                          //                               .orderModel!.offset!)
+                          //                           : 1,
+                          //                       itemView: ListView.builder(
+                          //                         shrinkWrap: true,
+                          //                         physics:
+                          //                             const NeverScrollableScrollPhysics(),
+                          //                         itemCount: orderController
+                          //                             .orderModel
+                          //                             ?.orders!
+                          //                             .length,
+                          //                         padding:
+                          //                             const EdgeInsets.all(0),
+                          //                         itemBuilder: (context,
+                          //                                 index) =>
+                          //                             OrderWidget(
+                          //                                 orderModel:
+                          //                                     orderController
+                          //                                             .orderModel
+                          //                                             ?.orders![
+                          //                                         index]),
+                          //                       ),
+                          //                     ),
+                          //                   )
+                          //                 : const NoInternetOrDataScreenWidget(
+                          //                     isNoInternet: false,
+                          //                     icon: Images.noOrder,
+                          //                     message: 'no_order_found',
+                          //                   )
+                          //             : const OrderShimmerWidget())
+                          //   ],
+                          // ),
 
                           //Second tabview
                           RefreshIndicator(
@@ -718,14 +709,6 @@ class _OrderScreenState extends State<OrderScreen>
                               // fetchDonation(userId);
                               // fetchEventData(userId);
                               // fetchTourData(userId);
-                              fetchVipOrders();
-                              fetchAnushthanOrders();
-                              fetchChadhavaOrders();
-                              fetchPoojaOrders();
-                              fetchPanditPoojaOrders();
-                              fetchOfflinePooja();
-                              fetchConsultationOrders();
-                              fetchDarshanOrders();
                             },
                             child: Column(
                               children: [
@@ -785,171 +768,49 @@ class _OrderScreenState extends State<OrderScreen>
                                           ),
                                         ),
 
-                                        //vip pooja
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(0);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 0
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated('vip', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 0
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-
-                                        // anushthan pooja
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(1);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 1
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'anushthan', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 1
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-
-                                        // chadhava pooja
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(2);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 2
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'CHADAVA', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 2
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-
-                                        // pooja
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(3);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 3
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated('POOJA', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 3
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-
-                                        //consultation
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(4);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 4
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'CONSULTATION', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 4
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-
                                         // events
+                                        // const SizedBox(
+                                        //     width: Dimensions.paddingSizeSmall),
+                                        // InkWell(
+                                        //   onTap: () {
+                                        //     shimmerEffect(5);
+                                        //   },
+                                        //   child: Container(
+                                        //     padding: const EdgeInsets.symmetric(
+                                        //         horizontal: 20, vertical: 7.5),
+                                        //     decoration: BoxDecoration(
+                                        //       color: selectOrder == 5
+                                        //           ? Colors.deepOrange
+                                        //           : Colors.deepOrange
+                                        //               .withOpacity(0.07),
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(100),
+                                        //     ),
+                                        //     child: Center(
+                                        //         child: Text(
+                                        //       getTranslated('events', context)!,
+                                        //       style: TextStyle(
+                                        //           color: selectOrder == 5
+                                        //               ? Colors.white
+                                        //               : Colors.black,
+                                        //           fontSize: 14),
+                                        //     )),
+                                        //   ),
+                                        // ),
+
+                                        // activity booking
                                         const SizedBox(
                                             width: Dimensions.paddingSizeSmall),
+
                                         InkWell(
                                           onTap: () {
-                                            shimmerEffect(5);
+                                            shimmerEffect(13);
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 7.5),
+                                                horizontal: 15, vertical: 7.5),
                                             decoration: BoxDecoration(
-                                              color: selectOrder == 5
+                                              color: selectOrder == 13
                                                   ? Colors.deepOrange
                                                   : Colors.deepOrange
                                                       .withOpacity(0.07),
@@ -958,9 +819,10 @@ class _OrderScreenState extends State<OrderScreen>
                                             ),
                                             child: Center(
                                                 child: Text(
-                                              getTranslated('events', context)!,
+                                              getTranslated(
+                                                  "activity_booking", context)!,
                                               style: TextStyle(
-                                                  color: selectOrder == 5
+                                                  color: selectOrder == 13
                                                       ? Colors.white
                                                       : Colors.black,
                                                   fontSize: 14),
@@ -1001,159 +863,6 @@ class _OrderScreenState extends State<OrderScreen>
                                         const SizedBox(
                                             width: Dimensions.paddingSizeSmall),
 
-                                        //pdf
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(7);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 7
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated('PDF', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 7
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
-                                        // donation
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(8);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 8
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'donation', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 8
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
-                                        // offline pooja
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(9);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 9
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'offline_pooja', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 9
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
-                                        // Darshan
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(10);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 10
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              'Darshan',
-                                              style: TextStyle(
-                                                  color: selectOrder == 10
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
-                                        // All Pandit
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(11);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 11
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'pooja_pandit', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 11
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
                                         // hotel tab
                                         InkWell(
                                           onTap: () {
@@ -1185,36 +894,7 @@ class _OrderScreenState extends State<OrderScreen>
                                         const SizedBox(
                                             width: Dimensions.paddingSizeSmall),
 
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(13);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 13
-                                                  ? Colors.deepOrange
-                                                  : Colors.deepOrange
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  "activity_booking", context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 13
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
+                                        // self driver
                                         InkWell(
                                           onTap: () {
                                             shimmerEffect(14);
@@ -1313,75 +993,67 @@ class _OrderScreenState extends State<OrderScreen>
                                                                                 allOrderModelList[index].orderId,
                                                                           ),
                                                                           pageAnimationType: RightToLeftTransition()))
-                                                                  : allOrderModelList[index].type == 'offlinepooja'
+                                                                  : allOrderModelList[index].type == 'tour'
                                                                       ? Navigator.push(
                                                                           context,
                                                                           PageAnimationTransition(
-                                                                              page: OfflinePoojaTrackOrder(
-                                                                                poojaId: allOrderModelList[index].orderId,
+                                                                              page: TrackTourDetails(
+                                                                                orderId: allOrderModelList[index].id.toString(),
                                                                               ),
                                                                               pageAnimationType: RightToLeftTransition()))
-                                                                      : allOrderModelList[index].type == 'tour'
+                                                                      : allOrderModelList[index].type == 'event'
                                                                           ? Navigator.push(
                                                                               context,
                                                                               PageAnimationTransition(
-                                                                                  page: TrackTourDetails(
-                                                                                    orderId: allOrderModelList[index].id.toString(),
+                                                                                  page: TrackEventDetails(
+                                                                                    orderId: allOrderModelList[index].id,
                                                                                   ),
                                                                                   pageAnimationType: RightToLeftTransition()))
-                                                                          : allOrderModelList[index].type == 'event'
+                                                                          : allOrderModelList[index].type == 'donate_ads' || allOrderModelList[index].type == 'donate_trust'
                                                                               ? Navigator.push(
                                                                                   context,
                                                                                   PageAnimationTransition(
-                                                                                      page: TrackEventDetails(
-                                                                                        orderId: allOrderModelList[index].id,
+                                                                                      page: TrackDonationDetails(
+                                                                                        donationId: '${allOrderModelList[index].id}',
                                                                                       ),
                                                                                       pageAnimationType: RightToLeftTransition()))
-                                                                              : allOrderModelList[index].type == 'donate_ads' || allOrderModelList[index].type == 'donate_trust'
+                                                                              : allOrderModelList[index].type == 'kundli'
                                                                                   ? Navigator.push(
                                                                                       context,
                                                                                       PageAnimationTransition(
-                                                                                          page: TrackDonationDetails(
-                                                                                            donationId: '${allOrderModelList[index].id}',
+                                                                                          page: PdfOrderDetails(
+                                                                                            orderId: '${allOrderModelList[index].id}',
+                                                                                            type: 'kundali',
                                                                                           ),
                                                                                           pageAnimationType: RightToLeftTransition()))
-                                                                                  : allOrderModelList[index].type == 'kundli'
+                                                                                  : allOrderModelList[index].type == 'kundli milan'
                                                                                       ? Navigator.push(
                                                                                           context,
                                                                                           PageAnimationTransition(
                                                                                               page: PdfOrderDetails(
                                                                                                 orderId: '${allOrderModelList[index].id}',
-                                                                                                type: 'kundali',
+                                                                                                type: 'kundali_milan',
                                                                                               ),
                                                                                               pageAnimationType: RightToLeftTransition()))
-                                                                                      : allOrderModelList[index].type == 'kundli milan'
+                                                                                      : allOrderModelList[index].type == 'vip'
                                                                                           ? Navigator.push(
                                                                                               context,
                                                                                               PageAnimationTransition(
-                                                                                                  page: PdfOrderDetails(
-                                                                                                    orderId: '${allOrderModelList[index].id}',
-                                                                                                    type: 'kundali_milan',
+                                                                                                  page: MahakalTrackOrder(
+                                                                                                    poojaId: '${allOrderModelList[index].orderId}',
+                                                                                                    typePooja: 'vip',
                                                                                                   ),
                                                                                                   pageAnimationType: RightToLeftTransition()))
-                                                                                          : allOrderModelList[index].type == 'vip'
+                                                                                          : allOrderModelList[index].type == 'anushthan'
                                                                                               ? Navigator.push(
                                                                                                   context,
                                                                                                   PageAnimationTransition(
                                                                                                       page: MahakalTrackOrder(
                                                                                                         poojaId: '${allOrderModelList[index].orderId}',
-                                                                                                        typePooja: 'vip',
+                                                                                                        typePooja: 'anushthan',
                                                                                                       ),
                                                                                                       pageAnimationType: RightToLeftTransition()))
-                                                                                              : allOrderModelList[index].type == 'anushthan'
-                                                                                                  ? Navigator.push(
-                                                                                                      context,
-                                                                                                      PageAnimationTransition(
-                                                                                                          page: MahakalTrackOrder(
-                                                                                                            poojaId: '${allOrderModelList[index].orderId}',
-                                                                                                            typePooja: 'anushthan',
-                                                                                                          ),
-                                                                                                          pageAnimationType: RightToLeftTransition()))
-                                                                                                  : null;
+                                                                                              : null;
                                                       // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
                                                       print(
                                                           'chal rha he ${allOrderModelList[index].orderId}');
@@ -1407,65 +1079,67 @@ class _OrderScreenState extends State<OrderScreen>
                                                   );
                                                 },
                                               )
-                                        : selectOrder == 0
-                                            ? vipModelList.isEmpty
-                                                ? showShimmerScreen
-                                                    ? const OrderShimmerWidget()
-                                                    : const NoInternetOrDataScreenWidget(
-                                                        isNoInternet: false,
-                                                        icon: Images.noOrder,
-                                                        message:
-                                                            'no_order_found',
-                                                      )
-                                                : ListView.builder(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    physics:
-                                                        const BouncingScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    itemCount:
-                                                        vipModelList.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              PageAnimationTransition(
-                                                                  page:
-                                                                      MahakalTrackOrder(
-                                                                    poojaId:
-                                                                        '${vipModelList[index].orderId}',
-                                                                    typePooja:
-                                                                        'vip',
-                                                                  ),
-                                                                  pageAnimationType:
-                                                                      RightToLeftTransition()));
-                                                          // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                          print('chal rha he');
-                                                        },
-                                                        child: buildOrderDesign(
-                                                          image:
-                                                              '${vipModelList[index].services?.thumbnail}',
-                                                          name:
-                                                              '${vipModelList[index].services?.name}',
-                                                          color: getStatusColor(
-                                                              '${vipModelList[index].status}'),
-                                                          date:
-                                                              '${vipModelList[index].createdAt}',
-                                                          price:
-                                                              '${vipModelList[index].payAmount}',
-                                                          orderId:
-                                                              '${vipModelList[index].orderId}',
-                                                          status:
-                                                              '${vipModelList[index].orderStatus}',
-                                                        ),
-                                                      );
-                                                    },
-                                                  )
-                                            : selectOrder == 1
-                                                ? anushthanModelList.isEmpty
+                                        // : selectOrder == 5
+                                        //     ? eventModelList.isEmpty
+                                        //         ? showShimmerScreen
+                                        //             ? const OrderShimmerWidget()
+                                        //             : const NoInternetOrDataScreenWidget(
+                                        //                 isNoInternet: false,
+                                        //                 icon: Images.noOrder,
+                                        //                 message:
+                                        //                     'no_order_found',
+                                        //               )
+                                        //         : ListView.builder(
+                                        //             padding:
+                                        //                 const EdgeInsets.all(
+                                        //                     10),
+                                        //             physics:
+                                        //                 const BouncingScrollPhysics(),
+                                        //             shrinkWrap: true,
+                                        //             itemCount:
+                                        //                 eventModelList.length,
+                                        //             itemBuilder:
+                                        //                 (context, index) {
+                                        //               return InkWell(
+                                        //                 onTap: () {
+                                        //                   Navigator.push(
+                                        //                       context,
+                                        //                       CupertinoPageRoute(
+                                        //                         builder:
+                                        //                             (context) =>
+                                        //                                 TrackEventDetails(
+                                        //                           orderId: eventModelList[
+                                        //                                       index]
+                                        //                                   .id ??
+                                        //                               0,
+                                        //                         ),
+                                        //                       ));
+                                        //                 },
+                                        //                 child: buildOrderDesign(
+                                        //                   image: eventModelList[
+                                        //                           index]
+                                        //                       .eventImage,
+                                        //                   name: eventModelList[
+                                        //                           index]
+                                        //                       .enEventName,
+                                        //                   color:
+                                        //                       Colors.deepOrange,
+                                        //                   date: eventModelList[
+                                        //                           index]
+                                        //                       .eventBookingDate,
+                                        //                   price:
+                                        //                       '${eventModelList[index].amount}',
+                                        //                   orderId:
+                                        //                       eventModelList[
+                                        //                               index]
+                                        //                           .orderNo,
+                                        //                   status: 'Event',
+                                        //                 ),
+                                        //               );
+                                        //             },
+                                        //           )
+                                            : selectOrder == 6
+                                                ? tourModelList.isEmpty
                                                     ? showShimmerScreen
                                                         ? const OrderShimmerWidget()
                                                         : const NoInternetOrDataScreenWidget(
@@ -1482,54 +1156,82 @@ class _OrderScreenState extends State<OrderScreen>
                                                         physics:
                                                             const BouncingScrollPhysics(),
                                                         shrinkWrap: true,
-                                                        itemCount:
-                                                            anushthanModelList
-                                                                .length,
+                                                        itemCount: tourModelList
+                                                            .length,
                                                         itemBuilder:
                                                             (context, index) {
                                                           return InkWell(
                                                             onTap: () {
+                                                              print(
+                                                                  tourModelList[
+                                                                          index]
+                                                                      .id);
                                                               Navigator.push(
                                                                   context,
-                                                                  PageAnimationTransition(
-                                                                      page:
-                                                                          MahakalTrackOrder(
-                                                                        poojaId:
-                                                                            '${anushthanModelList[index].orderId}',
-                                                                        typePooja:
-                                                                            'anushthan',
-                                                                      ),
-                                                                      pageAnimationType:
-                                                                          RightToLeftTransition()));
-                                                              // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                              print(
-                                                                  'chal rha he anushthan');
+                                                                  CupertinoPageRoute(
+                                                                    builder: (context) =>
+                                                                        TrackTourDetails(
+                                                                            orderId:
+                                                                                '${tourModelList[index].id}'),
+                                                                  ));
+                                                              //Navigator.push(context, CupertinoPageRoute(builder: (context) => TrackTourDetails(orderId: tourModelList[index].orderId,pickUpDate: tourModelList[index].pickupDate,userId: userId,),));
                                                             },
                                                             child:
                                                                 buildOrderDesign(
                                                               image:
-                                                                  '${anushthanModelList[index].services?.thumbnail}',
-                                                              name:
-                                                                  '${anushthanModelList[index].services?.name}',
-                                                              color: getStatusColor(
-                                                                  '${anushthanModelList[index].status}'),
+                                                                  tourModelList[
+                                                                          index]
+                                                                      .tourImage,
+                                                              name: tourModelList[
+                                                                      index]
+                                                                  .enTourName,
+                                                              color: tourModelList[
+                                                                              index]
+                                                                          .refundStatus ==
+                                                                      1
+                                                                  ? Colors.red
+                                                                  : tourModelList[index]
+                                                                              .partPayment ==
+                                                                          'part'
+                                                                      ? Colors
+                                                                          .blue
+                                                                      : tourModelList[index].partPayment ==
+                                                                              'full'
+                                                                          ? Colors
+                                                                              .green
+                                                                          : tourModelList[index].partPayment == 'custom'
+                                                                              ? Colors.orange
+                                                                              : Colors.grey,
                                                               date:
-                                                                  '${anushthanModelList[index].createdAt}',
+                                                                  '${tourModelList[index].bookingTime}',
                                                               price:
-                                                                  '${anushthanModelList[index].payAmount}',
+                                                                  '${tourModelList[index].payAmount}',
                                                               orderId:
-                                                                  '${anushthanModelList[index].orderId}',
-                                                              status:
-                                                                  '${anushthanModelList[index].orderStatus}',
+                                                                  '${tourModelList[index].orderId}',
+                                                              status: tourModelList[
+                                                                              index]
+                                                                          .refundStatus ==
+                                                                      1
+                                                                  ? 'Refunded'
+                                                                  : tourModelList[index]
+                                                                              .partPayment ==
+                                                                          'part'
+                                                                      ? 'Partially Paid'
+                                                                      : tourModelList[index].partPayment ==
+                                                                              'full'
+                                                                          ? 'Fully Paid'
+                                                                          : tourModelList[index].partPayment == 'custom'
+                                                                              ? 'Custom'
+                                                                              : (tourModelList[index].amountStatus == 1 ? 'Success' : 'Failed'),
                                                             ),
                                                           );
                                                         },
                                                       )
-                                                : selectOrder == 2
-                                                    ? chadhavaModelList.isEmpty
-                                                        ? showShimmerScreen
-                                                            ? const OrderShimmerWidget()
-                                                            : const NoInternetOrDataScreenWidget(
+                                                : selectOrder == 12
+                                                    ? _isLoading
+                                                        ? const OrderShimmerWidget()
+                                                        : hotelOrderList.isEmpty
+                                                            ? const NoInternetOrDataScreenWidget(
                                                                 isNoInternet:
                                                                     false,
                                                                 icon: Images
@@ -1537,58 +1239,102 @@ class _OrderScreenState extends State<OrderScreen>
                                                                 message:
                                                                     'no_order_found',
                                                               )
-                                                        : ListView.builder(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(10),
-                                                            physics:
-                                                                const BouncingScrollPhysics(),
-                                                            shrinkWrap: true,
-                                                            itemCount:
-                                                                chadhavaModelList
-                                                                    .length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              return InkWell(
-                                                                onTap: () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      PageAnimationTransition(
-                                                                          page: ChadhavaMahakalTrackOrder(
-                                                                            poojaId:
-                                                                                '${chadhavaModelList[index].orderId}',
-                                                                          ),
-                                                                          pageAnimationType: RightToLeftTransition()));
-                                                                  // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                                  print(
-                                                                      'chal rha he');
+                                                            : ListView.builder(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        10),
+                                                                itemCount:
+                                                                    hotelOrderList
+                                                                        .length,
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  final order =
+                                                                      hotelOrderList[
+                                                                          index];
+
+                                                                  return InkWell(
+                                                                    onTap: () {
+                                                                      Navigator.push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                              builder: (context) => HotelOrderDetailsScreen(
+                                                                                    orderId: '${order.code}',
+                                                                                  )));
+                                                                      //debugPrint("Hotel Order ID: ${order.id}");
+                                                                    },
+                                                                    child:
+                                                                        buildOrderDesign(
+                                                                      image: '',
+                                                                      name: order
+                                                                              .firstName ??
+                                                                          '',
+                                                                      color: order.status ==
+                                                                              'paid'
+                                                                          ? Colors
+                                                                              .green
+                                                                          : Colors
+                                                                              .red,
+                                                                      date:
+                                                                          '${order.createdAt}',
+                                                                      price:
+                                                                          order.paid ??
+                                                                              '',
+                                                                      orderId:
+                                                                          order.objectModel.toUpperCase() ??
+                                                                              '',
+                                                                      status:
+                                                                          order.status ??
+                                                                              '',
+                                                                    ),
+                                                                  );
                                                                 },
-                                                                child:
-                                                                    buildOrderDesign(
-                                                                  image:
-                                                                      '${chadhavaModelList[index].services?.thumbnail}',
-                                                                  name:
-                                                                      '${chadhavaModelList[index].services?.name}',
-                                                                  color: getStatusColor(
-                                                                      '${chadhavaModelList[index].status}'),
-                                                                  date:
-                                                                      '${chadhavaModelList[index].createdAt}',
-                                                                  price:
-                                                                      '${chadhavaModelList[index].payAmount}',
-                                                                  orderId:
-                                                                      '${chadhavaModelList[index].orderId}',
-                                                                  status:
-                                                                      '${chadhavaModelList[index].orderStatus}',
-                                                                ),
-                                                              );
-                                                            },
-                                                          )
-                                                    : selectOrder == 3
-                                                        ? orderModelList.isEmpty
-                                                            ? showShimmerScreen
-                                                                ? const OrderShimmerWidget()
-                                                                : const NoInternetOrDataScreenWidget(
+                                                              )
+                                        : selectOrder == 13
+                                        ? activityLoading
+                                        ? const OrderShimmerWidget()
+                                        : activitiesOrderList.isEmpty
+                                        ? const NoInternetOrDataScreenWidget(
+                                      isNoInternet: false,
+                                      icon: Images.noOrder,
+                                      message: 'no_order_found',
+                                    )
+                                        : ListView.builder(
+                                      padding: const EdgeInsets.all(10),
+                                      itemCount: activitiesOrderList.length,
+                                      itemBuilder: (context, index) {
+                                        final order = activitiesOrderList[index];
+
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => TrackActivityDetails(
+                                                  orderId: order.id,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: buildOrderDesign(
+                                            image: order.eventImage ?? '',
+                                            name: order.enEventName ?? '',
+                                            color: Colors.green,
+                                            date: '${order.eventBookingDate ?? ''}',
+                                            price: order.amount?.toString() ?? '',
+                                            orderId: order.id?.toString() ?? '',
+                                            status: 'Activity',
+                                          ),
+                                        );
+                                      },
+                                    )
+                                                    : selectOrder == 14
+                                                        ? _isLoading
+                                                            ? const OrderShimmerWidget()
+                                                            : selfOrderModelList
+                                                                    .isEmpty
+                                                                ? const NoInternetOrDataScreenWidget(
                                                                     isNoInternet:
                                                                         false,
                                                                     icon: Images
@@ -1596,514 +1342,54 @@ class _OrderScreenState extends State<OrderScreen>
                                                                     message:
                                                                         'no_order_found',
                                                                   )
-                                                            : ListView.builder(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        10),
-                                                                physics:
-                                                                    const BouncingScrollPhysics(),
-                                                                shrinkWrap:
-                                                                    true,
-                                                                itemCount:
-                                                                    orderModelList
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  return InkWell(
-                                                                    onTap: () {
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          PageAnimationTransition(
-                                                                              page: MahakalTrackOrder(
-                                                                                poojaId: '${orderModelList[index].orderId}',
-                                                                                typePooja: 'pooja',
-                                                                              ),
-                                                                              pageAnimationType: RightToLeftTransition()));
-                                                                    },
-                                                                    child:
-                                                                        buildOrderDesign(
-                                                                      image:
-                                                                          '${orderModelList[index].services?.thumbnail}',
-                                                                      name:
-                                                                          '${orderModelList[index].services?.name}',
-                                                                      color: getStatusColor(
-                                                                          '${orderModelList[index].status}'),
-                                                                      date:
-                                                                          '${orderModelList[index].createdAt}',
-                                                                      price:
-                                                                          '${orderModelList[index].payAmount}',
-                                                                      orderId:
-                                                                          '${orderModelList[index].orderId}',
-                                                                      status:
-                                                                          '${orderModelList[index].orderStatus}',
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              )
-                                                        : selectOrder == 4
-                                                            ? counsellingModelList
-                                                                    .isEmpty
-                                                                ? showShimmerScreen
-                                                                    ? const OrderShimmerWidget()
-                                                                    : const NoInternetOrDataScreenWidget(
-                                                                        isNoInternet:
-                                                                            false,
-                                                                        icon: Images
-                                                                            .noOrder,
-                                                                        message:
-                                                                            'no_order_found',
-                                                                      )
                                                                 : ListView
                                                                     .builder(
                                                                     padding:
                                                                         const EdgeInsets
                                                                             .all(
                                                                             10),
-                                                                    physics:
-                                                                        const BouncingScrollPhysics(),
-                                                                    shrinkWrap:
-                                                                        true,
                                                                     itemCount:
-                                                                        counsellingModelList
+                                                                        selfOrderModelList
                                                                             .length,
                                                                     itemBuilder:
                                                                         (context,
                                                                             index) {
+                                                                      final order =
+                                                                          selfOrderModelList[
+                                                                              index];
+
                                                                       return InkWell(
                                                                         onTap:
                                                                             () {
                                                                           Navigator.push(
                                                                               context,
-                                                                              PageAnimationTransition(
-                                                                                  page: CounsellingTrackOrder(
-                                                                                    poojaId: '${counsellingModelList[index].orderId}',
-                                                                                  ),
-                                                                                  pageAnimationType: RightToLeftTransition()));
-                                                                          // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                                          print(
-                                                                              'chal rha he');
+                                                                              MaterialPageRoute(
+                                                                                  builder: (context) => CabBookingDetailsScreen(
+                                                                                        id: order.id.toString(),
+                                                                                      )));
+                                                                          //debugPrint("Hotel Order ID: ${order.id}");
                                                                         },
                                                                         child:
                                                                             buildOrderDesign(
                                                                           image:
-                                                                              '${counsellingModelList[index].services?.thumbnail}',
-                                                                          name:
-                                                                              '${counsellingModelList[index].services?.name}',
+                                                                              '${order.thumbnail}',
+                                                                          name: order.serviceName ??
+                                                                              '',
                                                                           color:
-                                                                              getStatusColor('${counsellingModelList[index].status}'),
+                                                                              getStatusColor('${order.orderStatus}'),
                                                                           date:
-                                                                              '${counsellingModelList[index].createdAt}',
+                                                                              '',
                                                                           price:
-                                                                              '${counsellingModelList[index].payAmount}',
+                                                                              '${order.price}',
                                                                           orderId:
-                                                                              '${counsellingModelList[index].orderId}',
+                                                                              order.orderId!.toUpperCase() ?? '',
                                                                           status:
-                                                                              '${counsellingModelList[index].orderStatus}',
+                                                                              order.orderStatus ?? '',
                                                                         ),
                                                                       );
                                                                     },
                                                                   )
-                                                            : selectOrder == 5
-                                                                ? eventModelList
-                                                                        .isEmpty
-                                                                    ? showShimmerScreen
-                                                                        ? const OrderShimmerWidget()
-                                                                        : const NoInternetOrDataScreenWidget(
-                                                                            isNoInternet:
-                                                                                false,
-                                                                            icon:
-                                                                                Images.noOrder,
-                                                                            message:
-                                                                                'no_order_found',
-                                                                          )
-                                                                    : ListView
-                                                                        .builder(
-                                                                        padding: const EdgeInsets
-                                                                            .all(
-                                                                            10),
-                                                                        physics:
-                                                                            const BouncingScrollPhysics(),
-                                                                        shrinkWrap:
-                                                                            true,
-                                                                        itemCount:
-                                                                            eventModelList.length,
-                                                                        itemBuilder:
-                                                                            (context,
-                                                                                index) {
-                                                                          return InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              Navigator.push(
-                                                                                  context,
-                                                                                  CupertinoPageRoute(
-                                                                                    builder: (context) => TrackEventDetails(
-                                                                                      orderId: eventModelList[index].id ?? 0,
-                                                                                    ),
-                                                                                  ));
-                                                                            },
-                                                                            child:
-                                                                                buildOrderDesign(
-                                                                              image: eventModelList[index].eventImage,
-                                                                              name: eventModelList[index].enEventName,
-                                                                              color: Colors.deepOrange,
-                                                                              date: eventModelList[index].eventBookingDate,
-                                                                              price: '${eventModelList[index].amount}',
-                                                                              orderId: eventModelList[index].orderNo,
-                                                                              status: 'Event',
-                                                                            ),
-                                                                          );
-                                                                        },
-                                                                      )
-                                                                : selectOrder ==
-                                                                        6
-                                                                    ? tourModelList
-                                                                            .isEmpty
-                                                                        ? showShimmerScreen
-                                                                            ? const OrderShimmerWidget()
-                                                                            : const NoInternetOrDataScreenWidget(
-                                                                                isNoInternet: false,
-                                                                                icon: Images.noOrder,
-                                                                                message: 'no_order_found',
-                                                                              )
-                                                                        : ListView
-                                                                            .builder(
-                                                                            padding:
-                                                                                const EdgeInsets.all(10),
-                                                                            physics:
-                                                                                const BouncingScrollPhysics(),
-                                                                            shrinkWrap:
-                                                                                true,
-                                                                            itemCount:
-                                                                                tourModelList.length,
-                                                                            itemBuilder:
-                                                                                (context, index) {
-                                                                              return InkWell(
-                                                                                onTap: () {
-                                                                                  print(tourModelList[index].id);
-                                                                                  Navigator.push(
-                                                                                      context,
-                                                                                      CupertinoPageRoute(
-                                                                                        builder: (context) => TrackTourDetails(orderId: '${tourModelList[index].id}'),
-                                                                                      ));
-                                                                                  //Navigator.push(context, CupertinoPageRoute(builder: (context) => TrackTourDetails(orderId: tourModelList[index].orderId,pickUpDate: tourModelList[index].pickupDate,userId: userId,),));
-                                                                                },
-                                                                                child: buildOrderDesign(
-                                                                                  image: tourModelList[index].tourImage,
-                                                                                  name: tourModelList[index].enTourName,
-                                                                                  color: tourModelList[index].refundStatus == 1
-                                                                                      ? Colors.red
-                                                                                      : tourModelList[index].partPayment == 'part'
-                                                                                          ? Colors.blue
-                                                                                          : tourModelList[index].partPayment == 'full'
-                                                                                              ? Colors.green
-                                                                                              : tourModelList[index].partPayment == 'custom'
-                                                                                                  ? Colors.orange
-                                                                                                  : Colors.grey,
-                                                                                  date: '${tourModelList[index].bookingTime}',
-                                                                                  price: '${tourModelList[index].payAmount}',
-                                                                                  orderId: '${tourModelList[index].orderId}',
-                                                                                  status: tourModelList[index].refundStatus == 1
-                                                                                      ? 'Refunded'
-                                                                                      : tourModelList[index].partPayment == 'part'
-                                                                                          ? 'Partially Paid'
-                                                                                          : tourModelList[index].partPayment == 'full'
-                                                                                              ? 'Fully Paid'
-                                                                                              : tourModelList[index].partPayment == 'custom'
-                                                                                                  ? 'Custom'
-                                                                                                  : (tourModelList[index].amountStatus == 1 ? 'Success' : 'Failed'),
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                          )
-                                                                    : selectOrder ==
-                                                                            7
-                                                                        ? pdfModelList
-                                                                                .isEmpty
-                                                                            ? showShimmerScreen
-                                                                                ? const OrderShimmerWidget()
-                                                                                : const NoInternetOrDataScreenWidget(
-                                                                                    isNoInternet: false,
-                                                                                    icon: Images.noOrder,
-                                                                                    message: 'no_order_found',
-                                                                                  )
-                                                                            : TabBarKundali(
-                                                                                context)
-                                                                        : selectOrder ==
-                                                                                8
-                                                                            ? donationModelList.isEmpty
-                                                                                ? showShimmerScreen
-                                                                                    ? const OrderShimmerWidget()
-                                                                                    : const NoInternetOrDataScreenWidget(
-                                                                                        isNoInternet: false,
-                                                                                        icon: Images.noOrder,
-                                                                                        message: 'no_order_found',
-                                                                                      )
-                                                                                : ListView.builder(
-                                                                                    padding: const EdgeInsets.all(10),
-                                                                                    physics: const BouncingScrollPhysics(),
-                                                                                    shrinkWrap: true,
-                                                                                    itemCount: donationModelList.length,
-                                                                                    itemBuilder: (context, index) {
-                                                                                      return InkWell(
-                                                                                        onTap: () {
-                                                                                          Navigator.push(
-                                                                                              context,
-                                                                                              PageAnimationTransition(
-                                                                                                  page:
-                                                                                                      //DonationSuccessScreen(),
-                                                                                                      TrackDonationDetails(
-                                                                                                    donationId: '${donationModelList[index].id}',
-                                                                                                  ),
-                                                                                                  pageAnimationType: RightToLeftTransition()));
-                                                                                        },
-                                                                                        child: buildOrderDesign(
-                                                                                          image: donationModelList[index].image,
-                                                                                          name: donationModelList[index].enTrustName,
-                                                                                          color: Colors.orange,
-                                                                                          date: donationModelList[index].date,
-                                                                                          price: '${donationModelList[index].amount}',
-                                                                                          orderId: donationModelList[index].orderId,
-                                                                                          status: donationModelList[index].type,
-                                                                                          subscriptionId: donationModelList[index].frequency,
-                                                                                          Ordertype: 'donation',
-                                                                                        ),
-                                                                                      );
-                                                                                    },
-                                                                                  )
-                                                                            : selectOrder == 9
-                                                                                ? offlineModelList.isEmpty
-                                                                                    ? showShimmerScreen
-                                                                                        ? const OrderShimmerWidget()
-                                                                                        : const NoInternetOrDataScreenWidget(
-                                                                                            isNoInternet: false,
-                                                                                            icon: Images.noOrder,
-                                                                                            message: 'no_order_found',
-                                                                                          )
-                                                                                    : ListView.builder(
-                                                                                        padding: const EdgeInsets.all(10),
-                                                                                        physics: const BouncingScrollPhysics(),
-                                                                                        shrinkWrap: true,
-                                                                                        itemCount: offlineModelList.length,
-                                                                                        itemBuilder: (context, index) {
-                                                                                          return InkWell(
-                                                                                            onTap: () {
-                                                                                              Navigator.push(
-                                                                                                  context,
-                                                                                                  PageAnimationTransition(
-                                                                                                      page: OfflinePoojaTrackOrder(
-                                                                                                        poojaId: offlineModelList[index].orderId,
-                                                                                                      ),
-                                                                                                      pageAnimationType: RightToLeftTransition()));
-                                                                                              // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                                                              print('chal rha he');
-                                                                                            },
-                                                                                            child: buildOrderDesign(
-                                                                                              image: offlineModelList[index].services!.thumbnail,
-                                                                                              name: offlineModelList[index].services!.name,
-                                                                                              color: getStatusColor(offlineModelList[index].status),
-                                                                                              date: '${offlineModelList[index].createdAt}',
-                                                                                              price: offlineModelList[index].payAmount,
-                                                                                              orderId: offlineModelList[index].orderId,
-                                                                                              status: offlineModelList[index].status,
-                                                                                            ),
-                                                                                          );
-                                                                                        },
-                                                                                      )
-                                                                                : selectOrder == 10
-                                                                                    ? darshanModelList.isEmpty
-                                                                                        ? showShimmerScreen
-                                                                                            ? const OrderShimmerWidget()
-                                                                                            : const NoInternetOrDataScreenWidget(
-                                                                                                isNoInternet: false,
-                                                                                                icon: Images.noOrder,
-                                                                                                message: 'no_order_found',
-                                                                                              )
-                                                                                        : ListView.builder(
-                                                                                            padding: const EdgeInsets.all(10),
-                                                                                            physics: const BouncingScrollPhysics(),
-                                                                                            shrinkWrap: true,
-                                                                                            itemCount: darshanModelList.length,
-                                                                                            itemBuilder: (context, index) {
-                                                                                              return InkWell(
-                                                                                                onTap: () {
-                                                                                                  Navigator.push(
-                                                                                                      context,
-                                                                                                      PageAnimationTransition(
-                                                                                                          page: MandirDarshanDetailsOrder(
-                                                                                                            orderId: darshanModelList[index].id.toString(),
-                                                                                                          ),
-                                                                                                          pageAnimationType: RightToLeftTransition()));
-                                                                                                  // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                                                                  print('chal rha he ${darshanModelList[index].id.toString()}');
-                                                                                                },
-                                                                                                child: buildOrderDesign(
-                                                                                                  image: darshanModelList[index].image,
-                                                                                                  name: darshanModelList[index].enTempleName,
-                                                                                                  color: darshanModelList[index].status == 1 ? Colors.green : Colors.red,
-                                                                                                  date: darshanModelList[index].createdAt,
-                                                                                                  price: '${darshanModelList[index].price}',
-                                                                                                  orderId: darshanModelList[index].orderId,
-                                                                                                  status: darshanModelList[index].status == 1 ? 'Success' : 'Failed',
-                                                                                                ),
-                                                                                              );
-                                                                                            },
-                                                                                          )
-                                                                                    : selectOrder == 11
-                                                                                        ? panditPoojaOrderModelList.isEmpty
-                                                                                            ? showShimmerScreen
-                                                                                                ? const OrderShimmerWidget()
-                                                                                                : const NoInternetOrDataScreenWidget(
-                                                                                                    isNoInternet: false,
-                                                                                                    icon: Images.noOrder,
-                                                                                                    message: 'no_order_found',
-                                                                                                  )
-                                                                                            : ListView.builder(
-                                                                                                padding: const EdgeInsets.all(10),
-                                                                                                physics: const BouncingScrollPhysics(),
-                                                                                                shrinkWrap: true,
-                                                                                                itemCount: panditPoojaOrderModelList.length,
-                                                                                                itemBuilder: (context, index) {
-                                                                                                  return InkWell(
-                                                                                                    onTap: () {
-                                                                                                      Navigator.push(
-                                                                                                          context,
-                                                                                                          PageAnimationTransition(
-                                                                                                              page: MahakalTrackOrder(
-                                                                                                                poojaId: '${panditPoojaOrderModelList[index].orderId}',
-                                                                                                                typePooja: 'pooja',
-                                                                                                              ),
-                                                                                                              pageAnimationType: RightToLeftTransition()));
-
-                                                                                                      // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                                                                      print('chal rha he ${panditPoojaOrderModelList[index].id.toString()}');
-                                                                                                    },
-                                                                                                    child: buildOrderDesign(
-                                                                                                      image: panditPoojaOrderModelList[index].services?.thumbnail ?? '',
-                                                                                                      name: panditPoojaOrderModelList[index].services?.name ?? '',
-                                                                                                      color: panditPoojaOrderModelList[index].status == 1 ? Colors.green : Colors.red,
-                                                                                                      date: panditPoojaOrderModelList[index].createdAt ?? '',
-                                                                                                      price: '${panditPoojaOrderModelList[index].payAmount}',
-                                                                                                      orderId: panditPoojaOrderModelList[index].orderId,
-                                                                                                      status: panditPoojaOrderModelList[index].status ?? '',
-                                                                                                    ),
-                                                                                                  );
-                                                                                                },
-                                                                                              )
-                                                                                        : selectOrder == 12
-                                                                                            ? _isLoading
-                                                                                                ? const OrderShimmerWidget()
-                                                                                                : hotelOrderList.isEmpty
-                                                                                                    ? const NoInternetOrDataScreenWidget(
-                                                                                                        isNoInternet: false,
-                                                                                                        icon: Images.noOrder,
-                                                                                                        message: 'no_order_found',
-                                                                                                      )
-                                                                                                    : ListView.builder(
-                                                                                                        padding: const EdgeInsets.all(10),
-                                                                                                        itemCount: hotelOrderList.length,
-                                                                                                        itemBuilder: (context, index) {
-                                                                                                          final order = hotelOrderList[index];
-
-                                                                                                          return InkWell(
-                                                                                                            onTap: () {
-                                                                                                              Navigator.push(
-                                                                                                                  context,
-                                                                                                                  MaterialPageRoute(
-                                                                                                                      builder: (context) => HotelOrderDetailsScreen(
-                                                                                                                            orderId: '${order.code}',
-                                                                                                                          )));
-                                                                                                              //debugPrint("Hotel Order ID: ${order.id}");
-                                                                                                            },
-                                                                                                            child: buildOrderDesign(
-                                                                                                              image: '',
-                                                                                                              name: order.firstName ?? '',
-                                                                                                              color: order.status == 'paid' ? Colors.green : Colors.red,
-                                                                                                              date: '${order.createdAt}',
-                                                                                                              price: order.paid ?? '',
-                                                                                                              orderId: order.objectModel.toUpperCase() ?? '',
-                                                                                                              status: order.status ?? '',
-                                                                                                            ),
-                                                                                                          );
-                                                                                                        },
-                                                                                                      )
-                                                                                            : selectOrder == 13
-                                                                                                ? activityLoading
-                                                                                                    ? const OrderShimmerWidget()
-                                                                                                    : activitiesOrderList.isEmpty
-                                                                                                        ? const NoInternetOrDataScreenWidget(
-                                                                                                            isNoInternet: false,
-                                                                                                            icon: Images.noOrder,
-                                                                                                            message: 'no_order_found',
-                                                                                                          )
-                                                                                                        : ListView.builder(
-                                                                                                            padding: const EdgeInsets.all(10),
-                                                                                                            itemCount: activitiesOrderList.length,
-                                                                                                            itemBuilder: (context, index) {
-                                                                                                              final order = activitiesOrderList[index];
-
-                                                                                                              return InkWell(
-                                                                                                                onTap: () {
-                                                                                                                  Navigator.push(
-                                                                                                                    context,
-                                                                                                                    MaterialPageRoute(
-                                                                                                                      builder: (context) => TrackActivityDetails(
-                                                                                                                        orderId: order.id,
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  );
-                                                                                                                },
-                                                                                                                child: buildOrderDesign(
-                                                                                                                  image: order.eventImage ?? '',
-                                                                                                                  name: order.enEventName ?? '',
-                                                                                                                  color: Colors.green,
-                                                                                                                  date: '${order.eventBookingDate ?? ''}',
-                                                                                                                  price: order.amount?.toString() ?? '',
-                                                                                                                  orderId: order.id?.toString() ?? '',
-                                                                                                                  status: 'Activity',
-                                                                                                                ),
-                                                                                                              );
-                                                                                                            },
-                                                                                                          )
-                                                                                                : selectOrder == 14
-                                                                                                    ? _isLoading
-                                                                                                        ? const OrderShimmerWidget()
-                                                                                                        : selfOrderModelList.isEmpty
-                                                                                                            ? const NoInternetOrDataScreenWidget(
-                                                                                                                isNoInternet: false,
-                                                                                                                icon: Images.noOrder,
-                                                                                                                message: 'no_order_found',
-                                                                                                              )
-                                                                                                            : ListView.builder(
-                                                                                                                padding: const EdgeInsets.all(10),
-                                                                                                                itemCount: selfOrderModelList.length,
-                                                                                                                itemBuilder: (context, index) {
-                                                                                                                  final order = selfOrderModelList[index];
-
-                                                                                                                  return InkWell(
-                                                                                                                    onTap: () {
-                                                                                                                      Navigator.push(
-                                                                                                                          context,
-                                                                                                                          MaterialPageRoute(
-                                                                                                                              builder: (context) => CabBookingDetailsScreen(
-                                                                                                                                    id: order.id.toString(),
-                                                                                                                                  )));
-                                                                                                                      //debugPrint("Hotel Order ID: ${order.id}");
-                                                                                                                    },
-                                                                                                                    child: buildOrderDesign(
-                                                                                                                      image: '${order.thumbnail}',
-                                                                                                                      name: order.serviceName ?? '',
-                                                                                                                      color: getStatusColor('${order.orderStatus}'),
-                                                                                                                      date: '',
-                                                                                                                      price: '${order.price}',
-                                                                                                                      orderId: order.orderId!.toUpperCase() ?? '',
-                                                                                                                      status: order.orderStatus ?? '',
-                                                                                                                    ),
-                                                                                                                  );
-                                                                                                                },
-                                                                                                              )
-                                                                                                    : const SizedBox()),
+                                                        : const SizedBox()),
                               ],
                             ),
                           ),

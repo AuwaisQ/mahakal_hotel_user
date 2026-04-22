@@ -9,9 +9,7 @@ import 'package:mahakal/data/datasource/remote/http/httpClient.dart';
 import 'package:mahakal/features/tour_and_travells/view/tour_packages/citywise_tours.dart';
 import 'package:tdk_bouncingwidget/tdk_bouncingwidget.dart';
 import '../../../utill/app_constants.dart';
-import '../../blogs_module/no_image_widget.dart';
-import '../../maha_bhandar/model/city_model.dart';
-import '../../youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
+import '../model/city_model.dart';
 import '../model/tour_allcity_model.dart';
 
 class ViewAllTours extends StatefulWidget {

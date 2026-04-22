@@ -2,27 +2,25 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mahakal/features/blogs_module/no_image_widget.dart';
 import 'package:mahakal/features/tour_and_travells/model/new_tours_model.dart';
 import 'package:mahakal/features/tour_and_travells/model/tour_category_model.dart';
 import 'package:mahakal/features/tour_and_travells/ui_heliper/search_screen.dart';
 import 'package:mahakal/features/tour_and_travells/view/TourDetails.dart';
 import 'package:mahakal/features/tour_and_travells/view/tour_packages/statewise_tour.dart';
-import 'package:mahakal/features/tour_and_travells/view/vendors_page.dart';
 import 'package:mahakal/features/tour_and_travells/view/view_all_tours.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/datasource/remote/http/httpClient.dart';
 import '../../../localization/controllers/localization_controller.dart';
 import '../../../utill/app_constants.dart';
+import '../../../utill/flutter_toast_helper.dart';
 import '../../../utill/loading_datawidget.dart';
-import '../../donation/ui_helper/custom_colors.dart';
-import '../../youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
 import '../model/all_state_model.dart';
 import '../model/tourimages_model.dart';
 
 class TourHomePage extends StatefulWidget {
-  const TourHomePage({super.key});
+  final ScrollController scrollController;
+  const TourHomePage({super.key, required this.scrollController});
 
   @override
   _TourHomePageState createState() => _TourHomePageState();
@@ -30,7 +28,6 @@ class TourHomePage extends StatefulWidget {
 
 class _TourHomePageState extends State<TourHomePage>
     with SingleTickerProviderStateMixin {
-  late ScrollController _scrollController;
   TabController? _tabController;
 
   // State variables
@@ -48,8 +45,7 @@ class _TourHomePageState extends State<TourHomePage>
     super.initState();
     getTourTabs();
     // Initialize ScrollControllere
-    _scrollController = ScrollController();
-    _scrollController.addListener(_onScroll);
+    widget.scrollController.addListener(_onScroll);
     getAllState();
   }
 
@@ -94,7 +90,6 @@ class _TourHomePageState extends State<TourHomePage>
 
   @override
   void dispose() {
-    _scrollController.dispose();
     _tabController?.dispose();
     super.dispose();
   }
@@ -102,7 +97,7 @@ class _TourHomePageState extends State<TourHomePage>
   void _onScroll() {
     setState(() {
       isAnimatedOpacityVisible =
-          _scrollController.offset > (expandedBarHeight - collapsedBarHeight);
+          widget.scrollController.offset > (expandedBarHeight - collapsedBarHeight);
     });
   }
 
@@ -168,7 +163,7 @@ class _TourHomePageState extends State<TourHomePage>
                     crossAxisCount: 4,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    childAspectRatio: 0.85,
+                    childAspectRatio: 0.8,
                   ),
                   itemCount: stateNames.length,
                   itemBuilder: (context, index) {
@@ -392,7 +387,7 @@ class _TourHomePageState extends State<TourHomePage>
                               color: Colors.orange,
                             ))
                           : NestedScrollView(
-                              controller: _scrollController,
+                              controller: widget.scrollController,
                               headerSliverBuilder:
                                   (context, innerBoxIsScrolled) {
                                 return [
@@ -591,62 +586,50 @@ class MainCollapsedContent extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
-      child: Row(
-        children: [
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.arrow_back_ios_rounded, size: 23),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const TourSearchScreen(
+                  recentName: '',
+                ),
+              ));
+        },
+        child: Container(
+          height: screenHeight * 0.05,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.grey),
+            color: Colors.white,
           ),
-          SizedBox(width: screenWidth * 0.02),
-          Expanded(
-            // Ensure this takes the remaining space
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => const TourSearchScreen(
-                        recentName: '',
-                      ),
-                    ));
-              },
-              child: Container(
-                height: screenHeight * 0.05,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: CustomColors.clrggreytxt),
-                  color: Colors.white,
-                ),
-                child: Center(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.search),
-                        Consumer<LocalizationController>(
-                          builder: (context, localizationController, child) {
-                            String currentLang =
-                                localizationController.locale.languageCode;
-                            return Text(
-                              currentLang == 'hi'
-                                  ? 'स्थान खोजे'
-                                  : 'Search destinations',
-                              style: TextStyle(
-                                fontSize: screenWidth * 0.04,
-                                color: CustomColors.clrggreytxt,
-                              ),
-                            );
-                          },
+          child: Center(
+            child: Padding(
+              padding:
+              EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+              child: Row(
+                children: [
+                  const Icon(Icons.search),
+                  Consumer<LocalizationController>(
+                    builder: (context, localizationController, child) {
+                      String currentLang =
+                          localizationController.locale.languageCode;
+                      return Text(
+                        currentLang == 'hi'
+                            ? 'स्थान खोजे'
+                            : 'Search destinations',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.04,
+                          color: Colors.black,
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -780,125 +763,290 @@ class _MainExpandContentState extends State<MainExpandContent> {
     var screenWidth = MediaQuery.of(context).size.width;
     var screenHeight = MediaQuery.of(context).size.height;
 
-    return Container(
-      child: Stack(
-        children: [
-          // Background Slider
-          if ((tourImagesList?.data.isNotEmpty ?? false))
-            PageView.builder(
-              controller: _pageController,
-              itemCount: tourImagesList?.data.length ?? 0,
-              itemBuilder: (context, index) {
-                final imageUrl = tourImagesList?.data[index] ?? '';
-                return Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                  errorBuilder: (_, __, ___) => Container(
-                    color: Colors.grey.shade300,
-                    child: const Center(child: Icon(Icons.image, size: 50)),
-                  ),
-                );
-              },
-            )
-          else
-            Container(
-              color: Colors.grey.shade200,
-              child: const Center(
-                  child: CircularProgressIndicator(
-                color: Colors.transparent,
-              )),
-            ),
-
-          // Top gradient overlay
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.transparent,
-                  ],
+    return Stack(
+      children: [
+        // Background Slider
+        if ((tourImagesList?.data.isNotEmpty ?? false))
+          PageView.builder(
+            controller: _pageController,
+            itemCount: tourImagesList?.data.length ?? 0,
+            itemBuilder: (context, index) {
+              final imageUrl = tourImagesList?.data[index] ?? '';
+              return Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                errorBuilder: (_, __, ___) => Container(
+                  color: Colors.grey.shade300,
+                  child: const Center(child: Icon(Icons.image, size: 50)),
                 ),
+              );
+            },
+          )
+        else
+          Container(
+            color: Colors.grey.shade200,
+            child: const Center(
+                child: CircularProgressIndicator(
+              color: Colors.transparent,
+            )),
+          ),
+
+        // Top gradient overlay
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.3),
+                  Colors.transparent,
+                ],
               ),
             ),
           ),
+        ),
 
-          // Bottom white gradient overlay
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 150,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Colors.white.withOpacity(1),
-                    Colors.white.withOpacity(0),
-                  ],
-                ),
+        // Bottom white gradient overlay
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 150,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.white.withOpacity(1),
+                  Colors.white.withOpacity(0),
+                ],
               ),
             ),
           ),
+        ),
 
-          // Foreground content
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: screenWidth * 0.24),
+        // Foreground content
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: screenWidth * 0.24),
 
-              // App Bar with Back & Search
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: const Icon(Icons.arrow_back_ios_new_rounded,
-                          color: Colors.white, size: 24),
+            // App Bar with Back & Search
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              child:  InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) =>
+                      const TourSearchScreen(recentName: ''),
                     ),
-                    SizedBox(width: screenWidth * 0.02),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) =>
-                                  const TourSearchScreen(recentName: ''),
+                  );
+                  _loadRecentSearches();
+                },
+                child: Container(
+                  height: screenHeight * 0.05,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.03),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.search, color: Colors.black54),
+                      const SizedBox(width: 8),
+                      Consumer<LocalizationController>(
+                        builder:
+                            (context, localizationController, child) {
+                          String currentLang = localizationController
+                              .locale.languageCode;
+                          return Text(
+                            currentLang == 'hi'
+                                ? 'स्थान खोजे'
+                                : 'Search destinations',
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.04,
+                              color: Colors.black,
                             ),
                           );
-                          _loadRecentSearches();
                         },
-                        child: Container(
-                          height: screenHeight * 0.05,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.grey.shade300),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: screenWidth * 0.04),
+
+            // Recent Searches Horizontal Chips
+            if(_recentSearches.isNotEmpty)
+            Container(
+                height: 36,
+                padding: const EdgeInsets.only(left: 16),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _recentSearches.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white24),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => TourSearchScreen(
+                                    recentName: _recentSearches[index],
+                                  ),
+                                ),
+                              );
+                              _loadRecentSearches();
+                            },
+                            child: Text(
+                              _recentSearches[index],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenWidth * 0.035,
+                              ),
+                            ),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.03),
-                          child: Row(
+                          const SizedBox(width: 6),
+                          GestureDetector(
+                            onTap: () => _removeSearch(index),
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.white70,
+                              size: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+            SizedBox(height: screenWidth * 0.04),
+
+            // Subtitle Text
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Consumer<LocalizationController>(
+                builder: (context, localizationController, child) {
+                  String currentLang =
+                      localizationController.locale.languageCode;
+                  return Text(
+                    currentLang == 'hi'
+                        ? "तीर्थ यात्रा, मंदिर दर्शन और अधिक, नवीनतम जानकारी यहां देखें...!"
+                        : "Check out the latest on pilgrimages, temple visits and more...!",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            SizedBox(height: screenWidth * 0.04),
+
+            // Horizontal New Tours List
+            if (_newToursList.isNotEmpty)
+              Container(
+                height: 210,
+                padding: EdgeInsets.only(left: screenWidth * 0.03),
+                child: ListView.builder(
+                  itemCount: _newToursList.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    final tour = _newToursList[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => TourDetails(
+                              productId: tour.id.toString(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 150,
+                        margin: EdgeInsets.only(right: screenWidth * 0.025),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Stack(
                             children: [
-                              const Icon(Icons.search, color: Colors.black54),
-                              const SizedBox(width: 8),
+                              CachedNetworkImage(
+                                imageUrl: tour.image ?? '',
+                                height: 230,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    placeholderImage(),
+                                errorWidget: (context, url, error) =>
+                                    const NoImageWidget(),
+                              ),
+                              Positioned.fill(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                      colors: [
+                                        Colors.black.withOpacity(0.65),
+                                        Colors.transparent,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Consumer<LocalizationController>(
                                 builder:
                                     (context, localizationController, child) {
                                   String currentLang = localizationController
                                       .locale.languageCode;
-                                  return Text(
-                                    currentLang == 'hi'
-                                        ? 'स्थान खोजे'
-                                        : 'Search destinations',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 0.04,
-                                      color: CustomColors.clrggreytxt,
+                                  return Positioned(
+                                    bottom: 12,
+                                    left: 10,
+                                    right: 10,
+                                    child: Text(
+                                      currentLang == 'hi'
+                                          ? tour.hiTourName ?? ''
+                                          : tour.enTourName ?? '',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: screenWidth * 0.04,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   );
                                 },
@@ -907,192 +1055,13 @@ class _MainExpandContentState extends State<MainExpandContent> {
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: screenWidth * 0.04),
-
-              // Recent Searches Horizontal Chips
-              if (_recentSearches.isNotEmpty)
-                Container(
-                  height: 36,
-                  padding: const EdgeInsets.only(left: 16),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _recentSearches.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: Colors.white24,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.white24),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => TourSearchScreen(
-                                      recentName: _recentSearches[index],
-                                    ),
-                                  ),
-                                );
-                                _loadRecentSearches();
-                              },
-                              child: Text(
-                                _recentSearches[index],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: screenWidth * 0.035,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            GestureDetector(
-                              onTap: () => _removeSearch(index),
-                              child: const Icon(
-                                Icons.close,
-                                color: Colors.white70,
-                                size: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-
-              SizedBox(height: screenWidth * 0.04),
-
-              // Subtitle Text
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Consumer<LocalizationController>(
-                  builder: (context, localizationController, child) {
-                    String currentLang =
-                        localizationController.locale.languageCode;
-                    return Text(
-                      currentLang == 'hi'
-                          ? "तीर्थ यात्रा, मंदिर दर्शन और अधिक, नवीनतम जानकारी यहां देखें...!"
-                          : "Check out the latest on pilgrimages, temple visits and more...!",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
                     );
                   },
                 ),
               ),
-
-              SizedBox(height: screenWidth * 0.04),
-
-              // Horizontal New Tours List
-              if (_newToursList.isNotEmpty)
-                Container(
-                  height: 210,
-                  padding: EdgeInsets.only(left: screenWidth * 0.03),
-                  child: ListView.builder(
-                    itemCount: _newToursList.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final tour = _newToursList[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => TourDetails(
-                                productId: tour.id.toString(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: 150,
-                          margin: EdgeInsets.only(right: screenWidth * 0.025),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Stack(
-                              children: [
-                                CachedNetworkImage(
-                                  imageUrl: tour.image ?? '',
-                                  height: 230,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      placeholderImage(),
-                                  errorWidget: (context, url, error) =>
-                                      const NoImageWidget(),
-                                ),
-                                Positioned.fill(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: [
-                                          Colors.black.withOpacity(0.65),
-                                          Colors.transparent,
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Consumer<LocalizationController>(
-                                  builder:
-                                      (context, localizationController, child) {
-                                    String currentLang = localizationController
-                                        .locale.languageCode;
-                                    return Positioned(
-                                      bottom: 12,
-                                      left: 10,
-                                      right: 10,
-                                      child: Text(
-                                        currentLang == 'hi'
-                                            ? tour.hiTourName ?? ''
-                                            : tour.enTourName ?? '',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: screenWidth * 0.04,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-            ],
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 }

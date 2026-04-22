@@ -45,3 +45,29 @@ class ToastHelper {
     );
   }
 }
+
+
+Widget placeholderImage() {
+  return Container(
+    child: Image.asset(
+      'assets/images/mahakal.jpeg',
+      fit: BoxFit.cover,
+    ),
+  );
+}
+
+class NoImageWidget extends StatelessWidget {
+  const NoImageWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        alignment: Alignment.center,
+        child: Image.asset(
+          "assets/images/no_image.png",
+          fit: BoxFit.fill,
+        ));
+  }
+}

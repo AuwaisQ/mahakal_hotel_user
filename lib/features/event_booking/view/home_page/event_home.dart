@@ -4,14 +4,15 @@ import 'package:tdk_bouncingwidget/tdk_bouncingwidget.dart';
 import '../../../../data/datasource/remote/http/httpClient.dart';
 import '../../../../utill/app_constants.dart';
 import '../../../../utill/loading_datawidget.dart';
-import '../../../donation/controller/lanaguage_provider.dart';
+import '../../../tour_and_travells/Controller/lanaguage_provider.dart';
 import '../../model/category_model.dart';
 import '../static_tab/AllEventScreen.dart';
 import 'event_main.dart';
 import 'package:provider/provider.dart';
 
 class EventHome extends StatefulWidget {
-  const EventHome({super.key});
+  final ScrollController scrollController;
+  const EventHome({super.key, required this.scrollController});
 
   @override
   State<EventHome> createState() => _EventHomeState();
@@ -76,8 +77,8 @@ class _EventHomeState extends State<EventHome> {
 
     /// TabBar Views
     final List<Widget> tabView = [
-      const AllEventScreen(),
-      ...categoryList.map((cat) => EventMain(categoryId: cat.id)),
+      AllEventScreen(scrollController: widget.scrollController,),
+      ...categoryList.map((cat) => EventMain(categoryId: cat.id, scrollController: widget.scrollController)),
     ];
 
     return isLoading

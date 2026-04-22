@@ -19,8 +19,6 @@ import '../features/chat/screens/inbox_screen.dart';
 import '../features/custom_bottom_bar/bottomBar.dart';
 import '../features/notification/screens/notification_screen.dart';
 import '../features/order_details/screens/order_details_screen.dart';
-import '../features/pooja_booking/view/silvertabbar.dart';
-import '../features/donation/view/home_page/static_view/all_home_page/static_details/Donationpage.dart';
 
 class NotificationHelper {
   static FlutterLocalNotificationsPlugin? _flnPlugin;
@@ -190,15 +188,15 @@ class NotificationHelper {
         case 'astrotalk':
           Navigator.push(context, MaterialPageRoute(builder: (_) => InboxScreen(scrollController: ScrollController())));
           break;
-        case 'pooja':
-        case 'anushthan':
-          Navigator.push(context, MaterialPageRoute(
-            builder: (_) => SliversExample(slugName: body.service_id.toString()),
-          ));
-          break;
-        case 'donation':
-          Navigator.push(context, MaterialPageRoute(builder: (_) => Donationpage(myId: null)));
-          break;
+        // case 'pooja':
+        // case 'anushthan':
+        //   Navigator.push(context, MaterialPageRoute(
+        //     builder: (_) => SliversExample(slugName: body.service_id.toString()),
+        //   ));
+        //   break;
+        // case 'donation':
+        //   Navigator.push(context, MaterialPageRoute(builder: (_) => Donationpage(myId: null)));
+        //   break;
         case 'notification':
           Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationScreen()));
           break;

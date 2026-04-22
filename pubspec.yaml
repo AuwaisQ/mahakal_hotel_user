@@ -151,7 +151,7 @@ dev_dependencies:
     sdk: flutter
 
 icons_launcher:
-  image_path: "assets/images/mahakal.jpeg"
+  image_path: "assets/images/mahakal.png"
   platforms:
     android:
       enable: true
@@ -163,29 +163,11 @@ flutter:
 
   assets:
     - assets/image/
-    - assets/hanuman_chalisa_audio/
     - assets/mandir_images/
     - assets/images/
-    - assets/donation/
-    - assets/images/gif/
-    - assets/images/jaap/
-    - assets/images/allcategories/
-    - assets/images/allcategories/animate/
-    - assets/images/calculator/
     - assets/language/
-    - assets/animated/
     - assets/lottie/
-    - assets/planet/
-    - assets/diya/
-    - assets/testImage/pooja/
-    - assets/testImage/poojabooking/
-    - assets/testImage/categories/
-    - assets/testImage/rashifall/
-    - assets/testImage/offersImage/
-    - assets/testImage/panchangImages/images/
-    - assets/testImage/panchangImages/wallpaper/
-    - assets/images/kundli_chart_images/
-    - assets/sahitya_images/
+
 
   fonts:
     - family: SF-Pro-Rounded-Regular

@@ -413,7 +413,7 @@ class _HotelFormState extends State<HotelForm> {
                             child: _buildTextField(
                               controller: _emailController,
                               label: 'Email Address',
-                              hintText: 'john.doe@example.com',
+                              hintText: 'john.doe@hotelapp.com',
                               prefixIcon: Icons.email_outlined,
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {

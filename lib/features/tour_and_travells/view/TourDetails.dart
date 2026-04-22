@@ -8,8 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:mahakal/features/blogs_module/no_image_widget.dart';
-import 'package:mahakal/features/pooja_booking/view/tabbarview_screens/askquestions.dart';
 import 'package:mahakal/features/tour_and_travells/view/tour_packages/special_tour_type.dart';
 import 'package:mahakal/features/tour_and_travells/view/tour_packages/usetypethree.dart';
 import 'package:mahakal/features/tour_and_travells/view/tour_packages/myfourthtour.dart';
@@ -23,6 +21,7 @@ import 'package:tdk_bouncingwidget/tdk_bouncingwidget.dart';
 import '../../../data/datasource/remote/http/httpClient.dart';
 import '../../../utill/app_constants.dart';
 import '../../../utill/devotees_count_widget.dart';
+import '../../../utill/flutter_toast_helper.dart';
 import '../../../utill/full_screen_image_slider.dart';
 import '../../../utill/loading_datawidget.dart';
 import '../../order/screens/track_screens/invoice_view_screen.dart';
@@ -2944,11 +2943,11 @@ DevoteesCountWidget(),
                               ),
 
                               /// FAQ's
-                              Container(
-                                key: nineKey,
-                                child: Askquestions(
-                                    type: 'Tour', translateEn: translateEn),
-                              ),
+                              // Container(
+                              //   key: nineKey,
+                              //   child: Askquestions(
+                              //       type: 'Tour', translateEn: translateEn),
+                              // ),
                               const SizedBox(
                                 height: 50,
                               ),

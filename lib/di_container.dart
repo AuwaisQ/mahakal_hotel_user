@@ -1,11 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:mahakal/call_service/call_service.dart';
 import 'package:mahakal/data/datasource/remote/dio/dio_client.dart';
 import 'package:mahakal/features/address/domain/repositories/address_repository_interface.dart';
 import 'package:mahakal/features/address/domain/services/address_service.dart';
 import 'package:mahakal/features/address/domain/services/address_service_interface.dart';
-import 'package:mahakal/features/astrotalk/controller/astrotalk_controller.dart';
 import 'package:mahakal/features/auth/domain/repositories/auth_repository.dart';
 import 'package:mahakal/features/auth/domain/repositories/auth_repository_interface.dart';
 import 'package:mahakal/features/auth/domain/services/auth_service.dart';
@@ -15,9 +13,6 @@ import 'package:mahakal/features/banner/domain/repositories/banner_repository.da
 import 'package:mahakal/features/banner/domain/repositories/banner_repository_interface.dart';
 import 'package:mahakal/features/banner/domain/services/banner_service.dart';
 import 'package:mahakal/features/banner/domain/services/banner_service_interface.dart';
-import 'package:mahakal/features/blogs_module/Controller/Bookmark%20Provider.dart';
-import 'package:mahakal/features/blogs_module/Controller/ShareScreen.dart';
-import 'package:mahakal/features/blogs_module/Controller/language_provider.dart';
 import 'package:mahakal/features/brand/domain/repositories/brand_repo_interface.dart';
 import 'package:mahakal/features/brand/domain/repositories/brand_repository.dart';
 import 'package:mahakal/features/brand/domain/services/brand_service.dart';
@@ -73,7 +68,6 @@ import 'package:mahakal/features/loyaltyPoint/controllers/loyalty_point_controll
 import 'package:mahakal/features/loyaltyPoint/domain/repositories/loyalty_point_repository_interface.dart';
 import 'package:mahakal/features/loyaltyPoint/domain/services/loyalty_poin_service.dart';
 import 'package:mahakal/features/loyaltyPoint/domain/services/loyalty_point_service_interface.dart';
-import 'package:mahakal/features/maha_bhandar/controller/hora_controller.dart';
 import 'package:mahakal/features/notification/controllers/notification_controller.dart';
 import 'package:mahakal/features/notification/domain/repositories/notification_repository.dart';
 import 'package:mahakal/features/notification/domain/repositories/notification_repository_interface.dart';
@@ -129,7 +123,6 @@ import 'package:mahakal/features/review/domain/repositories/review_repository.da
 import 'package:mahakal/features/review/domain/repositories/review_repository_interface.dart';
 import 'package:mahakal/features/review/domain/services/review_service.dart';
 import 'package:mahakal/features/review/domain/services/review_service_interface.dart';
-import 'package:mahakal/features/sahitya/view/hanuman_chalisa/list_chalisa_player.dart';
 import 'package:mahakal/features/search_product/domain/repositories/search_product_repository_interface.dart';
 import 'package:mahakal/features/search_product/domain/services/search_product_service.dart';
 import 'package:mahakal/features/search_product/domain/services/search_product_service_interface.dart';
@@ -191,7 +184,6 @@ import 'features/Tickit_Booking/controller/tickit_availablity_controller.dart';
 import 'features/Tickit_Booking/controller/tickit_booking_controller.dart';
 import 'features/Tickit_Booking/controller/tickit_leadupdate_controller.dart';
 import 'features/Tickit_Booking/controller/tickit_summery_controller.dart';
-import 'features/donation/controller/lanaguage_provider.dart';
 import 'features/event_booking/controller/event_auditorium_controller.dart';
 import 'features/event_booking/controller/event_booking_controller.dart';
 import 'features/event_booking/controller/event_leadupdate_controller.dart';
@@ -212,20 +204,10 @@ import 'features/hotels/controller/spaces_list_controller.dart';
 import 'features/hotels/controller/view_allhotel_controller.dart';
 import 'features/hotels/controller/view_allspace_controller.dart';
 import 'features/loyaltyPoint/domain/repositories/loyalty_point_repository.dart';
-import 'features/maha_bhandar/controller/share_panchang_controller.dart';
-import 'features/mandir/controller/share_controller.dart';
-import 'features/sahitya/controller/audio_controller.dart';
-import 'features/sahitya/controller/bookmark_provider.dart';
-import 'features/sahitya/controller/settings_controller.dart';
-import 'features/sahitya/controller/share_verse.dart';
-import 'features/sahitya/view/hanuman_chalisa/chalisa_player.dart';
-import 'features/sahitya/view/hanuman_chalisa/share_hanumanchalisa.dart';
-import 'features/sangeet/controller/audio_manager.dart';
-import 'features/sangeet/controller/favourite_manager.dart';
-import 'features/sangeet/controller/language_manager.dart';
 import 'features/search_product/domain/repositories/search_product_repository.dart';
 import 'features/tour_and_travells/Controller/fetch_coupon_controller.dart';
 import 'features/tour_and_travells/Controller/fetch_wallet_controller.dart';
+import 'features/tour_and_travells/Controller/lanaguage_provider.dart';
 import 'features/tour_and_travells/Controller/success_touramount_controller.dart';
 import 'features/tour_and_travells/Controller/tour_lead_controller.dart';
 
@@ -285,29 +267,29 @@ Future<void> init() async {
 
 
   //Mahakal-Controllers
-  sl.registerFactory(() => HoraController());
-  sl.registerFactory(() => AudioPlayerManager());
-  sl.registerFactory(() => FavouriteProvider());
-  sl.registerFactory(() => LanguageManager());
+  // sl.registerFactory(() => HoraController());
+  // sl.registerFactory(() => AudioPlayerManager());
+  // sl.registerFactory(() => FavouriteProvider());
+  // sl.registerFactory(() => LanguageManager());
   sl.registerFactory(() => LanguageProvider());
-  sl.registerFactory(() => BookmarkProvider());
-  sl.registerFactory(() => SettingsProvider());
-  sl.registerFactory(() => ShareVerse());
-  sl.registerFactory(() => SharePachangController());
-  sl.registerFactory(() => AudioPlayerManagerSahitya());
+  // sl.registerFactory(() => BookmarkProvider());
+  // sl.registerFactory(() => SettingsProvider());
+  // sl.registerFactory(() => ShareVerse());
+  // sl.registerFactory(() => SharePachangController());
+  // sl.registerFactory(() => AudioPlayerManagerSahitya());
   sl.registerFactory(() => SuccessTourAmountController());
   sl.registerFactory(() => FetchCouponController());
   sl.registerFactory(() => FetchWalletController());
-  sl.registerFactory(() => ShareMusic());
-  sl.registerFactory(() => ShareBlogs());
-  sl.registerFactory(() => BlogLanguageProvider());
-  sl.registerFactory(() => BlogSaveProvider());
-  sl.registerFactory(() => ShareHanumanChalisa());
-  sl.registerFactory(() => ListChalisaPlayer());
-  sl.registerFactory(() => ChalisaPlayer());
+  // sl.registerFactory(() => ShareMusic());
+  // sl.registerFactory(() => ShareBlogs());
+  // sl.registerFactory(() => BlogLanguageProvider());
+  // sl.registerFactory(() => BlogSaveProvider());
+  // sl.registerFactory(() => ShareHanumanChalisa());
+  // sl.registerFactory(() => ListChalisaPlayer());
+  // sl.registerFactory(() => ChalisaPlayer());
   sl.registerFactory(() => TourLeadController());
-  sl.registerFactory(() => SocketController());
-  sl.registerFactory(() => CallServiceProvider());
+  // sl.registerFactory(() => SocketController());
+  // sl.registerFactory(() => CallServiceProvider());
 
   //Hotels
   sl.registerFactory(() => LocationListController());

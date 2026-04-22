@@ -22,7 +22,6 @@ import '../../../profile/controllers/profile_contrroller.dart';
 import '../../../support/screens/support_ticket_screen.dart';
 import '../../model/trackdetail_model.dart';
 import 'invoice_view_screen.dart';
-import 'track_screen.dart';
 import 'package:http/http.dart' as http;
 
 class MahakalTrackOrder extends StatefulWidget {
@@ -1731,14 +1730,14 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: InkWell(
               onTap: () {
-                Navigator.push(
-                    context,
-                    PageAnimationTransition(
-                        page: OrderTrackingPage(
-                          userID: widget.poojaId,
-                          isPrashad: trackModelData?.order?.isPrashad!,
-                        ),
-                        pageAnimationType: RightToLeftTransition()));
+                // Navigator.push(
+                //     context,
+                //     PageAnimationTransition(
+                //         page: OrderTrackingPage(
+                //           userID: widget.poojaId,
+                //           isPrashad: trackModelData?.order?.isPrashad!,
+                //         ),
+                //         pageAnimationType: RightToLeftTransition()));
               },
               child: Container(
                 margin: const EdgeInsets.all(10),

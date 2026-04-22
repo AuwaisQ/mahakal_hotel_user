@@ -1,21 +1,20 @@
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mahakal/features/astrotalk/screen/astro_bottombar.dart';
-import 'package:mahakal/features/home/screens/home_screens.dart';
 import 'package:mahakal/features/more/screens/more_screen_view.dart';
 import 'package:hidable/hidable.dart';
 import 'package:page_animation_transition/animations/bottom_to_top_transition.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';
-import 'package:path/path.dart' as Get;
 import 'package:provider/provider.dart';
 import '../../common/basewidget/not_logged_in_bottom_sheet_widget.dart';
 import '../../utill/dimensions.dart';
+import '../Tickit_Booking/view/tickit_booking_home.dart';
 import '../auth/controllers/auth_controller.dart';
 import '../dashboard/models/navigation_model.dart';
-import '../explore/exploreScreen.dart';
-import '../mandir/view/mandir.dart';
-import '../pooja_booking/view/pooja_home.dart';
+import '../event_booking/view/home_page/event_home.dart';
+import '../hotels/view/hotels_home_page.dart';
+import '../self_drive/self_form_screen.dart';
+import '../tour_and_travells/view/main_home_tour.dart';
 import 'customPainter.dart';
 import '../../utill/app_constants.dart';
 
@@ -29,11 +28,11 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   PageController? _pageController;
-  final ScrollController exploreScrollController = ScrollController();
+  final ScrollController tourScrollController = ScrollController();
   final ScrollController orderScrollController = ScrollController();
   final ScrollController menuScrollController = ScrollController();
-  final ScrollController moreScrollController = ScrollController();
-  final ScrollController homeScrollController = ScrollController();
+  final ScrollController hotelScrollController = ScrollController();
+  final ScrollController eventScrollController = ScrollController();
   ScrollController? activeScrollController;
   int _pageIndex = 0;
   late List<Widget> _screens;
@@ -45,11 +44,11 @@ class _BottomBarState extends State<BottomBar> {
     _pageIndex = widget.pageIndex;
     _pageController = PageController(initialPage: widget.pageIndex);
     _screens = [
-      ExploreScreen(scrollController: exploreScrollController),
+      TourHomePage(scrollController: tourScrollController),
+      TickitBookingHome(scrollController: eventScrollController),
       const SizedBox(),
-      const SizedBox(),
-      PoojaHomeView(tabIndex: 0, scrollController: orderScrollController),
-      HomePage(scrollController: homeScrollController), // ✅ FIX
+      HotelHomeScreen(scrollController: hotelScrollController),
+      MoreScreen(scrollController: menuScrollController),
     ];
     _updateActiveScrollController();
   }
@@ -57,16 +56,16 @@ class _BottomBarState extends State<BottomBar> {
   void _updateActiveScrollController() {
     switch (_pageIndex) {
       case 0:
-        activeScrollController = exploreScrollController;
+        activeScrollController = tourScrollController;
         break;
       case 1:
-        activeScrollController = moreScrollController;
+        activeScrollController = eventScrollController;
         break;
       case 3:
-        activeScrollController = orderScrollController;
+        activeScrollController = hotelScrollController;
         break;
       case 4:
-        activeScrollController = homeScrollController;
+        activeScrollController = menuScrollController;
         break;
       default:
         activeScrollController = null;
@@ -129,12 +128,12 @@ class _BottomBarState extends State<BottomBar> {
                               shape: CircleBorder(
                                 side: BorderSide(
                                   width: 2,
-                                  color: _pageIndex == 5
+                                  color: _pageIndex == 2
                                       ? Theme.of(context).cardColor
                                       : Theme.of(context).primaryColor,
                                 ),
                               ),
-                              backgroundColor: _pageIndex == 5
+                              backgroundColor: _pageIndex == 2
                                   ? Theme.of(context).primaryColor
                                   : Theme.of(context).cardColor,
                               onPressed: () {
@@ -148,7 +147,7 @@ class _BottomBarState extends State<BottomBar> {
                                   Navigator.push(
                                     context,
                                     PageAnimationTransition(
-                                      page: const Mandir(tabIndex: 0),
+                                      page:  TripBookingPage(type: 'one-way',),
                                       pageAnimationType:
                                           BottomToTopTransition(),
                                     ),
@@ -156,13 +155,14 @@ class _BottomBarState extends State<BottomBar> {
                                 }
                               },
                               elevation: 10,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Image.asset(
-                                  'assets/animated/mandirmahakal animation.gif',
-                                  height: 60,
-                                ),
-                              ),
+                              child: Icon(CupertinoIcons.car_detailed,size: 30,color: Colors.deepOrange,),
+                              // child: ClipRRect(
+                              //   borderRadius: BorderRadius.circular(100),
+                              //   child: Image.asset(
+                              //     'assets/animated/mandirmahakal animation.gif',
+                              //     height: 60,
+                              //   ),
+                              // ),
                             ),
                           ),
                         ),
@@ -177,8 +177,8 @@ class _BottomBarState extends State<BottomBar> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 BottomNavItem(
-                                  title: 'Explore',
-                                  iconData: Icons.dashboard,
+                                  title: 'Tour',
+                                  iconData: Icons.travel_explore,
                                   isSelected: _pageIndex == 0,
                                   // onTap: () => _setPage(0),
                                   onTap: () {
@@ -194,84 +194,37 @@ class _BottomBarState extends State<BottomBar> {
                                   },
                                 ),
                                 BottomNavItem(
-                                  title: 'Astrologer',
-                                  iconData: CupertinoIcons.chat_bubble,
+                                  title: 'Event',
+                                  iconData: Icons.event,
                                   isSelected: _pageIndex == 1,
-                                  onTap: () {
-
-                                    //<<<------- Direct Navigation to Astro Bottom Bar ----->>>//
-                                    // Navigator.push(
-                                    //     context,
-                                    //     CupertinoPageRoute(
-                                    //         builder: (context) =>
-                                    //             const AstroBottomBar(
-                                    //               pageIndex: 1, initialIndex: 1,
-                                    //             )),
-                                    //   );
-
-                                    //<<<<------- Conditional Navigation Based on Base URL ----->>>//
-                                    if (AppConstants.baseUrl ==
-                                            'https://uat.pavtr.in' ||
-                                        AppConstants.baseUrl ==
-                                            'https://sit.resrv.in') {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) =>
-                                                const AstroBottomBar(
-                                                  pageIndex: 1, initialIndex: 1,
-                                                )),
-                                      );
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title:
-                                              const Text('Talk To Astorlogers'),
-                                          content: const Text(
-                                              'This feature is coming soon! Stay tuned for updates.'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: const Text(
-                                                'Close',
-                                                style: TextStyle(
-                                                    color: Colors.deepOrange),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  },
+                                  onTap: ()=> _setPage(1),
                                 ),
                                 BottomNavItem(
-                                  title: 'Mandir',
+                                  title: 'Cab',
                                   iconData: CupertinoIcons.minus,
-                                  isSelected: _pageIndex == 5,
-                                  onTap: () {
+                                  isSelected: _pageIndex == 2,
+                                  onTap: (){
                                     if (isGuestMode) {
                                       showModalBottomSheet(
                                           backgroundColor: Colors.transparent,
                                           context: context,
                                           builder: (_) =>
-                                              const NotLoggedInBottomSheetWidget());
+                                          const NotLoggedInBottomSheetWidget());
                                     } else {
                                       Navigator.push(
                                         context,
                                         PageAnimationTransition(
-                                          page: const Mandir(tabIndex: 0),
+                                          page:  const TripBookingPage(type: 'one-way',),
                                           pageAnimationType:
-                                              BottomToTopTransition(),
+                                          BottomToTopTransition(),
                                         ),
                                       );
                                     }
-                                  },
+                                  }
                                 ),
                                 BottomNavItem(
-                                  title: 'Pooja',
-                                  iconData: Icons.temple_hindu_outlined,
+                                  title: 'Hotel',
+                                  iconData: Icons.location_city,
                                   isSelected: _pageIndex == 3,
                                   // onTap: () => _setPage(3),
                                   onTap: () {
@@ -287,8 +240,8 @@ class _BottomBarState extends State<BottomBar> {
                                   },
                                 ),
                                 BottomNavItem(
-                                  title: 'Shop',
-                                  iconData: CupertinoIcons.cart_fill,
+                                  title: 'Menu',
+                                  iconData: Icons.menu,
                                   isSelected: _pageIndex == 4,
                                   onTap: () => _setPage(4),
                                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mahakal/data/datasource/remote/http/httpClient.dart';
-import '../../pooja_booking/model/coupon_model.dart';
+
+import '../model/coupon_model.dart';
 
 class FetchCouponController with ChangeNotifier {
   List<Couponlist> _couponlist = [];

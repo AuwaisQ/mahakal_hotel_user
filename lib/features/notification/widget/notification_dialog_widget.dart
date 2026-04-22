@@ -340,15 +340,6 @@ import 'package:mahakal/utill/dimensions.dart';
 import 'package:mahakal/common/basewidget/custom_image_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../main.dart';
-import '../../astrology/component/astrodetailspage.dart';
-import '../../donation/view/home_page/static_view/all_home_page/static_details/Donationpage.dart';
-import '../../event_booking/view/event_details.dart';
-import '../../mandir_darshan/mandirdetails_mandir.dart';
-import '../../offline_pooja/view/offline_details.dart';
-import '../../pooja_booking/view/anushthandetail.dart';
-import '../../pooja_booking/view/chadhavadetails.dart';
-import '../../pooja_booking/view/silvertabbar.dart';
-import '../../pooja_booking/view/vipdetails.dart';
 import '../../product_details/screens/product_details_screen.dart';
 import '../../tour_and_travells/view/TourDetails.dart';
 
@@ -377,77 +368,77 @@ class _NotificationDialogWidgetState extends State<NotificationDialogWidget> {
       final slug = notificationModel.slug ?? '';
 
       switch (notificationType) {
-        case 'puja':
-          final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
-          final nextDate =
-          dateFormat.format(DateTime.now().add(const Duration(days: 7)));
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!).push(
-              CupertinoPageRoute(
-                builder: (context) => SliversExample(
-                  slugName: slug,
-                  // nextDatePooja: nextDate,
-                ),
-              ),
-            );
-          });
-          break;
-
-        case 'vip':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!).push(
-              CupertinoPageRoute(
-                builder: (context) => VipDetails(idNumber: slug, typePooja: 'vip'),
-              ),
-            );
-          });
-          break;
-
-        case 'anushthan':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!).push(
-              CupertinoPageRoute(
-                builder: (context) =>
-                    AnushthanDetails(idNumber: slug, typePooja: 'anushthan'),
-              ),
-            );
-          });
-          break;
-
-        case 'chadhava':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!)
-                .push(CupertinoPageRoute(builder: (context) => ChadhavaDetailView(idNumber: serviceId)));
-          });
-          break;
-
-        case 'offlinepuja':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!)
-                .push(CupertinoPageRoute(builder: (context) => OfflinePoojaDetails(slugName: slug)));
-          });
-          break;
-
-        case 'consultancy':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!)
-                .push(CupertinoPageRoute(builder: (context) => AstroDetailsView(productId: serviceId, isProduct: false)));
-          });
-          break;
-
-        case 'event':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!)
-                .push(CupertinoPageRoute(builder: (context) => EventDeatils(eventId: slug)));
-          });
-          break;
-
-        case 'darshan':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!)
-                .push(CupertinoPageRoute(builder: (context) => MandirDetailView(detailId: serviceId)));
-          });
-          break;
+        // case 'puja':
+        //   final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+        //   final nextDate =
+        //   dateFormat.format(DateTime.now().add(const Duration(days: 7)));
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!).push(
+        //       CupertinoPageRoute(
+        //         builder: (context) => SliversExample(
+        //           slugName: slug,
+        //           // nextDatePooja: nextDate,
+        //         ),
+        //       ),
+        //     );
+        //   });
+        //   break;
+        //
+        // case 'vip':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!).push(
+        //       CupertinoPageRoute(
+        //         builder: (context) => VipDetails(idNumber: slug, typePooja: 'vip'),
+        //       ),
+        //     );
+        //   });
+        //   break;
+        //
+        // case 'anushthan':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!).push(
+        //       CupertinoPageRoute(
+        //         builder: (context) =>
+        //             AnushthanDetails(idNumber: slug, typePooja: 'anushthan'),
+        //       ),
+        //     );
+        //   });
+        //   break;
+        //
+        // case 'chadhava':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!)
+        //         .push(CupertinoPageRoute(builder: (context) => ChadhavaDetailView(idNumber: serviceId)));
+        //   });
+        //   break;
+        //
+        // case 'offlinepuja':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!)
+        //         .push(CupertinoPageRoute(builder: (context) => OfflinePoojaDetails(slugName: slug)));
+        //   });
+        //   break;
+        //
+        // case 'consultancy':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!)
+        //         .push(CupertinoPageRoute(builder: (context) => AstroDetailsView(productId: serviceId, isProduct: false)));
+        //   });
+        //   break;
+        //
+        // case 'event':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!)
+        //         .push(CupertinoPageRoute(builder: (context) => EventDeatils(eventId: slug)));
+        //   });
+        //   break;
+        //
+        // case 'darshan':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!)
+        //         .push(CupertinoPageRoute(builder: (context) => MandirDetailView(detailId: serviceId)));
+        //   });
+        //   break;
 
         case 'tour':
           Future.delayed(const Duration(milliseconds: 500), () {
@@ -456,12 +447,12 @@ class _NotificationDialogWidgetState extends State<NotificationDialogWidget> {
           });
           break;
 
-        case 'donation':
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.of(Get.context!)
-                .push(CupertinoPageRoute(builder: (context) => Donationpage(myId: serviceId)));
-          });
-          break;
+        // case 'donation':
+        //   Future.delayed(const Duration(milliseconds: 500), () {
+        //     Navigator.of(Get.context!)
+        //         .push(CupertinoPageRoute(builder: (context) => Donationpage(myId: serviceId)));
+        //   });
+        //   break;
 
         case 'product':
           Future.delayed(const Duration(milliseconds: 500), () {
