@@ -2,10 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:mahakal/features/blogs_module/no_image_widget.dart';
-import 'package:mahakal/features/youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../utill/flutter_toast_helper.dart';
 import '../controller/view_allhotel_controller.dart';
 import '../model/view_allhotel_model.dart';
 import 'hotel_detail_page.dart';
@@ -941,7 +940,8 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                     width: double.infinity,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => placeholderImage(),
-                    errorWidget: (context, url, error) => NoImageWidget()
+                     errorWidget: (context, url, error) =>
+                                const NoImageWidget(),
                   ),
                 ),
 

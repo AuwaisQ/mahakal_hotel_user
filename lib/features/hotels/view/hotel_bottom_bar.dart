@@ -18,7 +18,7 @@ import '../../../utill/dimensions.dart';
 /// ==========================
 import 'package:flutter/material.dart';
 
-import '../../all_pandit/PanditBottomNavItem.dart';
+import '../../custom_bottom_bar/bottomNamItem.dart';
 import '../../custom_bottom_bar/customPainter.dart';
 import 'hotel_orderlist_screen.dart';
 import 'hotels_home_page.dart';
@@ -186,19 +186,19 @@ class _HotelBottomBarState extends State<HotelBottomBar> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                PanditBottomNavItem(
+                                BottomNavItem(
                                   title: 'Home',
                                   iconData: Icons.home,
                                   isSelected: _pageIndex == 0,
                                   onTap: () => _setPage(0),
                                 ),
-                                PanditBottomNavItem(
+                                BottomNavItem(
                                   title: 'Hotels',
                                   iconData: Icons.hotel,
                                   isSelected: _pageIndex == 1,
                                   onTap: () => _setPage(1),
                                 ),
-                                PanditBottomNavItem(
+                                BottomNavItem(
                                   title: 'Draft',
                                   iconData: CupertinoIcons.minus,
                                   isSelected: _pageIndex == 5,
@@ -212,13 +212,13 @@ class _HotelBottomBarState extends State<HotelBottomBar> {
                                     );
                                   },
                                 ),
-                                PanditBottomNavItem(
+                                BottomNavItem(
                                   title: 'Spaces',
                                   iconData: CupertinoIcons.sparkles,
                                   isSelected: _pageIndex == 3,
                                   onTap: () => _setPage(3),
                                 ),
-                                PanditBottomNavItem(
+                                BottomNavItem(
                                   title: 'Bookings',
                                   iconData: Icons.bookmark_border,
                                   isSelected: _pageIndex == 4,

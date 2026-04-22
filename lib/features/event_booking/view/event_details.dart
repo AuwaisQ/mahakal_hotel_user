@@ -6,14 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mahakal/features/event_booking/model/event_lead_model.dart';
-import 'package:mahakal/features/pooja_booking/view/tabbarview_screens/askquestions.dart';
 import '../../../data/datasource/remote/http/httpClient.dart';
 import '../../../main.dart';
 import '../../../utill/app_constants.dart';
 import '../../../utill/full_screen_image_slider.dart';
 import '../../../utill/loading_datawidget.dart';
-import '../../donation/controller/lanaguage_provider.dart';
 import '../../profile/controllers/profile_contrroller.dart';
+import '../../tour_and_travells/Controller/lanaguage_provider.dart';
 import '../../tour_and_travells/widgets/OverAllProductRating.dart';
 import '../../tour_and_travells/widgets/PRatingBarIndicater.dart';
 import '../model/event_reviewmodel.dart';
@@ -1924,17 +1923,17 @@ class _EventDeatilsState extends State<EventDeatils> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Consumer<LanguageProvider>(
-                                builder: (BuildContext context,
-                                    languageProvider, Widget? child) {
-                                  return Askquestions(
-                                      type: 'event',
-                                      translateEn:
-                                          languageProvider.language == "english"
-                                              ? "en"
-                                              : "hi");
-                                },
-                              ),
+                              // Consumer<LanguageProvider>(
+                              //   builder: (BuildContext context,
+                              //       languageProvider, Widget? child) {
+                              //     return Askquestions(
+                              //         type: 'event',
+                              //         translateEn:
+                              //             languageProvider.language == "english"
+                              //                 ? "en"
+                              //                 : "hi");
+                              //   },
+                              // ),
                               const SizedBox(
                                 height: 80,
                               )

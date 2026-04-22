@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../features/pooja_booking/view/pooja_video_player.dart';
 import '../utill/web_view.dart';
 
 class DeepLinkRoutes {
@@ -141,9 +140,9 @@ class DeepLinkService {
         _handlePanchangRoute(navigator);
         break;
 
-      case DeepLinkRoutes.livestream:
-        _handleLiveStreamRoute(segments, navigator);
-        break;
+      // case DeepLinkRoutes.livestream:
+      //   _handleLiveStreamRoute(segments, navigator);
+      //   break;
 
       case DeepLinkRoutes.tour:
         _handleTourRoute(segments, navigator); // ✅ new handler
@@ -400,18 +399,18 @@ class DeepLinkService {
     }
   }
 
-  void _handleLiveStreamRoute(List<String> segments, NavigatorState navigator) {
-    if (segments.length >= 2 && segments[1].isNotEmpty) {
-      final streamKey = segments[1];
-      navigator.push(MaterialPageRoute(
-        builder: (_) =>
-            PoojaVideoPlayer(streamKey: streamKey, isRecorded: false),
-      ));
-    } else {
-      // Insufficient info: do nothing instead of forcing splash
-      debugPrint('Live stream deep link missing stream key: $segments');
-    }
-  }
+  // void _handleLiveStreamRoute(List<String> segments, NavigatorState navigator) {
+  //   if (segments.length >= 2 && segments[1].isNotEmpty) {
+  //     final streamKey = segments[1];
+  //     navigator.push(MaterialPageRoute(
+  //       builder: (_) =>
+  //           PoojaVideoPlayer(streamKey: streamKey, isRecorded: false),
+  //     ));
+  //   } else {
+  //     // Insufficient info: do nothing instead of forcing splash
+  //     debugPrint('Live stream deep link missing stream key: $segments');
+  //   }
+  // }
 
   void _handleEpoojaRoute(List<String> segments, NavigatorState navigator) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');

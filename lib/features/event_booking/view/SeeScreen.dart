@@ -481,9 +481,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mahakal/features/blogs_module/no_image_widget.dart';
-import '../../donation/controller/lanaguage_provider.dart';
-import '../../youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
+import '../../tour_and_travells/Controller/lanaguage_provider.dart';
 import '../model/subCategory_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -713,10 +711,10 @@ class _SeeScreenState extends State<SeeScreen> {
                                                     event.eventImage ?? "N/A",
                                                 fit: BoxFit.fill,
                                                 placeholder: (context, url) =>
-                                                    placeholderImage(),
+                                                    CircularProgressIndicator(),
                                                 errorWidget:
                                                     (context, url, error) =>
-                                                        const NoImageWidget(),
+                                                        const CircularProgressIndicator(),
                                               ),
                                             ),
                                           ),

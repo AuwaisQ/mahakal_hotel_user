@@ -2,11 +2,10 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mahakal/features/blogs_module/no_image_widget.dart';
-import 'package:mahakal/features/youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
 import '../../../../data/datasource/remote/http/httpClient.dart';
 import '../../../../utill/app_constants.dart';
-import '../../../donation/controller/lanaguage_provider.dart';
+import '../../../../utill/flutter_toast_helper.dart';
+import '../../../tour_and_travells/Controller/lanaguage_provider.dart';
 import '../../model/subCategory_model.dart';
 import '../event_details.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +13,8 @@ import 'package:intl/intl.dart';
 
 class EventMain extends StatefulWidget {
   int? categoryId;
-
-  EventMain({super.key, this.categoryId});
+  final ScrollController scrollController;
+  EventMain({super.key, this.categoryId, required this.scrollController});
 
   @override
   State<EventMain> createState() => _EventMainState();
@@ -36,7 +35,7 @@ class _EventMainState extends State<EventMain> {
   @override
   void initState() {
     super.initState();
-    print("My ID is ${widget.categoryId}");
+    print('My ID is ${widget.categoryId}');
     getEventSubCategory(widget.categoryId!);
   }
 
@@ -47,12 +46,12 @@ class _EventMainState extends State<EventMain> {
     String endpoint = AppConstants.eventSubCategoryUrl;
 
     Map<String, dynamic> data = {
-      "category_id": [categoryId],
-      "venue_data": [],
-      "price": [],
-      "language": [],
-      "organizer": [],
-      "upcoming": "1",
+      'category_id': [categoryId],
+      'venue_data': [],
+      'price': [],
+      'language': [],
+      'organizer': [],
+      'upcoming': '1',
     };
 
     setState(() {
@@ -68,15 +67,15 @@ class _EventMainState extends State<EventMain> {
 
         setState(() {
           eventSubCategory.addAll(subCategoryData.data ?? []);
-          print("Total Length is ${eventSubCategory.length}");
+          print('Total Length is ${eventSubCategory.length}');
           if (eventSubCategory.isNotEmpty) {
             print(
-                "First item startToEndDate: ${eventSubCategory[0].startToEndDate}");
+                'First item startToEndDate: ${eventSubCategory[0].startToEndDate}');
           }
         });
       }
     } catch (e) {
-      print("Error fetching event subcategory: $e");
+      print('Error fetching event subcategory: $e');
     } finally {
       setState(() {
         isLoading = false;
@@ -86,8 +85,8 @@ class _EventMainState extends State<EventMain> {
 
   void dateFormatter(String startToEndDate) {
     if (startToEndDate.isNotEmpty) {
-      List<String> dates = startToEndDate.contains(" - ")
-          ? startToEndDate.split(" - ")
+      List<String> dates = startToEndDate.contains(' - ')
+          ? startToEndDate.split(' - ')
           : [startToEndDate];
 
       final inputFormat = DateFormat('yyyy-MM-dd');
@@ -100,14 +99,14 @@ class _EventMainState extends State<EventMain> {
         if (dates.length > 1) {
           // End date format (if range is given)
           endDate = outputFormat.format(inputFormat.parse(dates[1]));
-          fullDate = "$startDate - $endDate";
+          fullDate = '$startDate - $endDate';
         } else {
           // Single date case
           singleDate = startDate;
           fullDate = startDate;
         }
       } catch (e) {
-        print("Date Parsing Error: $e");
+        print('Date Parsing Error: $e');
       }
     }
   }
@@ -124,11 +123,10 @@ class _EventMainState extends State<EventMain> {
                 color: Colors.orange,
               ))
             : (eventSubCategory.isEmpty
-                ? const Center(child: Text("No Data "))
+                ? const Center(child: Text('No Data'))
                 : SafeArea(
                     child: SingleChildScrollView(
-                      controller:
-                          _scrollController, // Attach the scroll controller
+                      controller: widget.scrollController,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -241,7 +239,7 @@ class _EventMainState extends State<EventMain> {
                                                                   imageUrl:
                                                                       currentEvent
                                                                               .eventImage ??
-                                                                          "",
+                                                                          '',
                                                                   fit: BoxFit
                                                                       .fill,
                                                                   width: double
@@ -275,17 +273,17 @@ class _EventMainState extends State<EventMain> {
                                                             Text(
                                                               languageProvider
                                                                           .language ==
-                                                                      "english"
+                                                                      'english'
                                                                   ? currentEvent
                                                                           .enEventName ??
                                                                       currentEvent
                                                                           .hiEventName ??
-                                                                      "Event"
+                                                                      'Event'
                                                                   : currentEvent
                                                                           .hiEventName ??
                                                                       currentEvent
                                                                           .enEventName ??
-                                                                      "इवेंट",
+                                                                      'इवेंट',
                                                               style: TextStyle(
                                                                 fontSize:
                                                                     screenwidth *
@@ -337,8 +335,8 @@ class _EventMainState extends State<EventMain> {
                                                                         TextSpan(
                                                                       children: [
                                                                         TextSpan(
-                                                                          text: "${currentEvent.formattedDate}" ??
-                                                                              "N/A",
+                                                                          text: '${currentEvent.formattedDate}' ??
+                                                                              'N/A',
                                                                           style:
                                                                               TextStyle(
                                                                             color:
@@ -390,7 +388,7 @@ class _EventMainState extends State<EventMain> {
                                                                       children: [
                                                                         TextSpan(
                                                                           text: firstVenue?.startTime ??
-                                                                              (languageProvider.language == "english" ? "Not specified" : "निर्दिष्ट नहीं"),
+                                                                              (languageProvider.language == 'english' ? 'Not specified' : 'निर्दिष्ट नहीं'),
                                                                           style:
                                                                               TextStyle(
                                                                             color:
@@ -441,9 +439,9 @@ class _EventMainState extends State<EventMain> {
                                                                         TextSpan(
                                                                       children: [
                                                                         TextSpan(
-                                                                          text: languageProvider.language == "english"
-                                                                              ? firstVenue?.enEventVenue ?? firstVenue?.hiEventVenue ?? (languageProvider.language == "english" ? "Not specified" : "निर्दिष्ट नहीं")
-                                                                              : firstVenue?.hiEventVenue ?? firstVenue?.enEventVenue ?? "निर्दिष्ट नहीं",
+                                                                          text: languageProvider.language == 'english'
+                                                                              ? firstVenue?.enEventVenue ?? firstVenue?.hiEventVenue ?? (languageProvider.language == 'english' ? 'Not specified' : 'निर्दिष्ट नहीं')
+                                                                              : firstVenue?.hiEventVenue ?? firstVenue?.enEventVenue ?? 'निर्दिष्ट नहीं',
                                                                           style:
                                                                               TextStyle(
                                                                             color:
@@ -487,7 +485,7 @@ class _EventMainState extends State<EventMain> {
                                                                   double
                                                                       rating =
                                                                       double.tryParse(
-                                                                              "${currentEvent.reviewAvgStar}") ??
+                                                                              '${currentEvent.reviewAvgStar}') ??
                                                                           0.0;
                                                                   //double rating = double.tryParse("3.0") ?? 0.0;
 
@@ -581,8 +579,8 @@ class _EventMainState extends State<EventMain> {
                                                                         .packageList[
                                                                             0]
                                                                         .priceNo ==
-                                                                    "0"
-                                                                ? "Free Event - "
+                                                                    '0'
+                                                                ? 'Free Event - '
                                                                 : "₹ ${firstVenue!.packageList[0].priceNo ?? 'N/A'}",
                                                             style: TextStyle(
                                                               fontWeight:
@@ -613,9 +611,9 @@ class _EventMainState extends State<EventMain> {
                                                           Text(
                                                             languageProvider
                                                                         .language ==
-                                                                    "english"
-                                                                ? "Book Now"
-                                                                : "अभी बुक करें",
+                                                                    'english'
+                                                                ? 'Book Now'
+                                                                : 'अभी बुक करें',
                                                             style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -658,9 +656,9 @@ class _EventMainState extends State<EventMain> {
                                                           Text(
                                                             languageProvider
                                                                         .language ==
-                                                                    "english"
-                                                                ? "About This Event"
-                                                                : "इस कार्यक्रम के बारे में",
+                                                                    'english'
+                                                                ? 'About This Event'
+                                                                : 'इस कार्यक्रम के बारे में',
                                                             style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight

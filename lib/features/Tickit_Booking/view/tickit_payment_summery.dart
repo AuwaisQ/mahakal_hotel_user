@@ -265,7 +265,7 @@ class _TicketPaymentSummaryState extends State<TicketPaymentSummary> {
       if (success) {
         ToastHelper.showSuccess("Booking Successful");
         Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (BuildContext context) => const BottomBar(pageIndex: 0)));
-        // Usage example:
+        // Usage hotelapp:
         showDialog(
           context: context,
           builder: (context) => bookingSuccessDialog(
@@ -303,7 +303,7 @@ class _TicketPaymentSummaryState extends State<TicketPaymentSummary> {
           if (success) {
             ToastHelper.showSuccess("Booking Successful");
             Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (BuildContext context) => const BottomBar(pageIndex: 0)));
-            // Usage example:
+            // Usage hotelapp:
             showDialog(
               context: context,
               builder: (context) => bookingSuccessDialog(
@@ -322,7 +322,7 @@ class _TicketPaymentSummaryState extends State<TicketPaymentSummary> {
           setState(() => circularIndicator = false);
           ToastHelper.showError("Payment failed. Please try again.");
           // Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (BuildContext context) => const BottomBar(pageIndex: 0)));
-          // // Usage example:
+          // // Usage hotelapp:
           // showDialog(
           //   context: context,
           //   builder: (context) => bookingSuccessDialog(
@@ -363,7 +363,7 @@ class _TicketPaymentSummaryState extends State<TicketPaymentSummary> {
           if (success) {
             ToastHelper.showSuccess("Booking Successful");
             Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (BuildContext context) => const BottomBar(pageIndex: 0)));
-            // Usage example:
+            // Usage hotelapp:
             showDialog(
               context: context,
               builder: (context) => bookingSuccessDialog(

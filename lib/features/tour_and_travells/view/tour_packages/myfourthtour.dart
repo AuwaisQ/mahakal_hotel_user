@@ -14,20 +14,18 @@ import 'package:mahakal/utill/app_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import '../../../../utill/payment_process_screen.dart';
 import '../../../../utill/razorpay_screen.dart';
 import '../../../auth/controllers/auth_controller.dart';
 import '../../../custom_bottom_bar/bottomBar.dart';
-import '../../../donation/ui_helper/custom_colors.dart';
-import '../../../explore/payment_process_screen.dart';
-import '../../../maha_bhandar/model/city_model.dart';
 import '../../../order/screens/order_screen.dart';
-import '../../../pooja_booking/model/coupon_model.dart';
 import '../../../profile/controllers/profile_contrroller.dart';
 import '../../Controller/fetch_coupon_controller.dart';
 import '../../Controller/fetch_wallet_controller.dart';
 import '../../Controller/success_touramount_controller.dart';
 import '../../Controller/tour_lead_controller.dart';
 import '../../model/city_details_model.dart';
+import '../../model/city_model.dart';
 import '../../widgets/ApplyCoupon.dart';
 import '../../widgets/backhandler.dart';
 import '../../widgets/cab_info_card.dart';
@@ -1242,7 +1240,7 @@ class _UseTypeFourState extends State<UseTypeFour>
                       : widget.hiTourName,
                   style: TextStyle(
                       fontSize: screenWidth * 0.06,
-                      color: CustomColors.clrorange),
+                      color: Colors.black),
                 ),
                 centerTitle: true,
                 bottom: PreferredSize(

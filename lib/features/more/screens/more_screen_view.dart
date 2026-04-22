@@ -92,9 +92,6 @@ class _MoreScreenState extends State<MoreScreen> {
               expandedHeight: 160,
               pinned: true,
               centerTitle: false,
-              leading: InkWell(onTap: (){
-                Navigator.pop(context);
-              },child: Icon(Icons.arrow_back_ios,color: Colors.white,size: 18,)),
               automaticallyImplyLeading: false,
               backgroundColor: Theme.of(context).highlightColor,
               collapsedHeight: 160,

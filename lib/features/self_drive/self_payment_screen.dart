@@ -12,7 +12,6 @@ import '../../utill/app_constants.dart';
 import '../../utill/completed_order_dialog.dart';
 import '../../utill/razorpay_screen.dart';
 import '../custom_bottom_bar/bottomBar.dart';
-import '../explore/payment_process_screen.dart';
 import '../profile/controllers/profile_contrroller.dart';
 
 class BookingConfirmationPage extends StatefulWidget {
@@ -331,7 +330,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
     final total = widget.hour.ceil() * int.parse(widget.price);
     final grandTotal = total + widget.insAmount!;
     return isLoading
-        ? const MahakalPaymentProcessing()
+        ? const CircularProgressIndicator()
         :  Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: (widget.type == 'self' && !_isAadhaarVerified)

@@ -6,15 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:mahakal/features/hotels/controller/hotel_user_controller.dart';
 import 'package:mahakal/features/hotels/view/see_alllocations_screen.dart';
 import 'package:mahakal/features/hotels/view/spcae_details_page.dart';
-import 'package:mahakal/features/hotels/view/view_allhotel_page.dart'
-    hide Hotel;
+import 'package:mahakal/features/hotels/view/view_allhotel_page.dart' hide Hotel;
 import 'package:mahakal/features/hotels/view/view_allspaces_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../main.dart';
+import '../../../utill/flutter_toast_helper.dart';
 import '../../auth/controllers/auth_controller.dart';
-import '../../blogs_module/no_image_widget.dart';
-import '../../youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
 import '../controller/check_order_status_Controller.dart';
 import '../controller/featured_hotel_controller.dart';
 import '../controller/location_list_controller.dart';
@@ -544,8 +542,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                               controller.spacesListModel!.data!.spaces.isEmpty;
 
                           final isEmpty = !isLoading &&
-                              (controller.spacesListModel!.data!.spaces == null ||
-                                  controller.spacesListModel!.data!.spaces.isEmpty);
+                              (controller.spacesListModel!.data!.spaces.isEmpty);
 
                           return SizedBox(
                             height: 280,
@@ -1089,27 +1086,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                 ),
               );
             },
-          ),
-
-          // Back Button
-          Positioned(
-            top: 50,
-            left: 20,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.arrow_back_ios_new, size: 20),
-                padding: EdgeInsets.zero,
-              ),
-            ),
           ),
 
           // Text Content
@@ -2485,7 +2461,9 @@ class DestinationCard extends StatelessWidget {
                 height: double.infinity,
                 fit: BoxFit.fill,
                 placeholder: (context, url) => placeholderImage(),
-                errorWidget: (context, url, error) => NoImageWidget()),
+                 errorWidget: (context, url, error) =>
+                                const NoImageWidget(),
+            ),
           ),
           Container(
             decoration: BoxDecoration(

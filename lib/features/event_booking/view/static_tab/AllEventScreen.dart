@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mahakal/features/blogs_module/no_image_widget.dart';
-import 'package:mahakal/features/youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
 import '../../../../data/datasource/remote/http/httpClient.dart';
 import '../../../../utill/app_constants.dart';
+import '../../../../utill/flutter_toast_helper.dart';
 import '../../../auth/controllers/auth_controller.dart';
-import '../../../donation/controller/lanaguage_provider.dart';
+import '../../../tour_and_travells/Controller/lanaguage_provider.dart';
 import '../../model/banners_model.dart';
 import '../../model/subCategory_model.dart';
 import '../SeeScreen.dart';
@@ -17,8 +16,10 @@ import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class AllEventScreen extends StatefulWidget {
+  final ScrollController scrollController;
   const AllEventScreen({
     super.key,
+    required this.scrollController,
   });
 
   @override
@@ -261,6 +262,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
               ))
             : SafeArea(
                 child: SingleChildScrollView(
+                  controller: widget.scrollController,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

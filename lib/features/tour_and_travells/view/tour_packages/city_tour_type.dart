@@ -21,20 +21,18 @@ import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../data/datasource/remote/http/httpClient.dart';
 import '../../../../utill/completed_order_dialog.dart';
+import '../../../../utill/payment_process_screen.dart';
 import '../../../../utill/razorpay_screen.dart';
 import '../../../auth/controllers/auth_controller.dart';
 import '../../../custom_bottom_bar/bottomBar.dart';
-import '../../../donation/ui_helper/custom_colors.dart';
-import '../../../explore/payment_process_screen.dart';
-import '../../../maha_bhandar/model/city_model.dart';
 import '../../../order/screens/order_screen.dart';
-import '../../../pooja_booking/model/coupon_model.dart';
 import '../../../profile/controllers/profile_contrroller.dart';
 import '../../Controller/fetch_coupon_controller.dart';
 import '../../Controller/fetch_wallet_controller.dart';
 import '../../Controller/success_touramount_controller.dart';
 import '../../Controller/tour_lead_controller.dart';
 import '../../model/city_details_model.dart';
+import '../../model/city_model.dart';
 import '../../model/distance_model.dart';
 import '../../widgets/ApplyCoupon.dart';
 import '../../widgets/backhandler.dart';
@@ -1217,7 +1215,7 @@ class _CityTourTypeState extends State<CityTourType> with SingleTickerProviderSt
                   "${widget.tourName}",
                   style: TextStyle(
                       fontSize: screenWidth * 0.06,
-                      color: CustomColors.clrorange),
+                      color: Colors.black),
                 ),
                 centerTitle: true,
                 bottom: PreferredSize(

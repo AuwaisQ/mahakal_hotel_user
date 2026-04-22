@@ -3,10 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mahakal/features/Tickit_Booking/view/tickit_booking_details.dart';
-import 'package:mahakal/features/blogs_module/no_image_widget.dart';
-import 'package:mahakal/features/donation/view/home_page/Donation_Home/donation_home_view.dart';
 import 'package:mahakal/features/event_booking/view/home_page/event_home.dart';
-import 'package:mahakal/features/youtube_vedios/view/dynamic_tabview/grid_view/YoutubeGridView.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../hotels/view/hotel_bottom_bar.dart';
@@ -18,14 +15,15 @@ import '../model/activities_category_model.dart';
 import '../model/activities_list_model.dart';
 
 class TickitBookingHome extends StatefulWidget {
-  const TickitBookingHome({super.key});
+  final ScrollController scrollController;
+  const TickitBookingHome({super.key, required this.scrollController});
 
   @override
   State<TickitBookingHome> createState() => _TickitBookingHomeState();
 }
 
 class _TickitBookingHomeState extends State<TickitBookingHome> {
-  final ScrollController _scrollController = ScrollController();
+  // final ScrollController widget.scrollController = ScrollController();
 
   bool _initialDataLoaded = false; // Add this flag
   bool isGridView = false;
@@ -54,12 +52,12 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
     });
 
     // Add scroll listener for pagination
-    _scrollController.addListener(_onScroll);
+    widget.scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (widget.scrollController.position.pixels ==
+        widget.scrollController.position.maxScrollExtent) {
       // Load more when reaching bottom
       _loadMoreActivities();
     }
@@ -74,26 +72,26 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
         );
         break;
 
-      case 'tour':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => TourHomePage()),
-        );
-        break;
+      // case 'tour':
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => TourHomePage()),
+      //   );
+      //   break;
 
-      case 'donate':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DonationHomeView()),
-        );
-        break;
+      // case 'donate':
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => DonationHomeView()),
+      //   );
+      //   break;
 
-      case 'event':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => EventHome()),
-        );
-        break;
+      // case 'event':
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => EventHome()),
+      //   );
+      //   break;
       //
       // case 'mandir':
       //   Navigator.push(
@@ -214,9 +212,9 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                   gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 15,
-                    childAspectRatio: 0.9,
+                    crossAxisSpacing: 6,
+                    mainAxisSpacing: 6,
+                    childAspectRatio: 0.8,
                   ),
                   itemCount: filteredCities.length + 1, // +1 for All Cities
                   itemBuilder: (context, index) {
@@ -292,7 +290,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: (selectedCity == city) ||
                 (isAll && selectedCity.isEmpty)
@@ -477,8 +475,6 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -497,12 +493,6 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-        ),
         title: GestureDetector(
           onTap: _showCitySelectionBottomSheet,
           child: Column(
@@ -537,53 +527,56 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
           ),
         ),
         actions: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              icon: Icon(
-                isEnglish ? Icons.language : Icons.translate_sharp,
-                color: Colors.deepOrange,
+          InkWell(
+            onTap: (){
+              setState(() {
+                isEnglish = !isEnglish;
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              onPressed: () {
-                setState(() {
-                  isEnglish = !isEnglish;
-                });
-              },
+              child: Icon(
+                  isEnglish ? Icons.language : Icons.translate_sharp,
+                  color: Colors.deepOrange,
+                ),
+
             ),
           ),
           const SizedBox(width: 10),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              icon: Icon(
-                isGridView ? Icons.list : Icons.grid_view,
-                color: Colors.deepOrange,
+          InkWell(
+            onTap: (){
+              setState(() {
+                isGridView = !isGridView;
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              onPressed: () {
-                setState(() {
-                  isGridView = !isGridView;
-                });
-              },
+              child: Icon(
+                  isGridView ? Icons.list : Icons.grid_view,
+                  color: Colors.deepOrange,
+                ),
             ),
           ),
           const SizedBox(width: 12),
@@ -614,7 +607,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
             color: Colors.orange,
             onRefresh: _refreshActivities,
             child: CustomScrollView(
-              controller: _scrollController,
+              controller: widget.scrollController ,
               slivers: [
                 // Explore by Category Section
                 // SliverToBoxAdapter(
@@ -650,14 +643,14 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                 // ),
 
                 // Sticky Category Filter Header
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _StickyHeaderDelegate(
-                    minHeight: 100,
-                    maxHeight:100,
-                    child: _buildCategoryHeader(),
-                  ),
-                ),
+                // SliverPersistentHeader(
+                //   pinned: true,
+                //   delegate: _StickyHeaderDelegate(
+                //     minHeight: 100,
+                //     maxHeight:100,
+                //     child: _buildCategoryHeader(),
+                //   ),
+                // ),
 
                 // Content Grid/List
                 if (isLoading && activities.isEmpty)
