@@ -213,7 +213,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                 min: controller.minPrice,
                                 max: controller.maxPrice,
                                 values: controller.priceRange,
-                                activeColor: Colors.orange,
+                                activeColor: Colors.blue,
                                 labels: RangeLabels(
                                   '₹${controller.priceRange.start.toInt()}',
                                   '₹${controller.priceRange.end.toInt()}',
@@ -229,13 +229,13 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                     '₹${controller.priceRange.start.toInt()}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.orange),
+                                        color: Colors.blue),
                                   ),
                                   Text(
                                     '₹${controller.priceRange.end.toInt()}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.orange),
+                                        color: Colors.blue),
                                   ),
                                 ],
                               ),
@@ -257,7 +257,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                             return CheckboxListTile(
                               contentPadding: EdgeInsets.zero,
                               value: isSelected,
-                              activeColor: Colors.orange,
+                              activeColor: Colors.blue,
                               onChanged: (_) {
                                 controller.toggleStarFilter(star);
                               },
@@ -266,7 +266,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                   star,
                                       (i) => const Icon(
                                     Icons.star,
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                     size: 20,
                                   ),
                                 ),
@@ -294,7 +294,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                             return FilterChip(
                               label: Text(loc.name ?? ''),
                               selected: selected,
-                              selectedColor: Colors.orange,
+                              selectedColor: Colors.blue,
                               onSelected: (_) {
                                 controller.toggleLocationFilter(
                                     loc.name ?? '');
@@ -347,7 +347,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: selected
-                                              ? Colors.orange
+                                              ? Colors.blue
                                               .withOpacity(0.2)
                                               : Colors.grey
                                               .shade100,
@@ -356,7 +356,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                               12),
                                           border: Border.all(
                                             color: selected
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors
                                                 .transparent,
                                           ),
@@ -370,7 +370,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                               _getIconData(
                                                   term.icon),
                                               color: selected
-                                                  ? Colors.orange
+                                                  ? Colors.blue
                                                   : Colors.grey
                                                   .shade600,
                                             ),
@@ -408,7 +408,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                     subtitle: Text(
                                         '${term.hotelCount ?? 0} hotels'),
                                     value: selected,
-                                    activeColor: Colors.orange,
+                                    activeColor: Colors.blue,
                                     onChanged: (_) {
                                       controller
                                           .toggleAttributeFilter(
@@ -444,7 +444,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                         _toggleFilter();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16),
                         shape: RoundedRectangleBorder(
@@ -607,7 +607,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.star, size: 16, color: Colors.orange),
+                            Icon(Icons.star, size: 16, color: Colors.blue),
                             SizedBox(width: 4),
                             Text(
                               hotel.starRate.toString(),
@@ -676,7 +676,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.deepOrange,
+                                    color: Colors.blue,
                                   ),
                                 ),
                                 TextSpan(
@@ -701,7 +701,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepOrange,
+                          backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -993,7 +993,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                       children: [
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: Colors.blue,
                           size: 12,
                         ),
                         SizedBox(width: 2),
@@ -1072,7 +1072,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                             ),
                             Text(
@@ -1090,7 +1090,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                           width: 32,
                           height: 32,
                           decoration: BoxDecoration(
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
@@ -1138,11 +1138,11 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
               width: 46,
               height: 46,
               decoration: BoxDecoration(
-                color: Colors.orange,
+                color: Colors.blue,
                 borderRadius: BorderRadius.circular(23),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.orange.withOpacity(0.3),
+                    color: Colors.blue.withOpacity(0.3),
                     blurRadius: 8,
                     offset: Offset(0, 4),
                   ),
@@ -1232,18 +1232,18 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                     decoration: BoxDecoration(
                       color: _isFilterOpen || hasActiveFilters
                           ? Colors.white
-                          : Colors.orange,
+                          : Colors.blue,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         if (!_isFilterOpen && !hasActiveFilters)
                           BoxShadow(
-                            color: Colors.orange.withOpacity(0.4),
+                            color: Colors.blue.withOpacity(0.4),
                             blurRadius: 8,
                             offset: Offset(0, 3),
                           ),
                       ],
                       border: Border.all(
-                        color: Colors.orange,
+                        color: Colors.blue,
                         width: 2,
                       ),
                     ),
@@ -1256,7 +1256,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                             child: Icon(
                               Icons.filter_list,
                               color: _isFilterOpen || hasActiveFilters
-                                  ? Colors.orange
+                                  ? Colors.blue
                                   : Colors.white,
                             ),
                           ),
@@ -1296,7 +1296,7 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
             if (isLoadingMore)
               const CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
               )
             else
               ElevatedButton(
@@ -1305,8 +1305,8 @@ class _AllHotelsScreenState extends State<AllHotelsScreen> with SingleTickerProv
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  foregroundColor: Colors.orange,
-                  side: BorderSide(color: Colors.orange.shade300),
+                  foregroundColor: Colors.blue,
+                  side: BorderSide(color: Colors.blue.shade300),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),

@@ -431,7 +431,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.deepOrange,
+              color: Colors.blue,
             ),
           ),
           content: Text(
@@ -454,7 +454,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
                 processPayment();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
+                backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -493,7 +493,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.deepOrange,
+              color: Colors.blue,
             ),
           ),
           const SizedBox(height: 12),
@@ -672,10 +672,10 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
-                border: Border.all(color: Colors.deepOrange, width: 1.5),
+                border: Border.all(color: Colors.blue, width: 1.5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.deepOrange.shade100,
+                    color: Colors.blue.shade100,
                     blurRadius: 4,
                     spreadRadius: 1,
                   ),
@@ -683,23 +683,23 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.discount_outlined, color: Colors.deepOrange),
+                  const Icon(Icons.discount_outlined, color: Colors.blue),
                   const SizedBox(width: 12),
                   const Text(
                     "Apply Coupon",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.deepOrange,
+                      color: Colors.blue,
                     ),
                   ),
                   const Spacer(),
                   const Text(
                     "Add",
-                    style: TextStyle(color: Colors.deepOrange, fontSize: 14),
+                    style: TextStyle(color: Colors.blue, fontSize: 14),
                   ),
                   const SizedBox(width: 4),
-                  const Icon(Icons.add, color: Colors.deepOrange, size: 20),
+                  const Icon(Icons.add, color: Colors.blue, size: 20),
                 ],
               ),
             ),
@@ -730,7 +730,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.deepOrange,
+              color: Colors.blue,
             ),
           ),
           const SizedBox(height: 16),
@@ -861,7 +861,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepOrange,
+                    color: Colors.blue,
                   ),
                 ),
               ],
@@ -903,7 +903,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Colors.deepOrange,
+                      color: Colors.blue,
                     ),
                   ),
                   Text(
@@ -992,7 +992,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
               //     }
               //   },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
+                backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -1085,7 +1085,7 @@ class _EventPaymentScreenState extends State<EventPaymentScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _buildPaymentButton(),
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),

@@ -143,7 +143,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         appBar: AppBar(
           centerTitle: true,
           title: Text('${capitalizeFirst(widget.type)} products'),
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
         ),
 
@@ -779,13 +779,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.12),
+              color: Colors.blue.withOpacity(0.12),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               icon,
               size: 18,
-              color: Colors.deepOrange,
+              color: Colors.blue,
             ),
           ),
           const SizedBox(width: 10),
@@ -806,7 +806,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               onTap: onTap,
               child: const Text(
                 'View all',
-                style: TextStyle(color: Colors.deepOrange),
+                style: TextStyle(color: Colors.blue),
               ),
             ),
 

@@ -467,7 +467,7 @@ void _showMaterialDialog() {
       ),
       title: const Row(
         children: [
-          Icon(Icons.download, color: Colors.orange, size: 28),
+          Icon(Icons.download, color: Colors.blue, size: 28),
           SizedBox(width: 12),
           Text(
             "Download Invoice",
@@ -499,7 +499,7 @@ void _showMaterialDialog() {
             await _handleDownloadWithPermission();
           },
           style: FilledButton.styleFrom(
-            backgroundColor: Colors.orange,
+            backgroundColor: Colors.blue,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -610,7 +610,7 @@ void _showPermissionDeniedSnackBar() {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: const Text("Storage permission is required to download files"),
-      backgroundColor: Colors.orange,
+      backgroundColor: Colors.blue,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       action: SnackBarAction(
@@ -964,7 +964,7 @@ void _showPermissionDeniedSnackBar() {
           //     ? Container(
           //   padding: const EdgeInsets.all(12),
           //   decoration: BoxDecoration(
-          //     color: Colors.orange.withOpacity(0.15),
+          //     color: Colors.blue.withOpacity(0.15),
           //     borderRadius: BorderRadius.circular(50),
           //   ),
           //   child: SizedBox(
@@ -973,14 +973,14 @@ void _showPermissionDeniedSnackBar() {
           //     child: CircularProgressIndicator(
           //       value: downloadProgress / 100,
           //       strokeWidth: 3,
-          //       backgroundColor: Colors.orange.shade100,
-          //       color: Colors.orange,
+          //       backgroundColor: Colors.blue.shade100,
+          //       color: Colors.blue,
           //     ),
           //   ),
           // )
           //     : _buildFloatingIconButton(
           //   icon: Icons.download,
-          //   color: Colors.orange,
+          //   color: Colors.blue,
           //   onPressed: showDownloadConfirmationDialog,
           // ),
         ],
@@ -1011,11 +1011,11 @@ void _showPermissionDeniedSnackBar() {
           //     ? Container(
           //   padding: const EdgeInsets.all(16),
           //   decoration: BoxDecoration(
-          //     color: Colors.orange.withOpacity(0.15),
+          //     color: Colors.blue.withOpacity(0.15),
           //     borderRadius: BorderRadius.circular(50),
           //     boxShadow: [
           //       BoxShadow(
-          //         color: Colors.orange.withOpacity(0.3),
+          //         color: Colors.blue.withOpacity(0.3),
           //         blurRadius: 10,
           //       ),
           //     ],
@@ -1029,8 +1029,8 @@ void _showPermissionDeniedSnackBar() {
           //         child: CircularProgressIndicator(
           //           value: downloadProgress / 100,
           //           strokeWidth: 4,
-          //           backgroundColor: Colors.orange.shade100,
-          //           color: Colors.orange,
+          //           backgroundColor: Colors.blue.shade100,
+          //           color: Colors.blue,
           //         ),
           //       ),
           //       Text(
@@ -1038,7 +1038,7 @@ void _showPermissionDeniedSnackBar() {
           //         style: const TextStyle(
           //           fontSize: 10,
           //           fontWeight: FontWeight.bold,
-          //           color: Colors.orange,
+          //           color: Colors.blue,
           //         ),
           //       ),
           //     ],
@@ -1047,7 +1047,7 @@ void _showPermissionDeniedSnackBar() {
           //     :
           _buildFloatingIconButton(
             icon: Icons.download,
-            color: Colors.orange,
+            color: Colors.blue,
             onPressed: showDownloadConfirmationDialog,
             isLarge: true,
           ),
@@ -1108,7 +1108,7 @@ void _showPermissionDeniedSnackBar() {
           widget.typeText,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.orange,
+            color: Colors.blue,
           ),
         ),
       ),

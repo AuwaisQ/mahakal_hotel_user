@@ -84,7 +84,7 @@ class _VendorsPageState extends State<VendorsPage> {
       body: isLoading
           ? Center(
               child: CircularProgressIndicator(
-              color: Colors.orange,
+              color: Colors.blue,
             ))
           : Column(
               children: [
@@ -92,7 +92,7 @@ class _VendorsPageState extends State<VendorsPage> {
                   width: double.infinity,
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                  color: Colors.deepOrange.shade50,
+                  color: Colors.blue.shade50,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -113,7 +113,7 @@ class _VendorsPageState extends State<VendorsPage> {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                             ),
                           ),
                         ],
@@ -150,12 +150,12 @@ class _VendorsPageState extends State<VendorsPage> {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
-                                      color: Colors.deepOrange, width: 1.5),
+                                      color: Colors.blue, width: 1.5),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
-                                      color: Colors.deepOrange, width: 2),
+                                      color: Colors.blue, width: 2),
                                 ),
                               ),
                               onChanged: (value) {
@@ -169,7 +169,7 @@ class _VendorsPageState extends State<VendorsPage> {
                               filterVendors(searchController.text);
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepOrange,
+                              backgroundColor: Colors.blue,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -226,7 +226,7 @@ class _VendorsPageState extends State<VendorsPage> {
         borderRadius: BorderRadius.circular(16),
         border: Border(
           bottom: BorderSide(
-            color: Colors.deepOrange, // change color as needed
+            color: Colors.blue, // change color as needed
             width: 1.0, // thickness of the border
           ),
         ),
@@ -261,7 +261,7 @@ class _VendorsPageState extends State<VendorsPage> {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundColor: Colors.deepOrange.shade50,
+                      backgroundColor: Colors.blue.shade50,
                       child: ClipOval(
                         child: CachedNetworkImage(
                           imageUrl:
@@ -304,14 +304,14 @@ class _VendorsPageState extends State<VendorsPage> {
 
                                 if (rating >= index + 1) {
                                   return const Icon(Icons.star,
-                                      color: Colors.orange, size: 20);
+                                      color: Colors.blue, size: 20);
                                 } else if (rating > index &&
                                     rating < index + 1) {
                                   return const Icon(Icons.star_half,
-                                      color: Colors.orange, size: 20);
+                                      color: Colors.blue, size: 20);
                                 } else {
                                   return const Icon(Icons.star_border,
-                                      color: Colors.orange, size: 20);
+                                      color: Colors.blue, size: 20);
                                 }
                               }),
                               const SizedBox(width: 6),
@@ -370,7 +370,7 @@ class _VendorsPageState extends State<VendorsPage> {
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: value == "0" ? Colors.orange : Colors.deepOrange,
+                color: value == "0" ? Colors.blue : Colors.blue,
               ),
             ),
             const SizedBox(width: 10),

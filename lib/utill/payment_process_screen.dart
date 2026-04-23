@@ -78,7 +78,7 @@ class _MahakalPaymentProcessingState extends State<MahakalPaymentProcessing> {
                   height: 60,
                   child: CircularProgressIndicator(
                     strokeWidth: 6,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                   ),
                 ),
                 const SizedBox(height: 30),

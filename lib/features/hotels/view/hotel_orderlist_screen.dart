@@ -63,7 +63,7 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.deepOrange.shade200, width: 1),
+                    border: Border.all(color: Colors.blue.shade200, width: 1),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(7),
@@ -78,7 +78,7 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
                         color: Colors.grey.shade100,
                         child: Icon(
                           Icons.hotel,
-                          color: Colors.deepOrange.shade300,
+                          color: Colors.blue.shade300,
                           size: 30,
                         ),
                       ),
@@ -95,7 +95,7 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
                                   loadingProgress.expectedTotalBytes!
                                   : null,
                               strokeWidth: 2,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                             ),
                           ),
                         );
@@ -112,12 +112,12 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: Colors.white, width: 1.5),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.deepOrange.withOpacity(0.3),
+                            color: Colors.blue.withOpacity(0.3),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -229,7 +229,7 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
                             ? "Free"
                             : '₹ ${double.parse(price).toStringAsFixed(0)}',
                         style: const TextStyle(
-                          color: Colors.deepOrange,
+                          color: Colors.blue,
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
@@ -283,14 +283,14 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
           'My Bookings',
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Colors.deepOrange,
+            color: Colors.blue,
           ),
         ),
         centerTitle: true,
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        foregroundColor: Colors.deepOrange,
+        foregroundColor: Colors.blue,
       ),
       body: Consumer<HotelOrderController>(
         builder: (context, controller, child) {
@@ -326,7 +326,7 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
                   Icon(
                     Icons.hotel_outlined,
                     size: 80,
-                    color: Colors.deepOrange.shade200,
+                    color: Colors.blue.shade200,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -334,7 +334,7 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.deepOrange.shade700,
+                      color: Colors.blue.shade700,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -352,7 +352,7 @@ class _HotelOrderListScreenState extends State<HotelOrderListScreen> {
 
           // Hotel Order List
           return RefreshIndicator(
-            color: Colors.deepOrange,
+            color: Colors.blue,
             onRefresh: _fetchOrders,
             child: ListView.builder(
               controller: widget.scrollController,

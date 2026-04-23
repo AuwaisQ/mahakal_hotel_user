@@ -218,7 +218,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.orange),
+                                  color: Colors.blue),
                             ),
                             Text(
                               userEmail,
@@ -306,7 +306,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                               children: List.generate(options.length, (index) {
                                 return CheckboxListTile(
                                   checkColor: Colors.white,
-                                  activeColor: Colors.orange,
+                                  activeColor: Colors.blue,
                                   title: Text(
                                     options[index],
                                     style: const TextStyle(fontSize: 14),
@@ -350,10 +350,10 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.orange)),
+                                        BorderSide(color: Colors.blue)),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.orange)),
+                                        BorderSide(color: Colors.blue)),
                                 hintText: "Write here...",
                               ),
                             ),
@@ -371,7 +371,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                color: Colors.orange.shade400,
+                                color: Colors.blue.shade400,
                               ),
                               child: const Center(
                                   child: CircularProgressIndicator(
@@ -389,7 +389,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                 margin: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                 ),
                                 child: const Center(
                                   child: Text(
@@ -504,7 +504,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.orange),
+                        color: Colors.blue),
                   ),
                   const SizedBox(height: 10),
                   ListView.builder(
@@ -535,7 +535,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                 )
                               : IconButton(
                                   icon: const Icon(Icons.download,
-                                      color: Colors.orange),
+                                      color: Colors.blue),
                                   onPressed: () async {
                                     await downloadPass(orderId, index,
                                         isDownloading, progressValues);
@@ -627,7 +627,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please download the invoice first!"),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.blue,
         ),
       );
       return;
@@ -656,7 +656,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
               backgroundColor: Colors.white,
               body: Center(
                   child: CircularProgressIndicator(
-                color: Colors.orange,
+                color: Colors.blue,
               )));
         }
 
@@ -709,7 +709,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                       style: TextStyle(
                           color: orderData.amountStatus == 1
                               ? Colors.green
-                              : Colors.orange,
+                              : Colors.blue,
                           fontSize: 20,
                           fontWeight: FontWeight.bold)),
                 ])),
@@ -833,7 +833,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                   orderId: widget.orderId.toString());
             },
             color: Colors.white,
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Colors.blue,
             displacement: 40.0,
             child: SingleChildScrollView(
               child: Column(
@@ -864,7 +864,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                   children: [
                                     Icon(
                                       Icons.article,
-                                      color: Colors.deepOrange,
+                                      color: Colors.blue,
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -874,7 +874,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                             fontSize: 20,
                                             overflow: TextOverflow.ellipsis,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.deepOrange))
+                                            color: Colors.blue))
                                   ],
                                 ),
                                 const Divider(
@@ -887,7 +887,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                   children: [
                                     Icon(
                                       Icons.person,
-                                      color: Colors.deepOrange.shade200,
+                                      color: Colors.blue.shade200,
                                     ),
                                     const SizedBox(
                                       width: 10,
@@ -905,7 +905,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                   children: [
                                     Icon(
                                       Icons.email_outlined,
-                                      color: Colors.deepOrange.shade200,
+                                      color: Colors.blue.shade200,
                                     ),
                                     const SizedBox(
                                       width: 10,
@@ -923,7 +923,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                   children: [
                                     Icon(
                                       Icons.phone,
-                                      color: Colors.deepOrange.shade200,
+                                      color: Colors.blue.shade200,
                                     ),
                                     const SizedBox(
                                       width: 10,
@@ -965,7 +965,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                         //       borderRadius: BorderRadius.circular(35),
                         //       boxShadow: [
                         //         BoxShadow(
-                        //           color: Colors.orange.withOpacity(0.2),
+                        //           color: Colors.blue.withOpacity(0.2),
                         //           blurRadius: 15,
                         //           spreadRadius: 2,
                         //           offset: const Offset(0, 6),
@@ -994,7 +994,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                         //             borderRadius: BorderRadius.circular(12),
                         //             boxShadow: [
                         //               BoxShadow(
-                        //                 color: Colors.orange.withOpacity(0.4),
+                        //                 color: Colors.blue.withOpacity(0.4),
                         //                 blurRadius: 8,
                         //                 offset: const Offset(0, 3),
                         //               ),
@@ -1015,7 +1015,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                         //             Text(
                         //               "Your Activity Pass",
                         //               style: TextStyle(
-                        //                 color: Colors.orange[800],
+                        //                 color: Colors.blue[800],
                         //                 fontSize: 12,
                         //                 fontWeight: FontWeight.w600,
                         //                 letterSpacing: 1.2,
@@ -1038,16 +1038,16 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                         //         Container(
                         //           padding: const EdgeInsets.all(6),
                         //           decoration: BoxDecoration(
-                        //             color: Colors.orange.withOpacity(0.1),
+                        //             color: Colors.blue.withOpacity(0.1),
                         //             shape: BoxShape.circle,
                         //             border: Border.all(
-                        //               color: Colors.orange.withOpacity(0.3),
+                        //               color: Colors.blue.withOpacity(0.3),
                         //               width: 1.5,
                         //             ),
                         //           ),
                         //           child: Icon(
                         //             Icons.arrow_forward_ios_rounded,
-                        //             color: Colors.orange[700],
+                        //             color: Colors.blue[700],
                         //             size: 16,
                         //           ),
                         //         ),
@@ -1069,7 +1069,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                           children: [
                             Icon(
                               Icons.redeem,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                             ),
                             SizedBox(
                               width: 10,
@@ -1079,7 +1079,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                     fontSize: 20,
                                     overflow: TextOverflow.ellipsis,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.deepOrange)),
+                                    color: Colors.blue)),
                           ],
                         ),
                         const SizedBox(
@@ -1239,7 +1239,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                 ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -1263,7 +1263,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                           "${NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 0).format(double.tryParse("${orderData.totalAmount ?? '0'}") ?? 0)}",
                                       style: GoogleFonts.poppins(
                                         fontSize: 16,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -1487,7 +1487,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
                                 style: TextStyle(
                                     fontSize: 16,
                                     overflow: TextOverflow.ellipsis,
-                                    color: Colors.deepOrange))),
+                                    color: Colors.blue))),
 
                         const SizedBox(
                           height: 80,
@@ -1515,7 +1515,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
 //       title: Text(
 //         widget.isEnglish ? "Activity Passes" : "एक्टिविटी पास",
 //         style: const TextStyle(
-//           color: Colors.orange,
+//           color: Colors.blue,
 //           fontWeight: FontWeight.bold,
 //         ),
 //       ),
@@ -1554,7 +1554,7 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
 //                 ElevatedButton(
 //                   onPressed: _fetchPasses,
 //                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Colors.orange,
+//                     backgroundColor: Colors.blue,
 //                     foregroundColor: Colors.white,
 //                     padding: const EdgeInsets.symmetric(
 //                       horizontal: 32,
@@ -1780,13 +1780,13 @@ class _TrackActivityDetailsState extends State<TrackActivityDetails> {
 //                                           Icon(
 //                                             Icons.qr_code,
 //                                             size: 40,
-//                                             color: Colors.orange.shade700,
+//                                             color: Colors.blue.shade700,
 //                                           ),
 //                                           Text(
 //                                             "QR",
 //                                             style: TextStyle(
 //                                               fontSize: 10,
-//                                               color: Colors.orange.shade700,
+//                                               color: Colors.blue.shade700,
 //                                               fontWeight: FontWeight.bold,
 //                                             ),
 //                                           ),

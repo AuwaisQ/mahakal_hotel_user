@@ -96,7 +96,7 @@ class _CabInfoCardState extends State<CabInfoCard>
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                             ),
                             maxLines: 2,
                           ),
@@ -174,8 +174,8 @@ class _CabInfoCardState extends State<CabInfoCard>
                                     height: 38,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
-                                      color: Colors.deepOrange,
-                                      border: Border.all(color: Colors.orange),
+                                      color: Colors.blue,
+                                      border: Border.all(color: Colors.blue),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -207,10 +207,10 @@ class _CabInfoCardState extends State<CabInfoCard>
                                       borderRadius: BorderRadius.circular(8),
                                       color: widget.quantity == 0
                                           ? Colors.white
-                                          : Colors.orange,
+                                          : Colors.blue,
                                       border: Border.all(
                                           color: widget.quantity == 0
-                                              ? Colors.orange
+                                              ? Colors.blue
                                               : Colors.grey.shade300),
                                     ),
                                     child: widget.quantity == 0
@@ -220,7 +220,7 @@ class _CabInfoCardState extends State<CabInfoCard>
                                               child: Text(
                                                 "ADD +",
                                                 style: TextStyle(
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -277,7 +277,7 @@ class _CabInfoCardState extends State<CabInfoCard>
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                             ),
                             maxLines: 2,
                           ),
@@ -388,10 +388,10 @@ class _CabInfoCardState extends State<CabInfoCard>
                                 borderRadius: BorderRadius.circular(8),
                                 color: widget.quantity == 0
                                     ? Colors.white
-                                    : Colors.orange,
+                                    : Colors.blue,
                                 border: Border.all(
                                     color: widget.quantity == 0
-                                        ? Colors.orange
+                                        ? Colors.blue
                                         : Colors.grey.shade300),
                               ),
                               child: widget.quantity == 0
@@ -401,7 +401,7 @@ class _CabInfoCardState extends State<CabInfoCard>
                                         child: Text(
                                           "ADD +",
                                           style: TextStyle(
-                                            color: Colors.orange,
+                                            color: Colors.blue,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -481,7 +481,7 @@ class _CabInfoCardState extends State<CabInfoCard>
                         horizontal: 10, vertical: 15),
                     decoration: BoxDecoration(
                       color: widget.quantity > 0
-                          ? Colors.orange.shade50
+                          ? Colors.blue.shade50
                           : Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
@@ -507,7 +507,7 @@ class _CabInfoCardState extends State<CabInfoCard>
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.deepOrange),
+                                        color: Colors.blue),
                                     maxLines: 2,
                                   ),
                                   const SizedBox(height: 4),
@@ -630,13 +630,13 @@ class _CabInfoCardState extends State<CabInfoCard>
                                               BorderRadius.circular(8),
                                           color: Colors.white,
                                           border: Border.all(
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                         ),
                                         child: const Center(
                                           child: Text(
                                             "ADD +",
                                             style: TextStyle(
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
@@ -671,11 +671,11 @@ class _CabInfoCardState extends State<CabInfoCard>
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                              color: Colors.orange.withOpacity(0.2)),
+                              color: Colors.blue.withOpacity(0.2)),
                           gradient: const LinearGradient(
                             colors: [
                               Colors.amber,
-                              Colors.deepOrange,
+                              Colors.blue,
                               Colors.amber,
                             ],
                           ),
@@ -721,7 +721,7 @@ class _CabInfoCardState extends State<CabInfoCard>
                                 borderRadius: BorderRadius.circular(30),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.orange.withOpacity(0.1),
+                                    color: Colors.blue.withOpacity(0.1),
                                     blurRadius: 8,
                                     spreadRadius: 1,
                                   ),

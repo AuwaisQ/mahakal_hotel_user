@@ -349,20 +349,20 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Colors.orange.shade100,
-                                Colors.orange.shade50,
+                                Colors.blue.shade100,
+                                Colors.blue.shade50,
                               ],
                             ),
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: Colors.orange.withOpacity(0.3),
+                              color: Colors.blue.withOpacity(0.3),
                               width: 1.5,
                             ),
                           ),
                           child: const Icon(
                             Icons.location_on_rounded,
                             size: 16,
-                            color: Colors.orange,
+                            color: Colors.blue,
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -428,7 +428,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                     Icon(
                                       Icons.photo_library_rounded,
                                       size: 24,
-                                      color: Colors.orange,
+                                      color: Colors.blue,
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
@@ -436,7 +436,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                       style: TextStyle(
                                         fontSize: 9,
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ],
@@ -452,7 +452,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                       width: 18,
                                       height: 18,
                                       decoration: BoxDecoration(
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                           color: Colors.white,
@@ -507,7 +507,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: _selectedImageIndex == index
-                                      ? Colors.orange
+                                      ? Colors.blue
                                       : Colors.transparent,
                                   width: 3,
                                 ),
@@ -559,7 +559,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                             width: 4,
                             height: 20,
                             decoration: BoxDecoration(
-                              color: Colors.orange,
+                              color: Colors.blue,
                               borderRadius: BorderRadius.circular(2),
                             ),
                           ),
@@ -612,7 +612,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.orange[800],
+                                  color: Colors.blue[800],
                                 ),
                               ),
                               const SizedBox(height: 12),
@@ -665,7 +665,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                               width: 4,
                               height: 20,
                               decoration: BoxDecoration(
-                                color: Colors.orange,
+                                color: Colors.blue,
                                 borderRadius: BorderRadius.circular(2),
                               ),
                             ),
@@ -729,8 +729,8 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Colors.orange.shade500,
-                                          Colors.orange.shade700,
+                                          Colors.blue.shade500,
+                                          Colors.blue.shade700,
                                         ],
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
@@ -783,7 +783,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ),
@@ -798,7 +798,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
-                                      color: Colors.orange.shade50,
+                                      color: Colors.blue.shade50,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Row(
@@ -806,7 +806,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                         Icon(
                                           Icons.star_rounded,
                                           size: 16,
-                                          color: Colors.orange,
+                                          color: Colors.blue,
                                         ),
                                         const SizedBox(width: 6),
                                         Text(
@@ -858,12 +858,12 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Colors.orange,
+                                color: Colors.blue,
                                 width: 1.5,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.orange.withOpacity(0.1),
+                                  color: Colors.blue.withOpacity(0.1),
                                   blurRadius: 10,
                                   offset: const Offset(0, 3),
                                 ),
@@ -885,14 +885,14 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                     const SizedBox(width: 8),
                                     Icon(
                                       Icons.arrow_forward_rounded,
                                       size: 18,
-                                      color: Colors.orange,
+                                      color: Colors.blue,
                                     ),
                                   ],
                                 ),
@@ -912,7 +912,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                   //         Icon(
                   //           Icons.hotel,
                   //           size: 20,
-                  //           color: Colors.orange,
+                  //           color: Colors.blue,
                   //         ),
                   //         const SizedBox(width: 8),
                   //         Text("You might also like",
@@ -963,7 +963,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                   width: 4,
                                   height: 20,
                                   decoration: BoxDecoration(
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 ),
@@ -1104,7 +1104,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                         Icon(
                           Icons.star_rounded,
                           size: 14,
-                          color: Colors.orange,
+                          color: Colors.blue,
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -1452,7 +1452,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                     width: 4,
                     height: 20,
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -1641,7 +1641,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
     final colors = [
       Colors.blue,
       Colors.green,
-      Colors.orange,
+      Colors.blue,
       Colors.purple,
       Colors.red,
       Colors.teal,
@@ -1814,7 +1814,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
       } else if (lowerTitle.contains('guarantee')) {
         return Colors.blue;
       } else {
-        return Colors.orange;
+        return Colors.blue;
       }
     }
 
@@ -2056,10 +2056,10 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
+                  color: Colors.blue.shade100,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.orange.withOpacity(0.3),
+                    color: Colors.blue.withOpacity(0.3),
                     width: 2,
                   ),
                 ),
@@ -2069,7 +2069,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
-                      color: Colors.orange.shade700,
+                      color: Colors.blue.shade700,
                     ),
                   ),
                 ),
@@ -2102,7 +2102,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                                   ? Icons.star_rounded
                                   : Icons.star_border_rounded,
                               size: 14,
-                              color: Colors.orange,
+                              color: Colors.blue,
                             );
                           }),
                         ),
@@ -2194,7 +2194,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
           //         style: TextStyle(
           //           fontSize: 13,
           //           fontWeight: FontWeight.w600,
-          //           color: Colors.orange,
+          //           color: Colors.blue,
           //         ),
           //       ),
           //     ),
@@ -2332,7 +2332,7 @@ class _SpcaeDetailsPageState extends State<SpcaeDetailsPage> {
                       children: [
                         Icon(
                           Icons.reviews_rounded,
-                          color: Colors.orange,
+                          color: Colors.blue,
                           size: 24,
                         ),
                         const SizedBox(width: 12),

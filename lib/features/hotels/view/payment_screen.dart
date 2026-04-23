@@ -168,12 +168,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: _selectedPaymentMethod == index
-                        ? AppColors.orange.withOpacity(0.05)
+                        ? AppColors.blue.withOpacity(0.05)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: _selectedPaymentMethod == index
-                          ? AppColors.orange
+                          ? AppColors.blue
                           : AppColors.lightGray,
                       width: _selectedPaymentMethod == index ? 2 : 1,
                     ),
@@ -183,7 +183,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Container(
                         decoration: BoxDecoration(
                           color: _selectedPaymentMethod == index
-                              ? AppColors.orange
+                              ? AppColors.blue
                               : AppColors.lightGray,
                           shape: BoxShape.circle,
                         ),
@@ -216,7 +216,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         value: index,
                         groupValue: _selectedPaymentMethod,
                         onChanged: (value) => setState(() => _selectedPaymentMethod = value!),
-                        activeColor: AppColors.orange,
+                        activeColor: AppColors.blue,
                       ),
                     ],
                   ),
@@ -250,7 +250,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [AppColors.orange, AppColors.deepOrange],
+                colors: [AppColors.blue, AppColors.yellow],
               ),
               borderRadius: BorderRadius.circular(16),
             ),
@@ -382,7 +382,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               Checkbox(
                 value: _saveCard,
                 onChanged: (value) => setState(() => _saveCard = value!),
-                activeColor: AppColors.orange,
+                activeColor: AppColors.blue,
               ),
               Text('Save card for future payments', style: AppTextStyles.bodySmall),
             ],

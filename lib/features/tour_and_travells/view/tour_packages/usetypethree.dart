@@ -274,14 +274,14 @@ class _UseTypeThreeState extends State<UseTypeThree> {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: Colors.orange.shade100,
-              onPrimary: Colors.orange,
+              primary: Colors.blue.shade100,
+              onPrimary: Colors.blue,
               surface: const Color(0xFFFFF7EC),
-              onSurface: Colors.orange,
+              onSurface: Colors.blue,
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.orange,
+                foregroundColor: Colors.blue,
                 backgroundColor: Colors.white,
               ),
             ),
@@ -310,25 +310,25 @@ class _UseTypeThreeState extends State<UseTypeThree> {
         return Theme(
           data: ThemeData.light().copyWith(
             timePickerTheme: TimePickerThemeData(
-              dialHandColor: Colors.orange.shade100,
-              dialTextColor: Colors.orange,
+              dialHandColor: Colors.blue.shade100,
+              dialTextColor: Colors.blue,
               dialBackgroundColor: Colors.white,
               dayPeriodColor: Colors.white,
-              dayPeriodTextColor: Colors.orange,
+              dayPeriodTextColor: Colors.blue,
               backgroundColor: const Color(0xFFFFF7EC),
-              hourMinuteTextColor: Colors.orange,
+              hourMinuteTextColor: Colors.blue,
               hourMinuteColor: Colors.white,
               inputDecorationTheme: const InputDecorationTheme(
                 border: InputBorder.none,
                 filled: true,
                 fillColor: Colors.white,
-                hintStyle: TextStyle(color: Colors.orange),
-                labelStyle: TextStyle(color: Colors.orange),
+                hintStyle: TextStyle(color: Colors.blue),
+                labelStyle: TextStyle(color: Colors.blue),
               ),
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.orange,
+                foregroundColor: Colors.blue,
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -891,7 +891,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                     "wallet"); // Wait for API or function to complete
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange, // Primary color
+                backgroundColor: Colors.blue, // Primary color
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -1041,7 +1041,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                   decoration: BoxDecoration(
                                     color: selectedIndexes.contains(index)
                                         ? Colors.grey.shade400
-                                        : Colors.deepOrange.withOpacity(0.07),
+                                        : Colors.blue.withOpacity(0.07),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Center(
@@ -1061,7 +1061,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                     height: 1.5,
                                     width: 40,
                                     color: selectedIndexes.contains(index)
-                                        ? Colors.orange
+                                        ? Colors.blue
                                         : Colors.grey,
                                   ),
                               ],
@@ -1113,7 +1113,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                 style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.orange),
+                                    color: Colors.blue),
                                 textAlign: TextAlign.center,
                               )),
                               Expanded(
@@ -1271,7 +1271,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                         border: Border.all(
                                           color: distance > 200
                                               ? Colors.red
-                                              : Colors.orange,
+                                              : Colors.blue,
                                         ),
                                       ),
                                       child: TextFormField(
@@ -1287,7 +1287,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                             size: 28,
                                             color: distance > 200
                                                 ? Colors.red
-                                                : Colors.orange,
+                                                : Colors.blue,
                                           ),
                                           hintStyle: const TextStyle(
                                               color: Colors.grey),
@@ -1515,7 +1515,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                           children: [
                                             Icon(Icons.route,
                                                 size: 28,
-                                                color: Colors.deepOrange[400]),
+                                                color: Colors.blue[400]),
                                             const SizedBox(width: 12),
                                             Text(
                                               widget.translateEn == "en"
@@ -1563,7 +1563,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                   decoration: BoxDecoration(
                                                     color: _selectedOption ==
                                                             'pickup'
-                                                        ? Colors.deepOrange[50]
+                                                        ? Colors.blue[50]
                                                         : Colors.grey[50],
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -1583,7 +1583,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                           size: 28,
                                                           color: _selectedOption ==
                                                                   'pickup'
-                                                              ? Colors.deepOrange[
+                                                              ? Colors.blue[
                                                                   400]
                                                               : Colors
                                                                   .grey[600]),
@@ -1598,7 +1598,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                               FontWeight.w600,
                                                           color: _selectedOption ==
                                                                   'pickup'
-                                                              ? Colors.deepOrange[
+                                                              ? Colors.blue[
                                                                   800]
                                                               : Colors
                                                                   .grey[800],
@@ -1614,7 +1614,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                         style: TextStyle(
                                                           color: _selectedOption ==
                                                                   'pickup'
-                                                              ? Colors.deepOrange[
+                                                              ? Colors.blue[
                                                                   600]
                                                               : Colors
                                                                   .grey[600],
@@ -1656,7 +1656,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                   decoration: BoxDecoration(
                                                     color: _selectedOption ==
                                                             'pickup_drop'
-                                                        ? Colors.deepOrange[50]
+                                                        ? Colors.blue[50]
                                                         : Colors.grey[50],
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -1676,7 +1676,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                           size: 28,
                                                           color: _selectedOption ==
                                                                   'pickup_drop'
-                                                              ? Colors.deepOrange[
+                                                              ? Colors.blue[
                                                                   400]
                                                               : Colors
                                                                   .grey[600]),
@@ -1691,7 +1691,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                               FontWeight.w600,
                                                           color: _selectedOption ==
                                                                   'pickup_drop'
-                                                              ? Colors.deepOrange[
+                                                              ? Colors.blue[
                                                                   800]
                                                               : Colors
                                                                   .grey[800],
@@ -1707,7 +1707,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                         style: TextStyle(
                                                           color: _selectedOption ==
                                                                   'pickup_drop'
-                                                              ? Colors.deepOrange[
+                                                              ? Colors.blue[
                                                                   600]
                                                               : Colors
                                                                   .grey[600],
@@ -2108,10 +2108,10 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                             BorderRadius.circular(8.0),
                                         border: Border.all(
                                             color: selectedAmountIndex == 0
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors.transparent),
                                         color: selectedAmountIndex == 0
-                                            ? Colors.orange
+                                            ? Colors.blue
                                             : Colors.grey.shade200,
                                       ),
                                       child: Center(
@@ -2121,7 +2121,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                             fontSize: 18,
                                             color: selectedAmountIndex == 0
                                                 ? Colors.white
-                                                : Colors.orange,
+                                                : Colors.blue,
                                           ),
                                         ),
                                       ),
@@ -2144,10 +2144,10 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                         border: Border.all(
                                             color: selectedAmountIndex == 0
                                                 ? Colors.transparent
-                                                : Colors.orange),
+                                                : Colors.blue),
                                         color: selectedAmountIndex == 0
                                             ? Colors.grey.shade200
-                                            : Colors.orange,
+                                            : Colors.blue,
                                       ),
                                       child: Center(
                                         child: Text(
@@ -2155,7 +2155,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                           style: TextStyle(
                                             fontSize: 18,
                                             color: selectedAmountIndex == 0
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors.white,
                                           ),
                                         ),
@@ -2506,7 +2506,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                           letterSpacing: 0.5,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Roboto',
-                                          color: Colors.orange),
+                                          color: Colors.blue),
                                     ),
                                   ),
                                 ),
@@ -2679,7 +2679,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                 BorderRadius.circular(8.0),
                                             color: selectOrder == 0
                                                 ? Colors.grey
-                                                : Colors.orange,
+                                                : Colors.blue,
                                           ),
                                           child: Center(
                                             child: Text(
@@ -2739,7 +2739,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            color: Colors.orange,
+                                            color: Colors.blue,
                                           ),
                                           child: Center(
                                             child: Text(
@@ -2790,7 +2790,7 @@ Widget _buildRowWithIcon(BuildContext context,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             // color: Colors.grey.shade100,
-            border: Border.all(color: Colors.orange),
+            border: Border.all(color: Colors.blue),
           ),
           child: Align(
             alignment: Alignment.centerLeft,
@@ -2803,7 +2803,7 @@ Widget _buildRowWithIcon(BuildContext context,
                   ),
                 ),
                 const Spacer(),
-                Icon(icon, color: Colors.orange, size: 28),
+                Icon(icon, color: Colors.blue, size: 28),
                 const SizedBox(
                   width: 5,
                 )

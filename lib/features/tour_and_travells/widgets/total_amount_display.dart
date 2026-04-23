@@ -5,7 +5,7 @@ Widget totalAmountDisplay({
   required dynamic amount,
   bool showRupeeSymbol = true,
   double fontSize = 22.0,
-  Color backgroundColor = Colors.orange,
+  Color backgroundColor = Colors.blue,
   Color amountColor = Colors.green,
 }) {
 

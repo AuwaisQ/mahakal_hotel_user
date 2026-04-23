@@ -191,7 +191,7 @@ class ShopInfoWidget extends StatelessWidget {
                               children: [
                                   Row(children: [
                                     const Icon(Icons.star_rate_rounded,
-                                        color: Colors.orange),
+                                        color: Colors.blue),
                                     Text(
                                         double.parse(ratting)
                                             .toStringAsFixed(1),

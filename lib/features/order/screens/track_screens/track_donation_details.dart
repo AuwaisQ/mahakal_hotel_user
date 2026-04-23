@@ -211,7 +211,7 @@
 //       ScaffoldMessenger.of(context).showSnackBar(
 //         const SnackBar(
 //           content: Text("Please download the invoice first!"),
-//           backgroundColor: Colors.orange,
+//           backgroundColor: Colors.blue,
 //         ),
 //       );
 //       return;
@@ -369,7 +369,7 @@
 //                     borderRadius: BorderRadius.circular(12),
 //                     boxShadow: [
 //                       BoxShadow(
-//                         color: Colors.orange[100]!,
+//                         color: Colors.blue[100]!,
 //                         blurRadius: 10,
 //                         spreadRadius: 2,
 //                       ),
@@ -485,7 +485,7 @@
 //                                                   ? Colors.red.shade600
 //                                                   : subscriptionStatus ==
 //                                                           "In Progress"
-//                                                       ? Colors.orange.shade600
+//                                                       ? Colors.blue.shade600
 //                                                       : Colors.green.shade600,
 //                                           borderRadius:
 //                                               BorderRadius.circular(30),
@@ -552,7 +552,7 @@
 //                                                 subscriptionStatus ==
 //                                                         "Cancelled"
 //                                                     ? Colors.grey
-//                                                     : Colors.orange.shade600,
+//                                                     : Colors.blue.shade600,
 //                                             shape: RoundedRectangleBorder(
 //                                               borderRadius:
 //                                                   BorderRadius.circular(30),
@@ -797,10 +797,10 @@
 //                                   width: 80,
 //                                   height: 80,
 //                                   decoration: BoxDecoration(
-//                                     color: Colors.deepOrange.shade100,
+//                                     color: Colors.blue.shade100,
 //                                     borderRadius: BorderRadius.circular(10),
 //                                     border: Border.all(
-//                                         color: Colors.deepOrange.shade200),
+//                                         color: Colors.blue.shade200),
 //                                   ),
 //                                   child: item.image != null &&
 //                                           item.image.isNotEmpty &&
@@ -820,7 +820,7 @@
 //                                               return Center(
 //                                                 child:
 //                                                     CircularProgressIndicator(
-//                                                   color: Colors.deepOrange,
+//                                                   color: Colors.blue,
 //                                                 ),
 //                                               );
 //                                             },
@@ -828,7 +828,7 @@
 //                                                 (context, error, stackTrace) {
 //                                               return Icon(
 //                                                 Icons.shopping_bag,
-//                                                 color: Colors.deepOrange,
+//                                                 color: Colors.blue,
 //                                                 size: 30,
 //                                               );
 //                                             },
@@ -837,7 +837,7 @@
 //                                       : Center(
 //                                           child: Icon(
 //                                             Icons.shopping_bag,
-//                                             color: Colors.deepOrange,
+//                                             color: Colors.blue,
 //                                             size: 30,
 //                                           ),
 //                                         ),
@@ -854,7 +854,7 @@
 //                                           fontSize: 18,
 //                                           fontWeight: FontWeight.bold,
 //                                           overflow: TextOverflow.ellipsis,
-//                                           color: Colors.deepOrange.shade800,
+//                                           color: Colors.blue.shade800,
 //                                         ),
 //                                         maxLines: 1,
 //                                       ),
@@ -863,7 +863,7 @@
 //                                         padding: EdgeInsets.symmetric(
 //                                             horizontal: 12, vertical: 4),
 //                                         decoration: BoxDecoration(
-//                                           color: Colors.orange.shade50,
+//                                           color: Colors.blue.shade50,
 //                                           borderRadius:
 //                                               BorderRadius.circular(20),
 //                                         ),
@@ -893,7 +893,7 @@
 //                                               fontSize: 18,
 //                                               fontWeight: FontWeight.w600,
 //                                               color:
-//                                                   Colors.deepOrange.shade900,
+//                                                   Colors.blue.shade900,
 //                                             ),
 //                                           ),
 //                                         ],
@@ -1072,7 +1072,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
           ),
           title: const Row(
             children: [
-              Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 28),
+              Icon(Icons.warning_amber_rounded, color: Colors.blue, size: 28),
               SizedBox(width: 8),
               Text(
                 'Cancel Subscription',
@@ -1178,7 +1178,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please download the invoice first!"),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.blue,
         ),
       );
       return;
@@ -1380,7 +1380,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.orange[100]!,
+            color: Colors.blue[100]!,
             blurRadius: 10,
             spreadRadius: 2,
           ),
@@ -1512,18 +1512,18 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.orange[100],
+                color: Colors.blue[100],
                 borderRadius: BorderRadius.circular(30),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.hourglass_top, color: Colors.orange, size: 18),
+                  Icon(Icons.hourglass_top, color: Colors.blue, size: 18),
                   SizedBox(width: 8),
                   Text(
                     "Processing Your Subscription",
                     style: TextStyle(
-                      color: Colors.orange,
+                      color: Colors.blue,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1545,7 +1545,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
         statusIcon = Icons.cancel;
         break;
       case "In Progress":
-        statusColor = Colors.orange;
+        statusColor = Colors.blue;
         statusIcon = Icons.hourglass_top;
         break;
       default:
@@ -1693,7 +1693,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.orange.shade50,
+            color: Colors.blue.shade50,
           ),
           child: Column(
             children: [
@@ -1721,7 +1721,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.orange.shade200),
+                  border: Border.all(color: Colors.blue.shade200),
                 ),
                 child: const Text(
                   'Your donation is eligible for tax exemption under Section 80G of the Income Tax Act, 1961',
@@ -1822,16 +1822,16 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
               child: Container(
                 width: 70,
                 height: 70,
-                color: Colors.orange.shade100,
+                color: Colors.blue.shade100,
                 child: item.image?.isNotEmpty == true && item.image != " "
                     ? Image.network(
                   item.image,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return Icon(Icons.image_not_supported, color: Colors.orange.shade300);
+                    return Icon(Icons.image_not_supported, color: Colors.blue.shade300);
                   },
                 )
-                    : Icon(Icons.card_giftcard, color: Colors.orange.shade300, size: 30),
+                    : Icon(Icons.card_giftcard, color: Colors.blue.shade300, size: 30),
               ),
             ),
             const SizedBox(width: 12),
@@ -1853,7 +1853,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.orange.shade50,
+                      color: Colors.blue.shade50,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -1861,7 +1861,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Colors.orange.shade800,
+                        color: Colors.blue.shade800,
                       ),
                     ),
                   ),
@@ -1938,7 +1938,7 @@ class _TrackDonationDetailsState extends State<TrackDonationDetails> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.orange.shade100,
+              color: Colors.blue.shade100,
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Text(
@@ -2116,11 +2116,11 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
           //"${widget.issuedDate}",
           '🎖 Certificate of Honor',
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.orange, fontSize: 18),
+              fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 18),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.orange),
+          icon: const Icon(Icons.arrow_back, color: Colors.blue),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -2152,7 +2152,7 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
                   imageUrl: widget.certificateImageUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(color: Colors.orange),
+                    child: CircularProgressIndicator(color: Colors.blue),
                   ),
                   errorWidget: (context, url, error) => const Center(
                     child:
@@ -2200,7 +2200,7 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.orange.withOpacity(0.2),
+                    color: Colors.blue.withOpacity(0.2),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -2221,7 +2221,7 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
                     const TextSpan(
                       text: 'Mahakal.com',
                       style: TextStyle(
-                          color: Colors.orange,
+                          color: Colors.blue,
                           fontWeight: FontWeight.w600,
                           fontSize: 16),
                     ),
@@ -2241,7 +2241,7 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
             //     borderRadius: BorderRadius.circular(12),
             //     boxShadow: [
             //       BoxShadow(
-            //         color: Colors.orange.withOpacity(0.2),
+            //         color: Colors.blue.withOpacity(0.2),
             //         blurRadius: 8,
             //         offset: const Offset(0, 4),
             //       ),
@@ -2249,7 +2249,7 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
             //   ),
             //   child: const Text(
             //     '🎊 You have been awarded this certificate for your dedicated involvement in the Pooja Ceremony, facilitated by Mahakal.com.\n\n🙏 May Lord Mahakal bless you with wisdom and prosperity!',
-            //     style: TextStyle(color: Colors.orange, fontWeight: FontWeight.w600, fontSize: 16),
+            //     style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600, fontSize: 16),
             //     textAlign: TextAlign.center,
             //   ),
             // ),
@@ -2266,14 +2266,14 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.deepOrange, Colors.orange.shade400],
+                          colors: [Colors.blue, Colors.blue.shade400],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.orange.withOpacity(0.4),
+                            color: Colors.blue.withOpacity(0.4),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -2311,14 +2311,14 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.deepOrange, Colors.orange.shade400],
+                          colors: [Colors.blue, Colors.blue.shade400],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.orange.withOpacity(0.4),
+                            color: Colors.blue.withOpacity(0.4),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),

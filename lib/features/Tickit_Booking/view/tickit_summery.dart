@@ -105,11 +105,11 @@ class _TickitSummeryState extends State<TickitSummery> {
         leading: Container(
           margin: EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.deepOrange.shade50,
+            color: Colors.blue.shade50,
             borderRadius: BorderRadius.circular(10),
           ),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.deepOrange),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.blue),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -271,7 +271,7 @@ class _TickitSummeryState extends State<TickitSummery> {
           ElevatedButton(
             onPressed: () => context.read<TickitSummeryController>().getTickitSummery(widget.slug, widget.venue),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepOrange,
+              backgroundColor: Colors.blue,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -433,12 +433,12 @@ class _TickitSummeryState extends State<TickitSummery> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.deepOrange.withOpacity(0.1),
+                color: Colors.blue.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.inventory_2_outlined,
-                color: Colors.deepOrange,
+                color: Colors.blue,
                 size: 28,
               ),
             ),
@@ -624,7 +624,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(28),
-                        color: isSelected && isAvailable ? Colors.orange : Colors.white,
+                        color: isSelected && isAvailable ? Colors.blue : Colors.white,
                         //     ? const LinearGradient(
                         //   colors: [Color(0xFF2D3436), Color(0xFF000000)], // Premium Dark Theme
                         //   begin: Alignment.topLeft,
@@ -663,7 +663,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                     Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                       decoration: BoxDecoration(
-                                        color: isSelected ? Colors.white24 : Colors.deepOrange.withOpacity(0.1),
+                                        color: isSelected ? Colors.white24 : Colors.blue.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
@@ -672,7 +672,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                           fontSize: 9,
                                           fontWeight: FontWeight.w800,
                                           letterSpacing: 0.5,
-                                          color: isSelected ? Colors.white : Colors.deepOrange,
+                                          color: isSelected ? Colors.white : Colors.blue,
                                         ),
                                       ),
                                     ),
@@ -705,7 +705,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                     Icon(
                                       Icons.bolt, // Changed to a more "action" oriented icon
                                       size: 14,
-                                      color: isSelected ? Colors.orangeAccent : Colors.deepOrange,
+                                      color: isSelected ? Colors.blueAccent : Colors.blue,
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
@@ -839,7 +839,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                     Text(
                       isExpanded ? "Show Less" : "Read Full Description",
                       style: TextStyle(
-                        color: Colors.deepOrange.shade400,
+                        color: Colors.blue.shade400,
                         fontWeight: FontWeight.w800,
                         fontSize: 13,
                       ),
@@ -847,7 +847,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                     const SizedBox(width: 4),
                     Icon(
                       isExpanded ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
-                      color: Colors.deepOrange.shade400,
+                      color: Colors.blue.shade400,
                       size: 18,
                     ),
                   ],
@@ -896,12 +896,12 @@ class _TickitSummeryState extends State<TickitSummery> {
             Container(
               padding: const EdgeInsets.all(8), // Thoda breathing room badha diya
               decoration: BoxDecoration(
-                color: Colors.deepOrange.withOpacity(0.1),
+                color: Colors.blue.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
-                color: Colors.deepOrange,
+                color: Colors.blue,
                 size: 18,
               ),
             ),
@@ -1166,14 +1166,14 @@ class _TickitSummeryState extends State<TickitSummery> {
         width: 60,
         margin: const EdgeInsets.only(right: 12),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.orange : Colors.white,
+          color: isSelected ? Colors.blue : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? Colors.orange : Colors.grey.shade100,
+            color: isSelected ? Colors.blue : Colors.grey.shade100,
             width: 1.5,
           ),
           boxShadow: isSelected ? [
-            BoxShadow(color: Colors.orange.withOpacity(0.15), blurRadius: 10, offset: const Offset(0, 5))
+            BoxShadow(color: Colors.blue.withOpacity(0.15), blurRadius: 10, offset: const Offset(0, 5))
           ] : [],
         ),
         child: Column(
@@ -1287,16 +1287,16 @@ class _TickitSummeryState extends State<TickitSummery> {
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.orange : Colors.white,
+                        color: isSelected ? Colors.blue : Colors.white,
                         borderRadius: BorderRadius.circular(14), //
                         border: Border.all(
-                          color: isSelected ? Colors.orange : Colors.grey.shade200,
+                          color: isSelected ? Colors.blue : Colors.grey.shade200,
                           width: 1.5,
                         ),
                         // boxShadow: [
                         //   if (isSelected)
                         //     BoxShadow(
-                        //       color: Colors.deepOrange.withOpacity(0.3),
+                        //       color: Colors.blue.withOpacity(0.3),
                         //       blurRadius: 12,
                         //       offset: const Offset(0, 6), // Soft orange glow
                         //     )
@@ -1314,7 +1314,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                             Icon(
                               Icons.access_time_filled_rounded,
                               size: 16,
-                              color: isSelected ? Colors.white : Colors.deepOrange,
+                              color: isSelected ? Colors.white : Colors.blue,
                             ),
                             const SizedBox(width: 8),
                             Text(
@@ -1409,12 +1409,12 @@ class _TickitSummeryState extends State<TickitSummery> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
+                  color: Colors.blue.shade100,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
                   Icons.people_alt_rounded,
-                  color: Colors.orange.shade700,
+                  color: Colors.blue.shade700,
                   size: 20,
                 ),
               ),
@@ -1473,7 +1473,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                           children: [
                             Icon(Icons.person,
                                 size: 18,
-                                color: Colors.deepOrange
+                                color: Colors.blue
                                     .withOpacity(0.8)),
                             const SizedBox(width: 8),
                             Expanded(
@@ -1550,7 +1550,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                             '( Primary Devotee)',
                             style: TextStyle(
                                 fontSize: 11,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                                 fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.italic),
                           ),
@@ -1718,7 +1718,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                             ),
                             IconButton(
@@ -1745,12 +1745,12 @@ class _TickitSummeryState extends State<TickitSummery> {
                                 margin: EdgeInsets.only(right: 8),
                                 decoration: BoxDecoration(
                                   color: _verificationStatus == 1
-                                      ? Colors.deepOrange.withOpacity(0.1)
+                                      ? Colors.blue.withOpacity(0.1)
                                       : Colors.grey.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
                                     color: _verificationStatus == 1
-                                        ? Colors.deepOrange
+                                        ? Colors.blue
                                         : Colors.grey.withOpacity(0.3),
                                     width: 1,
                                   ),
@@ -1759,7 +1759,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                   dense: true,
                                   contentPadding:
                                   EdgeInsets.symmetric(horizontal: 8),
-                                  activeColor: Colors.deepOrange,
+                                  activeColor: Colors.blue,
                                   title: Text(
                                     "Verified Aadhaar",
                                     style: TextStyle(
@@ -1783,12 +1783,12 @@ class _TickitSummeryState extends State<TickitSummery> {
                                 margin: EdgeInsets.only(left: 8),
                                 decoration: BoxDecoration(
                                   color: _verificationStatus == 0
-                                      ? Colors.deepOrange.withOpacity(0.1)
+                                      ? Colors.blue.withOpacity(0.1)
                                       : Colors.grey.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
                                     color: _verificationStatus == 0
-                                        ? Colors.deepOrange
+                                        ? Colors.blue
                                         : Colors.grey.withOpacity(0.3),
                                     width: 1,
                                   ),
@@ -1797,7 +1797,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                   dense: true,
                                   contentPadding:
                                   EdgeInsets.symmetric(horizontal: 8),
-                                  activeColor: Colors.deepOrange,
+                                  activeColor: Colors.blue,
                                   title: Text(
                                     "Non-Verified Aadhaar",
                                     style: TextStyle(
@@ -1847,7 +1847,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                               hintText: ' Enter phone number',
                               prefixIcon: const Icon(
                                 Icons.phone_rounded,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               counterText: '',
                             ),
@@ -1881,7 +1881,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                               hintText: ' Enter 12-digit Aadhar',
                               prefixIcon: const Icon(
                                 Icons.credit_card,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               counterText: '',
                             ),
@@ -1958,7 +1958,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                 getAadhar(aadhar, context, modalSetter);
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepOrange,
+                                backgroundColor: Colors.blue,
                                 padding:
                                 const EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
@@ -2008,7 +2008,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                               hintText: 'Enter full name',
                               prefixIcon: const Icon(
                                 Icons.person,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                             ),
                           ),
@@ -2042,7 +2042,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                 hintText: 'Enter phone number',
                                 prefixIcon: const Icon(
                                   Icons.phone,
-                                  color: Colors.deepOrange,
+                                  color: Colors.blue,
                                 ),
                                 counterText: '',
                               ),
@@ -2078,7 +2078,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                               hintText: 'Enter 12-digit Aadhar',
                               prefixIcon: const Icon(
                                 Icons.credit_card,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               counterText: '',
                             ),
@@ -2190,7 +2190,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                                 //sumTotal();
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepOrange,
+                                backgroundColor: Colors.blue,
                                 padding:
                                 const EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
@@ -2239,17 +2239,17 @@ class _TickitSummeryState extends State<TickitSummery> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.orange.shade200.withOpacity(0.9),
+              Colors.blue.shade200.withOpacity(0.9),
               Colors.amber.shade50.withOpacity(0.9),
             ],
           ),
           border: Border.all(
-            color: Colors.deepOrange.shade700.withOpacity(0.7),
+            color: Colors.blue.shade700.withOpacity(0.7),
             width: 1.2,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.deepOrange.withOpacity(0.15),
+              color: Colors.blue.withOpacity(0.15),
               blurRadius: 10,
               spreadRadius: 1,
               offset: const Offset(0, 3),
@@ -2263,7 +2263,7 @@ class _TickitSummeryState extends State<TickitSummery> {
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.deepOrange,
+                color: Colors.blue,
               ),
               child: const Icon(
                 Icons.group_add_rounded,
@@ -2285,7 +2285,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                   letterSpacing: 0.2,
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -2300,11 +2300,11 @@ class _TickitSummeryState extends State<TickitSummery> {
                 child: ElevatedButton(
                   onPressed: () => _showAddDevoteeDialog(context,aadharRequired),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepOrange,
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
                       side: BorderSide(
-                        color: Colors.deepOrange.shade600,
+                        color: Colors.blue.shade600,
                         width: 1.5,
                       ),
                     ),
@@ -2350,17 +2350,17 @@ class _TickitSummeryState extends State<TickitSummery> {
     //       begin: Alignment.topLeft,
     //       end: Alignment.bottomRight,
     //       colors: [
-    //         Colors.orange.shade200.withOpacity(0.9),
+    //         Colors.blue.shade200.withOpacity(0.9),
     //         Colors.amber.shade50.withOpacity(0.9),
     //       ],
     //     ),
     //     border: Border.all(
-    //       color: Colors.deepOrange.shade700.withOpacity(0.7),
+    //       color: Colors.blue.shade700.withOpacity(0.7),
     //       width: 1.2,
     //     ),
     //     boxShadow: [
     //       BoxShadow(
-    //         color: Colors.deepOrange.withOpacity(0.15),
+    //         color: Colors.blue.withOpacity(0.15),
     //         blurRadius: 10,
     //         spreadRadius: 1,
     //         offset: const Offset(0, 3),
@@ -2374,7 +2374,7 @@ class _TickitSummeryState extends State<TickitSummery> {
     //         padding: const EdgeInsets.all(6),
     //         decoration: BoxDecoration(
     //           shape: BoxShape.circle,
-    //           color: Colors.deepOrange,
+    //           color: Colors.blue,
     //         ),
     //         child: Icon(
     //           Icons.group_add_rounded, // More relevant icon
@@ -2391,7 +2391,7 @@ class _TickitSummeryState extends State<TickitSummery> {
     //           // Using a custom font (add google_fonts package)
     //           fontSize: 17,
     //           fontWeight: FontWeight.w600,
-    //           color: Colors.deepOrange,
+    //           color: Colors.blue,
     //           letterSpacing: 0.2,
     //         ),
     //       ),
@@ -2404,12 +2404,12 @@ class _TickitSummeryState extends State<TickitSummery> {
     //           child: ElevatedButton(
     //             onPressed: () => _showAddDevoteeDialog(context),
     //             style: ElevatedButton.styleFrom(
-    //               backgroundColor: Colors.deepOrange,
-    //               foregroundColor: Colors.deepOrange.shade300,
+    //               backgroundColor: Colors.blue,
+    //               foregroundColor: Colors.blue.shade300,
     //               shape: RoundedRectangleBorder(
     //                 borderRadius: BorderRadius.circular(18),
     //                 side: BorderSide(
-    //                   color: Colors.deepOrange.shade600,
+    //                   color: Colors.blue.shade600,
     //                   width: 1.5,
     //                 ),
     //               ),
@@ -2647,9 +2647,9 @@ class _TickitSummeryState extends State<TickitSummery> {
             child: Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.orange.shade50,
+                color: Colors.blue.shade50,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.orange.shade100, width: 1.5),
+                border: Border.all(color: Colors.blue.shade100, width: 1.5),
               ),
               child: Row(
                 children: [
@@ -2669,7 +2669,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                     ),
                     child: Icon(
                       Icons.person_add_alt_1_rounded,
-                      color: Colors.orange,
+                      color: Colors.blue,
                       size: 22,
                     ),
                   ),
@@ -2700,11 +2700,11 @@ class _TickitSummeryState extends State<TickitSummery> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.orange.withOpacity(0.3),
+                          color: Colors.blue.withOpacity(0.3),
                           blurRadius: 8,
                           offset: Offset(0, 3),
                         ),
@@ -2768,20 +2768,20 @@ class _TickitSummeryState extends State<TickitSummery> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.orange.shade100,
+                    color: Colors.blue.shade100,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.orange.shade200, width: 1),
+                    border: Border.all(color: Colors.blue.shade200, width: 1),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.pending, size: 14, color: Colors.orange),
+                      Icon(Icons.pending, size: 14, color: Colors.blue),
                       SizedBox(width: 6),
                       Text(
                         '${_nonVerifiedUsers.length} pending',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
-                          color: Colors.orange.shade800,
+                          color: Colors.blue.shade800,
                         ),
                       ),
                     ],
@@ -2857,7 +2857,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
-                              color: Colors.orange,
+                              color: Colors.blue,
                             ),
                           ),
                         ),
@@ -2865,7 +2865,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                       IconButton(
                         icon: Icon(Icons.add_rounded, size: 18),
                         onPressed: () => setState(() => _personCount++),
-                        color: Colors.orange,
+                        color: Colors.blue,
                       ),
                     ],
                   ),
@@ -3254,7 +3254,7 @@ class _TickitSummeryState extends State<TickitSummery> {
                 width: 60,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade200,
+                  color: Colors.blue.shade200,
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
@@ -3269,12 +3269,12 @@ class _TickitSummeryState extends State<TickitSummery> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange.withOpacity(0.1),
+                        color: Colors.blue.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.calendar_month_rounded,
-                        color: Colors.deepOrange,
+                        color: Colors.blue,
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -3302,14 +3302,14 @@ class _TickitSummeryState extends State<TickitSummery> {
                 child: Theme(
                   data: Theme.of(context).copyWith(
                     colorScheme: ColorScheme.light(
-                      primary: Colors.deepOrange,      // Selected circle
+                      primary: Colors.blue,      // Selected circle
                       onPrimary: Colors.white,         // Selected text
                       surface: Colors.white,
                       onSurface: Colors.black87,
                     ),
                     textButtonTheme: TextButtonThemeData(
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.deepOrange,
+                        foregroundColor: Colors.blue,
                       ),
                     ),
                   ),
@@ -3333,15 +3333,15 @@ class _TickitSummeryState extends State<TickitSummery> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 14),
                   decoration: BoxDecoration(
-                    color: Colors.deepOrange.withOpacity(0.08),
+                    color: Colors.blue.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                        color: Colors.deepOrange.withOpacity(0.2)),
+                        color: Colors.blue.withOpacity(0.2)),
                   ),
                   child: Row(
                     children: [
                       const Icon(Icons.event_available,
-                          color: Colors.deepOrange, size: 18),
+                          color: Colors.blue, size: 18),
                       const SizedBox(width: 10),
                       Text(
                         DateFormat('EEEE, d MMM yyyy')
@@ -3375,9 +3375,9 @@ class _TickitSummeryState extends State<TickitSummery> {
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepOrange,
+                    backgroundColor: Colors.blue,
                     elevation: 8,
-                    shadowColor: Colors.deepOrange.withOpacity(0.4),
+                    shadowColor: Colors.blue.withOpacity(0.4),
                     minimumSize: const Size(double.infinity, 55),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
@@ -3514,12 +3514,12 @@ class __AadharBottomSheetState extends State<_AadharBottomSheet> with SingleTick
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: TabBar(
               controller: _tabController,
-              labelColor: Colors.deepOrange,
+              labelColor: Colors.blue,
               unselectedLabelColor: Colors.grey.shade600,
               labelStyle: TextStyle(fontWeight: FontWeight.w700),
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.deepOrange.withOpacity(0.1),
+                color: Colors.blue.withOpacity(0.1),
               ),
               tabs: [
                 Tab(text: 'Non-Verified'),
@@ -3593,7 +3593,7 @@ class __AadharBottomSheetState extends State<_AadharBottomSheet> with SingleTick
                   height: 50,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.orange, Colors.deepOrange],
+                      colors: [Colors.blue, Colors.blue],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -3703,10 +3703,10 @@ class __AadharBottomSheetState extends State<_AadharBottomSheet> with SingleTick
       margin: EdgeInsets.only(bottom: 12),
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isVerified ? Colors.green.shade50 : Colors.orange.shade50,
+        color: isVerified ? Colors.green.shade50 : Colors.blue.shade50,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isVerified ? Colors.green.shade200 : Colors.orange.shade200,
+          color: isVerified ? Colors.green.shade200 : Colors.blue.shade200,
           width: 1,
         ),
       ),
@@ -3716,7 +3716,7 @@ class __AadharBottomSheetState extends State<_AadharBottomSheet> with SingleTick
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: isVerified ? Colors.green : Colors.orange,
+              color: isVerified ? Colors.green : Colors.blue,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -3754,7 +3754,7 @@ class __AadharBottomSheetState extends State<_AadharBottomSheet> with SingleTick
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: isVerified ? Colors.green : Colors.orange,
+              color: isVerified ? Colors.green : Colors.blue,
             ),
           ),
         ],

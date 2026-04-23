@@ -84,7 +84,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
           if (controller.isLoading) {
             return const Center(
                 child: CircularProgressIndicator(
-              color: Colors.orange,
+              color: Colors.blue,
             ));
           }
 
@@ -158,7 +158,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
 
     return RefreshIndicator(
       onRefresh: _loadOrderDetails,
-      color: Colors.orange,
+      color: Colors.blue,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -221,7 +221,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
 
     switch (booking.status) {
       case 'partial_payment':
-        statusColor = Colors.orange;
+        statusColor = Colors.blue;
         statusIcon = Icons.payment;
         statusText = 'Partial Payment';
         break;
@@ -473,13 +473,13 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.deepOrange[50],
+        color: Colors.blue[50],
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: Colors.deepOrange),
+          Icon(icon, size: 14, color: Colors.blue),
           const SizedBox(width: 6),
           Text(
             text,
@@ -513,7 +513,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
         children: [
           Row(
             children: const [
-              Icon(Icons.person_outline, color: Colors.deepOrange, size: 22),
+              Icon(Icons.person_outline, color: Colors.blue, size: 22),
               SizedBox(width: 12),
               Text(
                 'Guest Information',
@@ -615,7 +615,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
         children: [
           Row(
             children: const [
-              Icon(Icons.calendar_today, color: Colors.deepOrange, size: 22),
+              Icon(Icons.calendar_today, color: Colors.blue, size: 22),
               SizedBox(width: 12),
               Text(
                 'Booking Dates',
@@ -654,7 +654,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
               child: Text(
                 '$duration night${duration > 1 ? 's' : ''} stay',
                 style: const TextStyle(
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -859,7 +859,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
           /// HEADER
           Row(
             children: const [
-              Icon(Icons.receipt_long, color: Colors.deepOrange, size: 22),
+              Icon(Icons.receipt_long, color: Colors.blue, size: 22),
               SizedBox(width: 10),
               Text(
                 "Price Breakdown",
@@ -963,7 +963,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
               color: isDue
                   ? Colors.red
                   : isTotal
-                      ? Colors.deepOrange
+                      ? Colors.blue
                       : Colors.black,
             ),
           ),
@@ -993,7 +993,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
         children: [
           Row(
             children: const [
-              Icon(Icons.policy, color: Colors.deepOrange, size: 22),
+              Icon(Icons.policy, color: Colors.blue, size: 22),
               SizedBox(width: 12),
               Text(
                 'Hotel Policies',
@@ -1045,10 +1045,10 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            color: Colors.deepOrange.withOpacity(0.1),
+            color: Colors.blue.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(icon, color: Colors.deepOrange, size: 20),
+          child: Icon(icon, color: Colors.blue, size: 20),
         ),
         SizedBox(width: 12),
         Text(
@@ -1136,7 +1136,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.deepOrange,
+                                  color: Colors.blue,
                                   borderRadius: BorderRadius.circular(12),
                                   boxShadow: [
                                     BoxShadow(
@@ -1209,9 +1209,9 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
                                 height: 30,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Colors.deepOrange.shade50,
+                                  color: Colors.blue.shade50,
                                   border: Border.all(
-                                    color: Colors.deepOrange.shade100,
+                                    color: Colors.blue.shade100,
                                     width: 1,
                                   ),
                                 ),
@@ -1221,7 +1221,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.deepOrange,
+                                      color: Colors.blue,
                                     ),
                                   ),
                                 ),
@@ -1269,7 +1269,7 @@ class _HotelOrderDetailsScreenState extends State<HotelOrderDetailsScreen> {
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: Colors.deepOrange.withOpacity(0.35),
+                color: Colors.blue.withOpacity(0.35),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),
@@ -1792,12 +1792,12 @@ class _LocationMapScreenState extends State<LocationMapScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.orange.withOpacity(0.1),
+                              color: Colors.blue.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
                               Icons.access_time,
-                              color: Colors.orange,
+                              color: Colors.blue,
                               size: 20,
                             ),
                           ),

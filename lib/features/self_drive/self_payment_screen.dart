@@ -345,13 +345,13 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.deepOrange,
-              Colors.orange.shade400,
+              Colors.blue,
+              Colors.blue.shade400,
             ],
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.deepOrange.withOpacity(0.35),
+              color: Colors.blue.withOpacity(0.35),
               blurRadius: 18,
               offset: const Offset(0, 8),
             ),
@@ -445,13 +445,13 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                       'BOOK NOW',
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: Colors.deepOrange,
+                        color: Colors.blue,
                       ),
                     ),
                     SizedBox(width: 6),
                     Icon(
                       Icons.arrow_forward_rounded,
-                      color: Colors.deepOrange,
+                      color: Colors.blue,
                       size: 20,
                     ),
                   ],
@@ -529,12 +529,12 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                         Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: Colors.deepOrange.shade50,
+                            color: Colors.blue.shade50,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(
                             Icons.location_on,
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                             size: 22,
                           ),
                         ),
@@ -620,14 +620,14 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange.shade50,
+                        color: Colors.blue.shade50,
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Row(
                         children: [
                           const Icon(
                             Icons.currency_rupee,
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                             size: 22,
                           ),
                           const SizedBox(width: 6),
@@ -645,7 +645,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                             ),
                           )
                               : Text(
@@ -653,7 +653,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                             ),
                           ),
                         ],
@@ -722,14 +722,14 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             Colors.green.shade50,
           ]
               : [
-            Colors.orange.shade200.withOpacity(0.9),
+            Colors.blue.shade200.withOpacity(0.9),
             Colors.amber.shade50.withOpacity(0.9),
           ],
         ),
         border: Border.all(
           color: isVerified
               ? Colors.green.shade600
-              : Colors.deepOrange.shade700.withOpacity(0.7),
+              : Colors.blue.shade700.withOpacity(0.7),
           width: 1.2,
         ),
         boxShadow: [
@@ -747,7 +747,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isVerified ? Colors.green : Colors.deepOrange,
+              color: isVerified ? Colors.green : Colors.blue,
             ),
             child: Icon(
               isVerified
@@ -806,7 +806,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
               : ElevatedButton(
             onPressed: aadhaarController.text.length == 12 ? onVerify : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: aadhaarController.text.length == 12 ? Colors.deepOrange : Colors.grey.shade300,
+              backgroundColor: aadhaarController.text.length == 12 ? Colors.blue : Colors.grey.shade300,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
               ),
@@ -862,7 +862,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
               Icon(
                 Icons.verified_user,
                 size: 18,
-                color: Colors.deepOrange.shade400,
+                color: Colors.blue.shade400,
               ),
             ],
           ),
@@ -874,7 +874,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             height: 2,
             width: 28,
             decoration: BoxDecoration(
-              color: Colors.deepOrange.shade300,
+              color: Colors.blue.shade300,
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -895,14 +895,14 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                     Colors.green.shade50,
                   ]
                       : [
-                    Colors.orange.shade200.withOpacity(0.9),
+                    Colors.blue.shade200.withOpacity(0.9),
                     Colors.amber.shade50.withOpacity(0.9),
                   ],
                 ),
                 border: Border.all(
                   color: isVerify
                       ? Colors.green.shade600
-                      : Colors.deepOrange.shade700.withOpacity(0.7),
+                      : Colors.blue.shade700.withOpacity(0.7),
                   width: 1.2,
                 ),
                 boxShadow: [
@@ -920,7 +920,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: isVerify ? Colors.green : Colors.deepOrange,
+                      color: isVerify ? Colors.green : Colors.blue,
                     ),
                     child: Icon(
                       isVerify
@@ -988,7 +988,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                       getAadhar(_aadhaarController.text,context);
                     } : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _aadhaarController.text.length == 12 ? Colors.deepOrange : Colors.grey.shade300,
+                      backgroundColor: _aadhaarController.text.length == 12 ? Colors.blue : Colors.grey.shade300,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
                       ),
@@ -1049,9 +1049,9 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 18, color: Colors.deepOrange.shade400),
+          Icon(icon, size: 18, color: Colors.blue.shade400),
           const SizedBox(width: 5),
-          Text('$label : ', style: TextStyle(fontSize: 12, color: Colors.deepOrange.shade400)),
+          Text('$label : ', style: TextStyle(fontSize: 12, color: Colors.blue.shade400)),
           Expanded(child: Text(value, overflow: TextOverflow.ellipsis,style: const TextStyle(fontWeight: FontWeight.bold),)),
         ],
       ),

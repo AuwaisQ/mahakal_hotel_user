@@ -287,9 +287,9 @@ class _TripBookingPageState extends State<TripBookingPage> {
                       decoration: InputDecoration(
                         hintText: 'Search location',
                         prefixIcon:
-                        const Icon(Icons.search, color: Colors.deepOrange),
+                        const Icon(Icons.search, color: Colors.blue),
                         filled: true,
-                        fillColor: Colors.orange.shade50,
+                        fillColor: Colors.blue.shade50,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                           borderSide: BorderSide.none,
@@ -308,11 +308,11 @@ class _TripBookingPageState extends State<TripBookingPage> {
                         final item = filteredList[index];
                         return ListTile(
                           leading: const Icon(Icons.location_on,
-                              color: Colors.deepOrange),
+                              color: Colors.blue),
                           title: Text(
                             '${item.city}',
                             style: TextStyle(
-                              color: Colors.deepOrange.shade900,
+                              color: Colors.blue.shade900,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -463,8 +463,8 @@ class _TripBookingPageState extends State<TripBookingPage> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFFFF7A18),
-                Color(0xFFFF5722),
+                Color(0xFF18FFFF),
+                Color(0xFF2261FF),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -629,7 +629,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                             gradient: LinearGradient(
                               colors: [
                                 Colors.transparent,
-                                Colors.deepOrange.withOpacity(0.6),
+                                Colors.blue.withOpacity(0.6),
                               ],
                             ),
                           ),
@@ -645,13 +645,13 @@ class _TripBookingPageState extends State<TripBookingPage> {
                           shape: BoxShape.circle,
                           gradient: const LinearGradient(
                             colors: [
-                              Colors.deepOrange,
-                              Colors.orange,
+                              Colors.blue,
+                              Colors.blue,
                             ],
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.deepOrange.withOpacity(0.4),
+                              color: Colors.blue.withOpacity(0.4),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             )
@@ -673,7 +673,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Colors.deepOrange.withOpacity(0.6),
+                                Colors.blue.withOpacity(0.6),
                                 Colors.transparent,
                               ],
                             ),
@@ -758,20 +758,20 @@ class _TripBookingPageState extends State<TripBookingPage> {
                                                     const Icon(
                                                       Icons.arrow_upward,
                                                       size: 16,
-                                                      color: Colors.deepOrange,
+                                                      color: Colors.blue,
                                                     ),
                                                     Text(
                                                       '${distanceKm.toStringAsFixed(2)} km',
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.w700,
-                                                        color: Colors.deepOrange,
+                                                        color: Colors.blue,
                                                       ),
                                                     ),
                               const Icon(
                                 Icons.arrow_downward,
                                 size: 16,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                             ],
                           ),
@@ -814,20 +814,20 @@ class _TripBookingPageState extends State<TripBookingPage> {
                               const Icon(
                                 Icons.arrow_upward,
                                 size: 16,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               Text(
                                 '${returnDistanceKm.toStringAsFixed(2)} km',
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.deepOrange,
+                                  color: Colors.blue,
                                 ),
                               ),
                               const Icon(
                                 Icons.arrow_downward,
                                 size: 16,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                             ],
                           ),
@@ -985,7 +985,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
       case 'confirmed':
         return Colors.green;
       default:
-        return Colors.orange; // Default color for unknown statuses
+        return Colors.blue; // Default color for unknown statuses
     }
   }
 
@@ -1019,7 +1019,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: isActive
-                ? Colors.deepOrange.withOpacity(0.08)
+                ? Colors.blue.withOpacity(0.08)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
@@ -1035,7 +1035,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                   icon,
                   size: 24,
                   color: isActive
-                      ? Colors.deepOrange
+                      ? Colors.blue
                       : Colors.grey.shade600,
                 ),
               ),
@@ -1049,7 +1049,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: isActive
-                      ? Colors.deepOrange
+                      ? Colors.blue
                       : Colors.grey.shade700,
                 ),
                 child: Text(label),
@@ -1064,7 +1064,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                 height: 3,
                 width: isActive ? 24 : 0,
                 decoration: BoxDecoration(
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -1186,7 +1186,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.4,
-                          color: Colors.deepOrange,
+                          color: Colors.blue,
                         ),
                       ),
 
@@ -1252,7 +1252,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
             child: Row(
               children: [
                 const Icon(Icons.location_on_outlined,
-                    color: Colors.deepOrange),
+                    color: Colors.blue),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -1261,14 +1261,14 @@ class _TripBookingPageState extends State<TripBookingPage> {
                       fontSize: 16,
                       color: selectedLocation == null
                           ? Colors.grey.shade600
-                          : Colors.deepOrange.shade900,
+                          : Colors.blue.shade900,
                       fontWeight: FontWeight.w500,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const Icon(Icons.keyboard_arrow_down,
-                    color: Colors.deepOrange),
+                    color: Colors.blue),
               ],
             ),
           ),
@@ -1292,7 +1292,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
               const Icon(
                 Icons.watch_later_outlined,
                 size: 16,
-                color: Colors.deepOrange,
+                color: Colors.blue,
               ),
               const SizedBox(width: 8,),
               Text(
@@ -1300,14 +1300,14 @@ class _TripBookingPageState extends State<TripBookingPage> {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                 ),
               ),
               const SizedBox(width: 8,),
               const Icon(
                 Icons.arrow_downward,
                 size: 16,
-                color: Colors.deepOrange,
+                color: Colors.blue,
               ),
             ],
           ),
@@ -1347,8 +1347,8 @@ class _TripBookingPageState extends State<TripBookingPage> {
                     gradient: selected
                         ? LinearGradient(
                       colors: [
-                        Colors.deepOrange.shade400,
-                        Colors.deepOrange.shade600,
+                        Colors.blue.shade400,
+                        Colors.blue.shade600,
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -1358,13 +1358,13 @@ class _TripBookingPageState extends State<TripBookingPage> {
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
                       color: selected
-                          ? Colors.deepOrange
+                          ? Colors.blue
                           : Colors.grey.shade300,
                     ),
                     boxShadow: selected
                         ? [
                       BoxShadow(
-                        color: Colors.deepOrange.withOpacity(0.25),
+                        color: Colors.blue.withOpacity(0.25),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -1499,7 +1499,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
             boxShadow: isActive
                 ? [
               BoxShadow(
-                color: Colors.orange.withOpacity(0.35),
+                color: Colors.blue.withOpacity(0.35),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -1589,20 +1589,20 @@ class _TripBookingPageState extends State<TripBookingPage> {
           //       const Icon(
           //         Icons.arrow_upward,
           //         size: 16,
-          //         color: Colors.deepOrange,
+          //         color: Colors.blue,
           //       ),
           //       Text(
           //         '${distanceKm.toStringAsFixed(2)} km',
           //         style: const TextStyle(
           //           fontSize: 14,
           //           fontWeight: FontWeight.w700,
-          //           color: Colors.deepOrange,
+          //           color: Colors.blue,
           //         ),
           //       ),
           //       const Icon(
           //         Icons.arrow_downward,
           //         size: 16,
-          //         color: Colors.deepOrange,
+          //         color: Colors.blue,
           //       ),
           //     ],
           //   ),
@@ -1699,7 +1699,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.deepOrange.withOpacity(0.35),
+                      color: Colors.blue.withOpacity(0.35),
                       blurRadius: 14,
                       offset: const Offset(0, 8),
                     ),
@@ -1819,7 +1819,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: Colors.deepOrange.withOpacity(0.35),
+                color: Colors.blue.withOpacity(0.35),
                 blurRadius: 14,
                 offset: const Offset(0, 8),
               ),
@@ -1855,7 +1855,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.deepOrange),
+          Icon(icon, color: Colors.blue),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1898,7 +1898,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
             duration: const Duration(milliseconds: 250),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isSelected ? Colors.deepOrange : Colors.transparent,
+              color: isSelected ? Colors.blue : Colors.transparent,
               borderRadius: BorderRadius.circular(30),
             ),
             child: Text(
@@ -1958,7 +1958,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Colors.deepOrange,
+              primary: Colors.blue,
               onPrimary: Colors.white,
               onSurface: Colors.black,
             ),
@@ -1985,15 +1985,15 @@ class _TripBookingPageState extends State<TripBookingPage> {
             data: Theme.of(context).copyWith(
               timePickerTheme: const TimePickerThemeData(
                 backgroundColor: Colors.white,
-                hourMinuteTextColor: Colors.deepOrange,
-                dayPeriodTextColor: Colors.deepOrange,
-                dialHandColor: Colors.deepOrange,
+                hourMinuteTextColor: Colors.blue,
+                dayPeriodTextColor: Colors.blue,
+                dialHandColor: Colors.blue,
                 dialBackgroundColor: Color(0xFFFFE0B2),
                 hourMinuteColor: Color(0xFFFFF3E0),
-                entryModeIconColor: Colors.deepOrange,
+                entryModeIconColor: Colors.blue,
               ),
               colorScheme: const ColorScheme.light(
-                primary: Colors.deepOrange,
+                primary: Colors.blue,
                 onPrimary: Colors.white,
                 onSurface: Colors.black,
               ),

@@ -261,7 +261,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                     style: {
                       "body": Style(
                         fontSize: FontSize(23),
-                        color: Colors.orange,
+                        color: Colors.blue,
                         lineHeight: LineHeight.number(1.5),
                         textAlign: TextAlign.center,
                       ),
@@ -377,7 +377,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                               const Text(
                                 "Reviews",
                                 style: TextStyle(
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                   fontSize: 22,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.bold,
@@ -829,7 +829,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                       Row(
                                         children: [
                                           Icon(Icons.location_on_outlined,
-                                              color: Colors.deepOrange,
+                                              color: Colors.blue,
                                               size: screenWidth * 0.05),
                                           SizedBox(width: screenWidth * 0.02),
                                           Expanded(
@@ -893,7 +893,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                               ),
                                             ),
                                             SizedBox(width: screenWidth * 0.02),
@@ -930,7 +930,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                 ),
                                               ),
                                               SizedBox(
@@ -1190,7 +1190,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                       children: [
                                                         const Icon(Icons.policy,
                                                             color:
-                                                                Colors.orange),
+                                                                Colors.blue),
                                                         const SizedBox(
                                                             width: 10),
                                                         Expanded(
@@ -1254,7 +1254,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                           margin: const EdgeInsets.symmetric(
                                               vertical: 10),
                                           decoration: BoxDecoration(
-                                            color: Colors.orange.shade50,
+                                            color: Colors.blue.shade50,
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             boxShadow: [
@@ -1270,12 +1270,12 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                 padding:
                                                     const EdgeInsets.all(6),
                                                 decoration: BoxDecoration(
-                                                  color: Colors.orange.shade100,
+                                                  color: Colors.blue.shade100,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Icon(
                                                     Icons.policy_rounded,
-                                                    color: Colors.orange,
+                                                    color: Colors.blue,
                                                     size: screenWidth * 0.05),
                                               ),
                                               const SizedBox(width: 12),
@@ -1297,7 +1297,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                   Icons
                                                       .arrow_forward_ios_rounded,
                                                   size: screenWidth * 0.04,
-                                                  color: Colors.orange),
+                                                  color: Colors.blue),
                                             ],
                                           ),
                                         ),
@@ -1319,7 +1319,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          color: Colors.orange,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                       SizedBox(
@@ -1602,7 +1602,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                                               padding: const EdgeInsets.symmetric(horizontal: 20),
                                                                               decoration: BoxDecoration(
                                                                                 borderRadius: BorderRadius.circular(5),
-                                                                                color: Colors.orange.shade300,
+                                                                                color: Colors.blue.shade300,
                                                                                 boxShadow: [
                                                                                   BoxShadow(
                                                                                     color: Colors.black.withOpacity(0.2),
@@ -1627,7 +1627,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                                                       style: const TextStyle(fontWeight: FontWeight.w600),
                                                                                     ),
                                                                                     const Spacer(),
-                                                                                    const Text('|', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold)),
+                                                                                    const Text('|', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
                                                                                     SizedBox(width: screenWidth * 0.02),
                                                                                     // Display "Book now" button
                                                                                     Text(
@@ -1643,7 +1643,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                                               padding: const EdgeInsets.symmetric(horizontal: 20),
                                                                               decoration: BoxDecoration(
                                                                                 borderRadius: BorderRadius.circular(5),
-                                                                                color: Colors.orange.shade300,
+                                                                                color: Colors.blue.shade300,
                                                                                 boxShadow: [
                                                                                   BoxShadow(
                                                                                     color: Colors.black.withOpacity(0.2),
@@ -1674,7 +1674,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                                             borderRadius:
                                                                                 BorderRadius.circular(5),
                                                                             color:
-                                                                                Colors.orange.shade300,
+                                                                                Colors.blue.shade300,
                                                                             boxShadow: [
                                                                               BoxShadow(
                                                                                 color: Colors.black.withOpacity(0.2),
@@ -1715,7 +1715,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                 height: 10,
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -1738,7 +1738,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                       Container(
                                                         height: 20,
                                                         width: 3,
-                                                        color: Colors.orange,
+                                                        color: Colors.blue,
                                                       ),
                                                       const SizedBox(
                                                         width: 5,
@@ -1864,7 +1864,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                       vertical: 24),
                                               padding: const EdgeInsets.all(24),
                                               decoration: BoxDecoration(
-                                                color: Colors.orange.shade50,
+                                                color: Colors.blue.shade50,
                                                 borderRadius:
                                                     BorderRadius.circular(16),
                                                 boxShadow: [
@@ -1884,7 +1884,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                                   Icon(
                                                     Icons.rate_review_outlined,
                                                     color:
-                                                        Colors.orange.shade400,
+                                                        Colors.blue.shade400,
                                                     size: 48,
                                                   ),
                                                   const SizedBox(height: 12),
@@ -1914,7 +1914,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                         )),
 
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -1982,7 +1982,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                           margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                               boxShadow: [
                                 BoxShadow(
                                   color:
@@ -2094,11 +2094,11 @@ class _EventDeatilsState extends State<EventDeatils> {
       width: 200,
       margin: EdgeInsets.only(right: 8),
       decoration: BoxDecoration(
-        color: isSelected ? Colors.deepOrange.shade50 : Colors.white,
+        color: isSelected ? Colors.blue.shade50 : Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isSelected
-              ? Colors.deepOrange
+              ? Colors.blue
               : Colors.grey.shade200,
           width: isSelected ? 2 : 1,
         ),
@@ -2115,7 +2115,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                 Icon(
                   Icons.location_city_outlined,
                   size: 16,
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                 ),
 
                 SizedBox(width: 8),
@@ -2173,8 +2173,8 @@ class _EventDeatilsState extends State<EventDeatils> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.deepOrange,
-              Colors.orangeAccent,
+              Colors.blue,
+              Colors.blueAccent,
             ],
           ),
           borderRadius: BorderRadius.circular(20),
@@ -2326,14 +2326,14 @@ class _EventDeatilsState extends State<EventDeatils> {
                         decoration: BoxDecoration(
 
                           color: isSelected
-                              ? Colors.deepOrange.shade50
+                              ? Colors.blue.shade50
                               : Colors.white,
 
                           borderRadius: BorderRadius.circular(18),
 
                           border: Border.all(
                             color: isSelected
-                                ? Colors.deepOrange
+                                ? Colors.blue
                                 : Colors.grey.shade200,
                             width: isSelected ? 2 : 1,
                           ),
@@ -2364,7 +2364,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                   Icon(
                                     Icons.location_city_outlined,
                                     size: 16,
-                                    color: Colors.deepOrange,
+                                    color: Colors.blue,
                                   ),
 
                                   SizedBox(width: 6),
@@ -2417,7 +2417,7 @@ class _EventDeatilsState extends State<EventDeatils> {
 
                                       Icon(
                                         Icons.check_circle,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                         size: 16,
                                       ),
 
@@ -2426,7 +2426,7 @@ class _EventDeatilsState extends State<EventDeatils> {
                                       Text(
                                         "Selected",
                                         style: TextStyle(
-                                          color: Colors.deepOrange,
+                                          color: Colors.blue,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -2582,7 +2582,7 @@ class _EventCountdownWidgetState extends State<EventCountdownWidget> {
           Row(
             children: [
               const Icon(Icons.calendar_month_outlined,
-                  color: Colors.deepOrange, size: 20),
+                  color: Colors.blue, size: 20),
               const SizedBox(width: 6),
               Text.rich(
                 TextSpan(

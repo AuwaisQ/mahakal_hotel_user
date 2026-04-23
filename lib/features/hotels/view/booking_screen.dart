@@ -71,7 +71,7 @@ class _BookingScreenState extends State<BookingScreen> {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.orange, size: 16),
+              Icon(icon, color: Colors.blue, size: 16),
               SizedBox(width: 8),
               Text(
                 label,
@@ -160,7 +160,7 @@ class _BookingScreenState extends State<BookingScreen> {
         child: ElevatedButton(
           onPressed:  _showBookingSummary,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 56),
             shape: RoundedRectangleBorder(
@@ -355,7 +355,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         return Icon(
                           Icons.star_rounded,
                           size: 16,
-                          color: index < rating ? Colors.orange : Colors.grey[300],
+                          color: index < rating ? Colors.blue : Colors.grey[300],
                         );
                       }),
                     ),
@@ -478,11 +478,11 @@ class _BookingScreenState extends State<BookingScreen> {
                 Container(
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
+                    color: Colors.blue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(Icons.arrow_forward,
-                      color: Colors.orange, size: 20),
+                      color: Colors.blue, size: 20),
                 ),
                 _buildDateColumn(
                   icon: Icons.calendar_today,
@@ -578,7 +578,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
                     elevation: 4,
-                    shadowColor: Colors.orange.withOpacity(0.3),
+                    shadowColor: Colors.blue.withOpacity(0.3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -654,7 +654,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           child: Text(
                             'Try different dates',
                             style: TextStyle(
-                              color: Colors.orange,
+                              color: Colors.blue,
                               fontSize: 12,
                             ),
                           ),
@@ -916,10 +916,10 @@ class _BookingScreenState extends State<BookingScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: Colors.deepOrange.withOpacity(0.1),
+                                    color: Colors.blue.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(
-                                      color: Colors.deepOrange.withOpacity(0.3),
+                                      color: Colors.blue.withOpacity(0.3),
                                     ),
                                   ),
                                   child: Row(
@@ -937,7 +937,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       //   style: TextStyle(
                                       //     fontSize: 16,
                                       //     fontWeight: FontWeight.bold,
-                                      //     color: Colors.deepOrange,
+                                      //     color: Colors.blue,
                                       //   ),
                                       // ),
                                       Text(
@@ -977,12 +977,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                       margin: const EdgeInsets.only(bottom: 8),
                                       decoration: BoxDecoration(
                                         color: selectedRooms == roomCount
-                                            ? Colors.deepOrange.withOpacity(0.1)
+                                            ? Colors.blue.withOpacity(0.1)
                                             : Colors.grey[50],
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
                                           color: selectedRooms == roomCount
-                                              ? Colors.deepOrange.withOpacity(0.5)
+                                              ? Colors.blue.withOpacity(0.5)
                                               : Colors.grey[200]!,
                                           width: selectedRooms == roomCount ? 2 : 1,
                                         ),
@@ -996,7 +996,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                               selectedRooms = value as int;
                                             });
                                           },
-                                          activeColor: Colors.deepOrange,
+                                          activeColor: Colors.blue,
                                         ),
                                         title: Text(
                                           '$roomCount Room${roomCount > 1 ? 's' : ''}',
@@ -1011,7 +1011,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.deepOrange,
+                                            color: Colors.blue,
                                           ),
                                         ),
                                         trailing: Container(
@@ -1020,7 +1020,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                             vertical: 6,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: Colors.deepOrange.withOpacity(0.2),
+                                            color: Colors.blue.withOpacity(0.2),
                                             borderRadius: BorderRadius.circular(20),
                                           ),
                                           child: Text(
@@ -1028,7 +1028,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.deepOrange,
+                                              color: Colors.blue,
                                             ),
                                           ),
                                         ),
@@ -1098,7 +1098,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       Navigator.pop(context);
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.deepOrange,
+                                    backgroundColor: Colors.blue,
                                     foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -1227,7 +1227,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(8),
                                       border: Border.all(
-                                          color: Colors.deepOrange.withOpacity(0.3)),
+                                          color: Colors.blue.withOpacity(0.3)),
                                     ),
                                     padding: const EdgeInsets.all(8),
                                     child: Row(
@@ -1326,7 +1326,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   //   style: const TextStyle(
                                   //     fontSize: 24,
                                   //     fontWeight: FontWeight.bold,
-                                  //     color: Colors.deepOrange,
+                                  //     color: Colors.blue,
                                   //   ),
                                   // ),
                                   Text(
@@ -1415,7 +1415,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                         children: [
                                           Icon(iconData,
                                               size: 16,
-                                              color: Colors.deepOrange),
+                                              color: Colors.blue),
                                           const SizedBox(width: 6),
                                           Text(
                                             feature.title ?? 'Amenity',
@@ -1466,7 +1466,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: selectedRooms > 0
                                     ? Colors.green
-                                    : Colors.deepOrange,
+                                    : Colors.blue,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -1557,7 +1557,7 @@ class _BookingScreenState extends State<BookingScreen> {
   }) {
     return Row(
       children: [
-        Icon(icon, size: 18, color: Colors.deepOrange),
+        Icon(icon, size: 18, color: Colors.blue),
         const SizedBox(width: 5),
         Text(
           value,

@@ -29,7 +29,7 @@ class PRatingProgressIndicater extends StatelessWidget {
                 minHeight: 11,
                 backgroundColor: Colors.grey,
                 borderRadius: BorderRadius.circular(7),
-                valueColor: const AlwaysStoppedAnimation(Colors.orange),
+                valueColor: const AlwaysStoppedAnimation(Colors.blue),
               ),
             ))
       ],

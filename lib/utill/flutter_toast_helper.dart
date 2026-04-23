@@ -50,7 +50,7 @@ class ToastHelper {
 Widget placeholderImage() {
   return Container(
     child: Image.asset(
-      'assets/images/mahakal.jpeg',
+      'assets/images/mahakal.png',
       fit: BoxFit.cover,
     ),
   );

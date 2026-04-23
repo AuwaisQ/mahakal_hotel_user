@@ -105,7 +105,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () {
@@ -119,8 +119,8 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.deepOrange.shade50,
-              Colors.orange.shade50,
+              Colors.blue.shade50,
+              Colors.blue.shade50,
             ],
           ),
         ),
@@ -200,7 +200,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                   height: 36,
                   decoration: BoxDecoration(
                     color: isActive
-                        ? Colors.deepOrange
+                        ? Colors.blue
                         : isCompleted
                             ? Colors.green
                             : Colors.grey.shade300,
@@ -208,7 +208,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                     boxShadow: isActive
                         ? [
                             BoxShadow(
-                              color: Colors.deepOrange.withOpacity(0.3),
+                              color: Colors.blue.withOpacity(0.3),
                               spreadRadius: 2,
                               blurRadius: 6,
                               offset: Offset(0, 2),
@@ -236,8 +236,8 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                     value: 1.0,
                     strokeWidth: 2,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.deepOrange.shade700),
-                    backgroundColor: Colors.deepOrange.shade100,
+                        Colors.blue.shade700),
+                    backgroundColor: Colors.blue.shade100,
                   ),
               ],
             ),
@@ -245,7 +245,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
             Text(
               title,
               style: TextStyle(
-                color: isActive ? Colors.deepOrange : Colors.grey.shade700,
+                color: isActive ? Colors.blue : Colors.grey.shade700,
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 fontSize: 12,
               ),
@@ -283,13 +283,13 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: isSelected
-                ? BorderSide(color: Colors.deepOrange, width: 2)
+                ? BorderSide(color: Colors.blue, width: 2)
                 : BorderSide.none,
           ),
           child: ListTile(
             leading: Icon(
               Icons.location_on,
-              color: isSelected ? Colors.deepOrange : Colors.grey,
+              color: isSelected ? Colors.blue : Colors.grey,
               size: 28,
             ),
             title: Text(
@@ -297,19 +297,19 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
-                color: isSelected ? Colors.deepOrange : Colors.black87,
+                color: isSelected ? Colors.blue : Colors.black87,
               ),
             ),
             subtitle: Text(
               venue["en_event_venue_full_address"]!,
               style: TextStyle(
                 color: isSelected
-                    ? Colors.deepOrange.shade600
+                    ? Colors.blue.shade600
                     : Colors.grey.shade600,
               ),
             ),
             trailing: isSelected
-                ? Icon(Icons.check_circle, color: Colors.deepOrange)
+                ? Icon(Icons.check_circle, color: Colors.blue)
                 : null,
             onTap: () {
               setState(() {
@@ -334,7 +334,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.deepOrange.shade800,
+              color: Colors.blue.shade800,
             ),
           ),
         ),
@@ -368,11 +368,11 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                     child: Container(
                       padding: EdgeInsets.all(8), // Reduced padding
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.deepOrange : Colors.white,
+                        color: isSelected ? Colors.blue : Colors.white,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: isSelected
-                              ? Colors.deepOrange
+                              ? Colors.blue
                               : Colors.grey.shade300,
                           width: 1.5,
                         ),
@@ -394,7 +394,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                               fontSize: 14, // Smaller font
                               fontWeight: FontWeight.bold,
                               color:
-                                  isSelected ? Colors.white : Colors.deepOrange,
+                                  isSelected ? Colors.white : Colors.blue,
                             ),
                           ),
                           SizedBox(height: 2), // Reduced spacing
@@ -435,7 +435,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: isSelected
-                ? BorderSide(color: Colors.deepOrange, width: 2)
+                ? BorderSide(color: Colors.blue, width: 2)
                 : BorderSide.none,
           ),
           child: Column(
@@ -443,7 +443,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
               ListTile(
                 leading: Icon(
                   Icons.confirmation_number,
-                  color: isSoldOut ? Colors.grey : Colors.deepOrange,
+                  color: isSoldOut ? Colors.grey : Colors.blue,
                   size: 28,
                 ),
                 title: Text(
@@ -459,7 +459,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    color: isSoldOut ? Colors.grey : Colors.deepOrange,
+                    color: isSoldOut ? Colors.grey : Colors.blue,
                   ),
                 ),
                 trailing: isSoldOut
@@ -511,7 +511,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                     Expanded(
                       child: IconButton(
                         icon:
-                            Icon(Icons.info_outline, color: Colors.deepOrange),
+                            Icon(Icons.info_outline, color: Colors.blue),
                         onPressed: () {
                           setState(() {
                             _selectedTicketIndex =
@@ -528,7 +528,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
                               "Proceed to payment for ${ticket["type"]} ticket");
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepOrange,
+                          backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

@@ -528,7 +528,7 @@ class _TourDetailsState extends State<TourDetails>
                                         ? delhiModal?.data?.enTourName ?? ""
                                         : delhiModal?.data?.hiTourName ?? "",
                                     style: const TextStyle(
-                                      color: Colors.orange,
+                                      color: Colors.blue,
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                       overflow: TextOverflow.ellipsis,
@@ -575,7 +575,7 @@ class _TourDetailsState extends State<TourDetails>
                                       ),
                                       child: Icon(
                                         Icons.picture_as_pdf_rounded,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                         size: 28,
                                       ),
                                     ),
@@ -737,7 +737,7 @@ class _TourDetailsState extends State<TourDetails>
                             horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.deepOrange,
+                          color: Colors.blue,
                           boxShadow: const [
                             BoxShadow(
                               color: Colors.black26,
@@ -846,7 +846,7 @@ class _TourDetailsState extends State<TourDetails>
                               const Text(
                                 "Reviews",
                                 style: TextStyle(
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                   fontSize: 22,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.bold,
@@ -1247,7 +1247,7 @@ class _TourDetailsState extends State<TourDetails>
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.orange.shade50,
+                color: Colors.blue.shade50,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
@@ -1257,7 +1257,7 @@ class _TourDetailsState extends State<TourDetails>
                 children: [
                   const Icon(
                     Icons.travel_explore,
-                    color: Colors.orange,
+                    color: Colors.blue,
                     size: 24,
                   ),
                   const SizedBox(width: 10),
@@ -1268,13 +1268,13 @@ class _TourDetailsState extends State<TourDetails>
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.orange,
+                      color: Colors.blue,
                     ),
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.orange),
+                    icon: const Icon(Icons.close, color: Colors.blue),
                   ),
                 ],
               ),
@@ -1293,7 +1293,7 @@ class _TourDetailsState extends State<TourDetails>
                       children: [
                         CircleAvatar(
                           radius: 55,
-                          backgroundColor: Colors.orange.shade100,
+                          backgroundColor: Colors.blue.shade100,
                           backgroundImage: travellerInfo?.data?.image != null &&
                                   travellerInfo!.data!.image.isNotEmpty
                               ? NetworkImage(travellerInfo!.data!.image)
@@ -1310,7 +1310,7 @@ class _TourDetailsState extends State<TourDetails>
                             padding: const EdgeInsets.all(2),
                             child: const Icon(
                               Icons.verified,
-                              color: Colors.deepOrange,
+                              color: Colors.blue,
                               size: 30,
                             ),
                           ),
@@ -1380,8 +1380,8 @@ class _TourDetailsState extends State<TourDetails>
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundColor: Colors.orange.withOpacity(0.1),
-            child: Icon(icon, color: Colors.orange, size: 22),
+            backgroundColor: Colors.blue.withOpacity(0.1),
+            child: Icon(icon, color: Colors.blue, size: 22),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -1463,7 +1463,7 @@ class _TourDetailsState extends State<TourDetails>
       // ScaffoldMessenger.of(context).showSnackBar(
       //   const SnackBar(
       //     content: Text("Invoice URL not available!"),
-      //     backgroundColor: Colors.orange,
+      //     backgroundColor: Colors.blue,
       //   ),
       // );
       return;
@@ -1634,7 +1634,7 @@ class _TourDetailsState extends State<TourDetails>
                                                         ?.data?.hiTourName ??
                                                     'N/A',
                                             style: const TextStyle(
-                                              color: Colors.orange,
+                                              color: Colors.blue,
                                               fontSize: 22,
                                               fontFamily: 'Roboto',
                                               fontWeight: FontWeight.bold,
@@ -1665,17 +1665,17 @@ class _TourDetailsState extends State<TourDetails>
                                               borderRadius:
                                                   BorderRadius.circular(4.0),
                                               color: gridList
-                                                  ? Colors.orange
+                                                  ? Colors.blue
                                                   : Colors.white,
                                               border: Border.all(
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                   width: 2),
                                             ),
                                             child: Icon(
                                               Icons.translate,
                                               color: gridList
                                                   ? Colors.white
-                                                  : Colors.orange,
+                                                  : Colors.blue,
                                               size: 18,
                                             ),
                                           ),
@@ -1732,7 +1732,7 @@ class _TourDetailsState extends State<TourDetails>
                                                     Icons
                                                         .calendar_month_outlined,
                                                     color:
-                                                    Colors.orange,
+                                                    Colors.blue,
                                                     size: 25),
                                                 SizedBox(
                                                     width: screenWidth *
@@ -2004,7 +2004,7 @@ DevoteesCountWidget(),
                                                     '${delhiModal!.data!.userBookingCount! + 10000}+ ',
                                                 style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.orange,
+                                                    color: Colors.blue,
                                                     fontSize: 16),
                                               ),
                                               TextSpan(
@@ -2019,7 +2019,7 @@ DevoteesCountWidget(),
                                                 text: 'Mahakal.com ',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.orange,
+                                                    color: Colors.blue,
                                                     fontSize: 16),
                                               ),
                                               TextSpan(
@@ -2065,9 +2065,9 @@ DevoteesCountWidget(),
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: [
-                                                  Colors.orange.shade300
+                                                  Colors.blue.shade300
                                                       .withOpacity(0.9),
-                                                  Colors.orange.shade100,
+                                                  Colors.blue.shade100,
                                                   Colors.white,
                                                 ],
                                               ),
@@ -2075,7 +2075,7 @@ DevoteesCountWidget(),
                                                   BorderRadius.circular(20),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.orange
+                                                  color: Colors.blue
                                                       .withOpacity(0.25),
                                                   blurRadius: 10,
                                                   offset: const Offset(0, 5),
@@ -2325,7 +2325,7 @@ DevoteesCountWidget(),
                                                     : "यात्रा एजेंट की जानकारी",
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                   fontSize: 20,
                                                 ),
                                               ),
@@ -2359,7 +2359,7 @@ DevoteesCountWidget(),
                                           //       ),
                                           //     ],
                                           //     border: Border.all(
-                                          //       color: Colors.orange.shade100,
+                                          //       color: Colors.blue.shade100,
                                           //       width: 1.5,
                                           //     ),
                                           //   ),
@@ -2377,13 +2377,13 @@ DevoteesCountWidget(),
                                           //                 decoration: BoxDecoration(
                                           //                   borderRadius: BorderRadius.circular(100),
                                           //                   border: Border.all(
-                                          //                     color: Colors.orange.shade300,
+                                          //                     color: Colors.blue.shade300,
                                           //                     width: 2,
                                           //                   ),
                                           //                   gradient: LinearGradient(
                                           //                     colors: [
-                                          //                       Colors.orange.shade100,
-                                          //                       Colors.orange.shade50,
+                                          //                       Colors.blue.shade100,
+                                          //                       Colors.blue.shade50,
                                           //                     ],
                                           //                     begin: Alignment.topCenter,
                                           //                     end: Alignment.bottomCenter,
@@ -2397,11 +2397,11 @@ DevoteesCountWidget(),
                                           //                     errorWidget: (context, url, error) => Icon(
                                           //                       Icons.person,
                                           //                       size: 40,
-                                          //                       color: Colors.orange.shade300,
+                                          //                       color: Colors.blue.shade300,
                                           //                     ),
                                           //                     placeholder: (context, url) => Center(
                                           //                       child: CircularProgressIndicator(
-                                          //                         color: Colors.orange.shade300,
+                                          //                         color: Colors.blue.shade300,
                                           //                       ),
                                           //                     ),
                                           //                   ),
@@ -2466,7 +2466,7 @@ DevoteesCountWidget(),
                                           //                     Icon(
                                           //                       Icons.business,
                                           //                       size: 18,
-                                          //                       color: Colors.orange.shade600,
+                                          //                       color: Colors.blue.shade600,
                                           //                     ),
                                           //                     const SizedBox(width: 6),
                                           //                     Expanded(
@@ -2520,8 +2520,8 @@ DevoteesCountWidget(),
                                           //       //   decoration: BoxDecoration(
                                           //       //     gradient: LinearGradient(
                                           //       //       colors: [
-                                          //       //         Colors.orange.shade500,
-                                          //       //         Colors.orange.shade700,
+                                          //       //         Colors.blue.shade500,
+                                          //       //         Colors.blue.shade700,
                                           //       //       ],
                                           //       //       begin: Alignment.centerLeft,
                                           //       //       end: Alignment.centerRight,
@@ -2529,7 +2529,7 @@ DevoteesCountWidget(),
                                           //       //     borderRadius: BorderRadius.circular(12),
                                           //       //     boxShadow: [
                                           //       //       BoxShadow(
-                                          //       //         color: Colors.orange.shade300,
+                                          //       //         color: Colors.blue.shade300,
                                           //       //         offset: const Offset(0, 2),
                                           //       //         blurRadius: 4,
                                           //       //       ),
@@ -2580,7 +2580,7 @@ DevoteesCountWidget(),
                                 height: 10,
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2601,7 +2601,7 @@ DevoteesCountWidget(),
                                 ),
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2625,7 +2625,7 @@ DevoteesCountWidget(),
                                 ),
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2660,7 +2660,7 @@ DevoteesCountWidget(),
                                 ),
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2695,7 +2695,7 @@ DevoteesCountWidget(),
                                 ),
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2721,7 +2721,7 @@ DevoteesCountWidget(),
                                 ),
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2747,7 +2747,7 @@ DevoteesCountWidget(),
                                 ),
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2767,7 +2767,7 @@ DevoteesCountWidget(),
                                 ),
                               ),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -2788,7 +2788,7 @@ DevoteesCountWidget(),
                                                   Container(
                                                     height: 20,
                                                     width: 3,
-                                                    color: Colors.orange,
+                                                    color: Colors.blue,
                                                   ),
                                                   const SizedBox(
                                                     width: 5,
@@ -2813,7 +2813,7 @@ DevoteesCountWidget(),
                                                             : "सभी देखें",
                                                         style: const TextStyle(
                                                             color:
-                                                                Colors.orange,
+                                                                Colors.blue,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontSize: 14),
@@ -2893,7 +2893,7 @@ DevoteesCountWidget(),
                                               horizontal: 16, vertical: 24),
                                           padding: const EdgeInsets.all(24),
                                           decoration: BoxDecoration(
-                                            color: Colors.orange.shade50,
+                                            color: Colors.blue.shade50,
                                             borderRadius:
                                                 BorderRadius.circular(16),
                                             boxShadow: [
@@ -2912,7 +2912,7 @@ DevoteesCountWidget(),
                                             children: [
                                               Icon(
                                                 Icons.rate_review_outlined,
-                                                color: Colors.orange.shade400,
+                                                color: Colors.blue.shade400,
                                                 size: 48,
                                               ),
                                               const SizedBox(height: 12),
@@ -2937,7 +2937,7 @@ DevoteesCountWidget(),
                                           ),
                                         )),
                               Container(
-                                color: Colors.orange.shade100,
+                                color: Colors.blue.shade100,
                                 width: double.infinity,
                                 height: 5,
                               ),
@@ -3047,11 +3047,11 @@ DevoteesCountWidget(),
                               height: 60,
                               width: 65,
                               decoration: BoxDecoration(
-                                color: Colors.orangeAccent,
+                                color: Colors.blueAccent,
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.deepOrange.withOpacity(0.15),
+                                    color: Colors.blue.withOpacity(0.15),
                                     blurRadius: 6,
                                     offset: const Offset(0, 3),
                                   ),
@@ -3090,7 +3090,7 @@ DevoteesCountWidget(),
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
@@ -3253,7 +3253,7 @@ DevoteesCountWidget(),
               tabAlignment: TabAlignment.start,
               unselectedLabelColor: Colors.black,
               indicatorColor: Colors.red,
-              labelColor: Colors.orange,
+              labelColor: Colors.blue,
               controller: _tabController,
               unselectedLabelStyle: const TextStyle(fontSize: 18),
               labelStyle: const TextStyle(fontSize: 20),

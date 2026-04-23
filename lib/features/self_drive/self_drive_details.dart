@@ -122,7 +122,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
       return Scaffold(
         body: Center(
           child: CircularProgressIndicator(
-            color: Colors.deepOrange,
+            color: Colors.blue,
           ),
         ),
       );
@@ -223,7 +223,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: Colors.deepOrange.withOpacity(0.3),
+                  color: Colors.blue.withOpacity(0.3),
                 ),
               ),
               child: Row(
@@ -232,7 +232,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                   const Icon(
                     Icons.info_outline,
                     size: 18,
-                    color: Colors.deepOrange,
+                    color: Colors.blue,
                   ),
                   const SizedBox(width: 6),
                   RichText(
@@ -247,7 +247,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                           text: '$minimum $unitType',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                           ),
                         ),
                         const TextSpan(text: ' booking required'),
@@ -284,7 +284,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       ),
                     );
                   },
-                  backgroundColor: Colors.deepOrange,
+                  backgroundColor: Colors.blue,
                   elevation: 6,
                   icon: const Icon(
                     Icons.directions_car_filled,
@@ -367,7 +367,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
               alignment: Alignment.center,
               child: const CircularProgressIndicator(
                 strokeWidth: 2,
-                color: Colors.deepOrange,
+                color: Colors.blue,
               ),
             ),
             errorWidget: (_, __, ___) => const Icon(
@@ -463,7 +463,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: isAcSelected
-                            ? Colors.deepOrange
+                            ? Colors.blue
                             : Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -488,7 +488,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: !isAcSelected
-                            ? Colors.deepOrange
+                            ? Colors.blue
                             : Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -521,7 +521,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: isAcSelected
-                            ? Colors.deepOrange
+                            ? Colors.blue
                             : Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -546,7 +546,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: !isAcSelected
-                            ? Colors.deepOrange
+                            ? Colors.blue
                             : Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -582,7 +582,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.15),
+                    color: Colors.blue.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -590,7 +590,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                     style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: Colors.orange,
+                      color: Colors.blue,
                     ),
                   ),
                 ),
@@ -704,10 +704,10 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.deepOrange.withOpacity(0.06),
+        color: Colors.blue.withOpacity(0.06),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: Colors.deepOrange.withOpacity(0.35),
+          color: Colors.blue.withOpacity(0.35),
         ),
       ),
       child: Column(
@@ -719,7 +719,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
               Icon(
                 Icons.info_outline,
                 size: 18,
-                color: Colors.deepOrange,
+                color: Colors.blue,
               ),
               SizedBox(width: 6),
               Text(
@@ -727,7 +727,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                 ),
               ),
             ],
@@ -748,7 +748,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                   text: '$minimum $unitType',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepOrange,
+                    color: Colors.blue,
                     fontSize: 16,
                   ),
                 ),
@@ -775,7 +775,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                         text: '₹$extraCharge/km',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.deepOrange,
+                          color: Colors.blue,
                           fontSize: 16,
                         ),
                       ),
@@ -791,7 +791,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                         text: '₹$extraCharge/hour',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.deepOrange,
+                          color: Colors.blue,
                           fontSize: 16,
                         ),
                       ),
@@ -971,11 +971,11 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
   //                   padding: const EdgeInsets.symmetric(
   //                       horizontal: 20, vertical: 5),
   //                   decoration: BoxDecoration(
-  //                     color: isSelected ? Colors.deepOrange : Colors.white,
+  //                     color: isSelected ? Colors.blue : Colors.white,
   //                     borderRadius: BorderRadius.circular(16),
   //                     border: Border.all(
   //                       color: isSelected
-  //                           ? Colors.deepOrange
+  //                           ? Colors.blue
   //                           : Colors.grey.shade300,
   //                       width: 1.5,
   //                     ),
@@ -1001,7 +1001,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
   //                               border: Border.all(
   //                                   color: isSelected
   //                                       ? Colors.white
-  //                                       : Colors.deepOrange,
+  //                                       : Colors.blue,
   //                                   width: 2),
   //                             ),
   //                             child: isSelected
@@ -1025,7 +1025,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
   //                               fontWeight: FontWeight.bold,
   //                               color: isSelected
   //                                   ? Colors.white
-  //                                   : Colors.deepOrange,
+  //                                   : Colors.blue,
   //                             ),
   //                           ),
   //                         ],
@@ -1068,15 +1068,15 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
   //     decoration: BoxDecoration(
   //       gradient: LinearGradient(
   //         colors: [
-  //           Colors.deepOrange.withOpacity(0.06),
-  //           Colors.deepOrange.withOpacity(0.12),
+  //           Colors.blue.withOpacity(0.06),
+  //           Colors.blue.withOpacity(0.12),
   //         ],
   //         begin: Alignment.topLeft,
   //         end: Alignment.bottomRight,
   //       ),
   //       borderRadius: BorderRadius.circular(16),
   //       border: Border.all(
-  //         color: Colors.deepOrange.withOpacity(0.25),
+  //         color: Colors.blue.withOpacity(0.25),
   //       ),
   //       boxShadow: [
   //         BoxShadow(
@@ -1094,13 +1094,13 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
   //             Container(
   //               padding: const EdgeInsets.all(6),
   //               decoration: BoxDecoration(
-  //                 color: Colors.deepOrange.withOpacity(0.15),
+  //                 color: Colors.blue.withOpacity(0.15),
   //                 shape: BoxShape.circle,
   //               ),
   //               child: const Icon(
   //                 Icons.verified,
   //                 size: 14,
-  //                 color: Colors.deepOrange,
+  //                 color: Colors.blue,
   //               ),
   //             ),
   //             const SizedBox(width: 8),
@@ -1110,7 +1110,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
   //                 style: const TextStyle(
   //                   fontSize: 14,
   //                   fontWeight: FontWeight.w700,
-  //                   color: Colors.deepOrange,
+  //                   color: Colors.blue,
   //                 ),
   //               ),
   //             ),
@@ -1204,12 +1204,12 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.deepOrange.withOpacity(0.12),
+                      color: Colors.blue.withOpacity(0.12),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
                       Icons.info_outline,
-                      color: Colors.deepOrange,
+                      color: Colors.blue,
                       size: 20,
                     ),
                   ),
@@ -1320,10 +1320,10 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.deepOrange.withOpacity(0.12),
+            color: Colors.blue.withOpacity(0.12),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: Colors.deepOrange, size: 20),
+          child: Icon(icon, color: Colors.blue, size: 20),
         ),
         title: Text(
           title,
@@ -1457,7 +1457,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.deepOrange.withOpacity(0.4),
+                      color: Colors.blue.withOpacity(0.4),
                       width: 1.5,
                     ),
                   ),
@@ -1655,7 +1655,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
+                backgroundColor: Colors.blue,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
@@ -1734,10 +1734,10 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.deepOrange.withOpacity(0.12),
+              color: Colors.blue.withOpacity(0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 22, color: Colors.deepOrange),
+            child: Icon(icon, size: 22, color: Colors.blue),
           ),
           const SizedBox(height: 8),
           Text(

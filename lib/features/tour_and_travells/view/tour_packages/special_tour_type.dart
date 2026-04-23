@@ -333,7 +333,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
       BeautifulToast.show(
         context,
         "Maximum ${widget.cabsquantity?[index].max} units allowed",
-        backgroundColor: Colors.orange.shade600,
+        backgroundColor: Colors.blue.shade600,
         icon: Icons.info_outline,
       );
       return;
@@ -765,7 +765,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                     "wallet"); // Wait for API or function to complete
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange, // Primary color
+                backgroundColor: Colors.blue, // Primary color
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -1264,7 +1264,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                       decoration: BoxDecoration(
                                         color: selectedIndexes.contains(index)
                                             ? Colors.grey.shade400
-                                            : Colors.deepOrange
+                                            : Colors.blue
                                                 .withOpacity(0.07),
                                         borderRadius: BorderRadius.circular(5),
                                       ),
@@ -1352,7 +1352,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                         height: 1.5,
                                         width: 40,
                                         color: selectedIndexes.contains(index)
-                                            ? Colors.orange
+                                            ? Colors.blue
                                             : Colors.grey,
                                       ),
                                   ],
@@ -1366,8 +1366,8 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                       width: 40,
                                       decoration: BoxDecoration(
                                         color: selectedIndexes.contains(index)
-                                            ? Colors.deepOrange
-                                            : Colors.deepOrange
+                                            ? Colors.blue
+                                            : Colors.blue
                                                 .withOpacity(0.07),
                                         borderRadius: BorderRadius.circular(5),
                                       ),
@@ -1390,7 +1390,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                         height: 1.5,
                                         width: 40,
                                         color: selectedIndexes.contains(index)
-                                            ? Colors.orange
+                                            ? Colors.blue
                                             : Colors.grey,
                                       ),
                                   ],
@@ -1402,8 +1402,8 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                   width: 40,
                                   decoration: BoxDecoration(
                                     color: selectedIndexes.contains(index)
-                                        ? Colors.deepOrange
-                                        : Colors.deepOrange.withOpacity(0.07),
+                                        ? Colors.blue
+                                        : Colors.blue.withOpacity(0.07),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Center(
@@ -1470,7 +1470,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -1647,7 +1647,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -1956,7 +1956,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                                         child: Container(
                                                                             height: 35,
                                                                             width: 100,
-                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.grey.shade300), color: Colors.orange),
+                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.grey.shade300), color: Colors.blue),
                                                                             child: Center(
                                                                               child: Text(
                                                                                 widget.translateEn == "en" ? "Add" : "जोड़ें",
@@ -1970,7 +1970,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                                             Container(
                                                                               height: 35,
                                                                               width: 30,
-                                                                              decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)), border: Border.all(color: Colors.orange)),
+                                                                              decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)), border: Border.all(color: Colors.blue)),
                                                                               child: GestureDetector(
                                                                                   onTap: () {
                                                                                     setState(() {
@@ -1990,7 +1990,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                                             Container(
                                                                               height: 35,
                                                                               width: 40,
-                                                                              decoration: BoxDecoration(border: Border.all(color: Colors.orange), color: Colors.orange),
+                                                                              decoration: BoxDecoration(border: Border.all(color: Colors.blue), color: Colors.blue),
                                                                               child: Center(
                                                                                   child: Text(
                                                                                 "${cabsQuantity[index]}",
@@ -2000,7 +2000,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                                             Container(
                                                                               height: 35,
                                                                               width: 30,
-                                                                              decoration: BoxDecoration(borderRadius: const BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)), border: Border.all(color: Colors.orange)),
+                                                                              decoration: BoxDecoration(borderRadius: const BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)), border: Border.all(color: Colors.blue)),
                                                                               child: GestureDetector(
                                                                                   onTap: () {
                                                                                     setState(() {
@@ -2137,7 +2137,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                     child: const Icon(
                                                       Icons
                                                           .report_gmailerrorred,
-                                                      color: Colors.orange,
+                                                      color: Colors.blue,
                                                       size: 22,
                                                     )),
                                               ]),
@@ -2279,7 +2279,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -2471,7 +2471,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -2659,7 +2659,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                               style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -2706,7 +2706,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                   ),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.deepOrange
+                                                      color: Colors.blue
                                                           .withOpacity(0.4),
                                                       blurRadius: 8,
                                                       offset:
@@ -2808,7 +2808,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                     BorderRadius.circular(25),
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Colors.deepOrange
+                                                    color: Colors.blue
                                                         .withOpacity(0.3),
                                                     blurRadius: 6,
                                                     offset: const Offset(0, 2),
@@ -3167,7 +3167,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                   ),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.deepOrange
+                                                      color: Colors.blue
                                                           .withOpacity(0.4),
                                                       blurRadius: 8,
                                                       offset:
@@ -3254,7 +3254,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -3435,7 +3435,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                   children: [
                                     const Icon(
                                       Icons.calendar_month,
-                                      color: Colors.orange,
+                                      color: Colors.blue,
                                       size: 22,
                                     ),
                                     const SizedBox(width: 8),
@@ -3469,7 +3469,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                         Icon(
                                           Icons.calendar_month,
                                           size: 26,
-                                          color: Colors.deepOrange,
+                                          color: Colors.blue,
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
@@ -3671,7 +3671,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                             children: [
                                               const Icon(
                                                 Icons.location_on_outlined,
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                               ),
                                               Text(
                                                   widget.translateEn == "en"
@@ -3711,7 +3711,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                             children: [
                                               const Icon(
                                                 Icons.car_crash_sharp,
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                                 size: 20,
                                               ),
                                               const SizedBox(width: 5),
@@ -3862,14 +3862,14 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                         const EdgeInsets.all(2),
                                                     decoration: BoxDecoration(
                                                       color: isPickAirport
-                                                          ? Colors.orange[50]
+                                                          ? Colors.blue[50]
                                                           : Colors.grey[50],
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               12),
                                                       border: Border.all(
                                                         color: isPickAirport
-                                                            ? Colors.orange
+                                                            ? Colors.blue
                                                             : Colors.grey,
                                                         width: 2,
                                                       ),
@@ -3904,7 +3904,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                             });
                                                           },
                                                           activeColor:
-                                                              Colors.orange,
+                                                              Colors.blue,
                                                         ),
                                                         const SizedBox(
                                                             width: 4),
@@ -3912,7 +3912,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                           Icons
                                                               .airplanemode_active,
                                                           color: isPickAirport
-                                                              ? Colors.orange
+                                                              ? Colors.blue
                                                               : Colors.grey,
                                                           size: 24,
                                                         ),
@@ -3954,7 +3954,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                               children: [
                                                 const Icon(
                                                   Icons.location_on_outlined,
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                 ),
                                                 const SizedBox(width: 8),
                                                 Expanded(
@@ -3997,7 +3997,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                             children: [
                                               const Icon(
                                                 Icons.car_crash_sharp,
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                                 size: 20,
                                               ),
                                               const SizedBox(width: 5),
@@ -4148,14 +4148,14 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                         const EdgeInsets.all(2),
                                                     decoration: BoxDecoration(
                                                       color: isDropAirport
-                                                          ? Colors.orange[50]
+                                                          ? Colors.blue[50]
                                                           : Colors.grey[50],
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               12),
                                                       border: Border.all(
                                                         color: isDropAirport
-                                                            ? Colors.orange
+                                                            ? Colors.blue
                                                             : Colors.grey,
                                                         width: 2,
                                                       ),
@@ -4188,7 +4188,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                             });
                                                           },
                                                           activeColor:
-                                                              Colors.orange,
+                                                              Colors.blue,
                                                         ),
                                                         const SizedBox(
                                                             width: 4),
@@ -4199,7 +4199,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                             Icons
                                                                 .airplanemode_active,
                                                             color: isDropAirport
-                                                                ? Colors.orange
+                                                                ? Colors.blue
                                                                 : Colors.grey,
                                                             size: 24,
                                                           ),
@@ -4242,7 +4242,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                               children: [
                                                 const Icon(
                                                   Icons.location_on_outlined,
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                 ),
                                                 const SizedBox(width: 8),
                                                 Expanded(
@@ -4498,10 +4498,10 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                             BorderRadius.circular(8.0),
                                         border: Border.all(
                                             color: selectedAmountIndex == 0
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors.transparent),
                                         color: selectedAmountIndex == 0
-                                            ? Colors.orange
+                                            ? Colors.blue
                                             : Colors.grey.shade200,
                                       ),
                                       child: Center(
@@ -4511,7 +4511,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                             fontSize: 18,
                                             color: selectedAmountIndex == 0
                                                 ? Colors.white
-                                                : Colors.orange,
+                                                : Colors.blue,
                                           ),
                                         ),
                                       ),
@@ -4535,10 +4535,10 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                         border: Border.all(
                                             color: selectedAmountIndex == 0
                                                 ? Colors.transparent
-                                                : Colors.orange),
+                                                : Colors.blue),
                                         color: selectedAmountIndex == 0
                                             ? Colors.grey.shade200
-                                            : Colors.orange,
+                                            : Colors.blue,
                                       ),
                                       child: Center(
                                         child: Text(
@@ -4546,7 +4546,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           style: TextStyle(
                                             fontSize: 18,
                                             color: selectedAmountIndex == 0
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors.white,
                                           ),
                                         ),
@@ -4606,7 +4606,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Roboto',
-                                    color: Colors.deepOrange,
+                                    color: Colors.blue,
                                   ),
                                 ),
                                 const SizedBox(height: 12),
@@ -4887,7 +4887,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Roboto',
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ],
@@ -4921,7 +4921,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           letterSpacing: 0.5,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Roboto',
-                                          color: Colors.orange),
+                                          color: Colors.blue),
                                     ),
                                   ),
                                 ),
@@ -5160,7 +5160,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                                 BorderRadius.circular(8.0),
                                             color: selectOrder == 0
                                                 ? Colors.grey
-                                                : Colors.orange,
+                                                : Colors.blue,
                                           ),
                                           child: Center(
                                             child: Text(
@@ -5230,7 +5230,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            color: Colors.orange,
+                                            color: Colors.blue,
                                           ),
                                           child: Center(
                                             child: Text(
@@ -5404,7 +5404,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
               //                   BorderRadius.circular(8.0),
               //                   color: selectOrder == 0
               //                       ? Colors.grey
-              //                       : Colors.orange,
+              //                       : Colors.blue,
               //                 ),
               //                 child: Center(
               //                   child: Text(
@@ -5482,7 +5482,7 @@ class _SpecialTourTypeState extends State<SpecialTourType>
               //                 decoration: BoxDecoration(
               //                   borderRadius:
               //                   BorderRadius.circular(8.0),
-              //                   color: Colors.orange,
+              //                   color: Colors.blue,
               //                 ),
               //                 child: Center(
               //                   child: Text(
@@ -5670,7 +5670,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
  //        int seatsAvailable = 0;
  //
  //        Color bgColor = Colors.white;
- //        Color borderColor = Colors.orange;
+ //        Color borderColor = Colors.blue;
  //        Color textColor = Colors.black;
  //        String seatText = "";
  //
@@ -5699,15 +5699,15 @@ class _CustomCalendarState extends State<CustomCalendar> {
  //          }
  //          // 3️⃣ PARTIAL SEATS → ORANGE
  //          else if (seatsAvailable < widget.totalSeats) {
- //            bgColor = Colors.orange.shade300;
- //            borderColor = Colors.orange;
+ //            bgColor = Colors.blue.shade300;
+ //            borderColor = Colors.blue;
  //            textColor = Colors.black;
  //            seatText = "$seatsAvailable seats";
  //          }
  //          // 4️⃣ AVAILABLE → WHITE
  //          else {
  //            bgColor = Colors.white;
- //            borderColor = Colors.orange;
+ //            borderColor = Colors.blue;
  //            textColor = Colors.black;
  //          }
  //
@@ -5731,7 +5731,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
  //            textColor = Colors.white;
  //          } else {
  //            bgColor = Colors.white;
- //            borderColor = Colors.orange;
+ //            borderColor = Colors.blue;
  //            textColor = Colors.black;
  //          }
  //        }
@@ -5817,7 +5817,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
         int seatsAvailable = 0;
 
         Color bgColor = Colors.white;
-        Color borderColor = Colors.orange;
+        Color borderColor = Colors.blue;
         Color textColor = Colors.black;
         String seatText = "";
         bool showRedCross = false; // Flag for today's date with seats but not selectable
@@ -5855,15 +5855,15 @@ class _CustomCalendarState extends State<CustomCalendar> {
           }
           // 3️⃣ PARTIAL SEATS → ORANGE
           else if (seatsAvailable < widget.totalSeats) {
-            bgColor = Colors.orange.shade300;
-            borderColor = Colors.orange;
+            bgColor = Colors.blue.shade300;
+            borderColor = Colors.blue;
             textColor = Colors.black;
             seatText = "$seatsAvailable seats";
           }
           // 4️⃣ AVAILABLE → WHITE
           else {
             bgColor = Colors.white;
-            borderColor = Colors.orange;
+            borderColor = Colors.blue;
             textColor = Colors.black;
           }
 
@@ -5892,7 +5892,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
             textColor = Colors.white;
           } else {
             bgColor = Colors.white;
-            borderColor = Colors.orange;
+            borderColor = Colors.blue;
             textColor = Colors.black;
           }
         }

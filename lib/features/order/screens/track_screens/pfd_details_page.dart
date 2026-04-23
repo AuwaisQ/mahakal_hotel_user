@@ -475,7 +475,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                     TextSpan(
                         text: " ${pdfModelList?.chartStyle}",
                         style: const TextStyle(
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                             fontSize: 20,
                             fontWeight: FontWeight.bold)),
                   ])),
@@ -525,7 +525,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                               children: [
                                 Icon(
                                   Icons.article,
-                                  color: Colors.deepOrange,
+                                  color: Colors.blue,
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -535,7 +535,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                         fontSize: 20,
                                         overflow: TextOverflow.ellipsis,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.deepOrange))
+                                        color: Colors.blue))
                               ],
                             ),
                             const Divider(
@@ -548,7 +548,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                               children: [
                                 Icon(
                                   Icons.person,
-                                  color: Colors.deepOrange.shade200,
+                                  color: Colors.blue.shade200,
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -566,7 +566,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                               children: [
                                 Icon(
                                   Icons.email_outlined,
-                                  color: Colors.deepOrange.shade200,
+                                  color: Colors.blue.shade200,
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -584,7 +584,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                               children: [
                                 Icon(
                                   Icons.phone,
-                                  color: Colors.deepOrange.shade200,
+                                  color: Colors.blue.shade200,
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -608,12 +608,12 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.deepOrange.shade400,
+                              color: Colors.blue.shade400,
                               width: 1.5,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.deepOrange.withOpacity(0.1),
+                                color: Colors.blue.withOpacity(0.1),
                                 blurRadius: 20,
                                 spreadRadius: 5,
                                 offset: const Offset(0, 4),
@@ -624,7 +624,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                               end: Alignment.bottomRight,
                               colors: [
                                 Colors.white,
-                                Colors.orange.shade50,
+                                Colors.blue.shade50,
                               ],
                             ),
                           ),
@@ -635,7 +635,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                               Row(
                                 children: [
                                   Icon(Icons.article,
-                                      color: Colors.deepOrange.shade700,
+                                      color: Colors.blue.shade700,
                                       size: 24),
                                   const SizedBox(width: 12),
                                   Text(
@@ -643,7 +643,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.w800,
-                                      color: Colors.deepOrange.shade800,
+                                      color: Colors.blue.shade800,
                                       letterSpacing: 0.5,
                                     ),
                                   ),
@@ -652,7 +652,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
 
                               // Divider
                               Divider(
-                                color: Colors.deepOrange.shade200,
+                                color: Colors.blue.shade200,
                                 thickness: 1,
                                 height: 24,
                               ),
@@ -662,7 +662,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(Icons.person,
-                                      color: Colors.deepOrange.shade600,
+                                      color: Colors.blue.shade600,
                                       size: 20),
                                   const SizedBox(width: 12),
                                   Expanded(
@@ -689,7 +689,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(Icons.date_range,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(width: 8),
                                       Text(
@@ -707,7 +707,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(Icons.access_alarm_rounded,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(width: 8),
                                       Text(
@@ -730,7 +730,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(Icons.location_on,
-                                      color: Colors.deepOrange.shade600,
+                                      color: Colors.blue.shade600,
                                       size: 20),
                                   const SizedBox(width: 12),
                                   Expanded(
@@ -755,7 +755,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(Icons.flag,
-                                      color: Colors.deepOrange.shade600,
+                                      color: Colors.blue.shade600,
                                       size: 20),
                                   const SizedBox(width: 12),
                                   Expanded(
@@ -784,12 +784,12 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
-                                  color: Colors.deepOrange.shade400,
+                                  color: Colors.blue.shade400,
                                   width: 1.5,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.deepOrange.withOpacity(0.1),
+                                    color: Colors.blue.withOpacity(0.1),
                                     blurRadius: 20,
                                     spreadRadius: 5,
                                     offset: const Offset(0, 4),
@@ -800,7 +800,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   end: Alignment.bottomRight,
                                   colors: [
                                     Colors.white,
-                                    Colors.orange.shade50,
+                                    Colors.blue.shade50,
                                   ],
                                 ),
                               ),
@@ -820,7 +820,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                               overflow: TextOverflow.ellipsis,
                                               fontWeight: FontWeight.bold,
                                               color:
-                                                  Colors.deepOrange.shade600))
+                                                  Colors.blue.shade600))
                                     ],
                                   ),
                                   const Divider(
@@ -834,7 +834,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                       Expanded(
                                           flex: 0,
                                           child: Icon(Icons.person,
-                                              color: Colors.deepOrange.shade600,
+                                              color: Colors.blue.shade600,
                                               size: 20)),
                                       const SizedBox(
                                         width: 10,
@@ -857,7 +857,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   Row(
                                     children: [
                                       Icon(Icons.date_range,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,
@@ -872,7 +872,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                         width: 60,
                                       ),
                                       Icon(Icons.access_alarm_rounded,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,
@@ -891,7 +891,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   Row(
                                     children: [
                                       Icon(Icons.location_on,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,
@@ -908,7 +908,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   Row(
                                     children: [
                                       Icon(Icons.flag,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,
@@ -932,12 +932,12 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
-                                  color: Colors.deepOrange.shade400,
+                                  color: Colors.blue.shade400,
                                   width: 1.5,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.deepOrange.withOpacity(0.1),
+                                    color: Colors.blue.withOpacity(0.1),
                                     blurRadius: 20,
                                     spreadRadius: 5,
                                     offset: const Offset(0, 4),
@@ -948,7 +948,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   end: Alignment.bottomRight,
                                   colors: [
                                     Colors.white,
-                                    Colors.orange.shade50,
+                                    Colors.blue.shade50,
                                   ],
                                 ),
                               ),
@@ -968,7 +968,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                               overflow: TextOverflow.ellipsis,
                                               fontWeight: FontWeight.bold,
                                               color:
-                                                  Colors.deepOrange.shade600))
+                                                  Colors.blue.shade600))
                                     ],
                                   ),
                                   const Divider(
@@ -982,7 +982,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                       Expanded(
                                           flex: 0,
                                           child: Icon(Icons.person,
-                                              color: Colors.deepOrange.shade600,
+                                              color: Colors.blue.shade600,
                                               size: 20)),
                                       const SizedBox(
                                         width: 10,
@@ -1005,7 +1005,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   Row(
                                     children: [
                                       Icon(Icons.date_range,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,
@@ -1020,7 +1020,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                         width: 60,
                                       ),
                                       Icon(Icons.access_alarm_rounded,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,
@@ -1039,7 +1039,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   Row(
                                     children: [
                                       Icon(Icons.location_on,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,
@@ -1056,7 +1056,7 @@ class _PdfOrderDetailsState extends State<PdfOrderDetails> {
                                   Row(
                                     children: [
                                       Icon(Icons.flag,
-                                          color: Colors.deepOrange.shade600,
+                                          color: Colors.blue.shade600,
                                           size: 20),
                                       const SizedBox(
                                         width: 10,

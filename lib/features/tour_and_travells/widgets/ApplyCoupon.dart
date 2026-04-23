@@ -9,7 +9,7 @@ Widget couponBox({
   required VoidCallback onApply,
   required VoidCallback onRemove,
 }) {
-  const orange = Colors.orange;
+  const orange = Colors.blue;
   const green = Colors.green;
 
   return InkWell(
@@ -124,7 +124,7 @@ void showCouponBottomSheet({
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: Colors.blue,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
                       ),
@@ -137,7 +137,7 @@ void showCouponBottomSheet({
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Container(height: 20, width: 2, color: Colors.orange),
+                  Container(height: 20, width: 2, color: Colors.blue),
                   const SizedBox(width: 8),
                   const Text(
                     'Available Promo',
@@ -175,7 +175,7 @@ void showCouponBottomSheet({
                                   discountValue,
                                   style: const TextStyle(
                                     fontSize: 24,
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -192,7 +192,7 @@ void showCouponBottomSheet({
                             Container(
                               height: 80,
                               width: 2,
-                              color: Colors.orange,
+                              color: Colors.blue,
                             ),
                             const SizedBox(width: 20),
                             Expanded(
@@ -222,9 +222,9 @@ void showCouponBottomSheet({
                                       height: 36,
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
-                                        color: Colors.orange.shade50,
+                                        color: Colors.blue.shade50,
                                         border:
-                                            Border.all(color: Colors.orange),
+                                            Border.all(color: Colors.blue),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Row(
@@ -239,7 +239,7 @@ void showCouponBottomSheet({
                                           ),
                                           const SizedBox(width: 10),
                                           const Icon(Icons.copy,
-                                              size: 18, color: Colors.orange),
+                                              size: 18, color: Colors.blue),
                                         ],
                                       ),
                                     ),

@@ -29,7 +29,7 @@
 //     final splashController =
 //     Provider.of<SplashController>(context, listen: false);
 //
-//     final Color deepOrange = Colors.deepOrange.shade600;
+//     final Color deepOrange = Colors.blue.shade600;
 //
 //     void handleNotificationNavigation(NotificationItem notificationModel) {
 //       final notificationType = notificationModel.type ?? '';
@@ -360,7 +360,7 @@ class _NotificationDialogWidgetState extends State<NotificationDialogWidget> {
   Widget build(BuildContext context) {
     final splashController =
     Provider.of<SplashController>(context, listen: false);
-    final Color deepOrange = Colors.deepOrange.shade600;
+    final Color deepOrange = Colors.blue.shade600;
 
     void handleNotificationNavigation(NotificationItem notificationModel) {
       final notificationType = notificationModel.type ?? '';
@@ -546,7 +546,7 @@ class _NotificationDialogWidgetState extends State<NotificationDialogWidget> {
                         child: Text(
                           isExpanded ? "View Less" : "View More",
                           style: const TextStyle(
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
