@@ -18,7 +18,6 @@ import 'package:mahakal/theme/light_theme.dart';
 import 'package:mahakal/utill/app_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sip_ua/sip_ua.dart';
 import 'features/event_booking/view/event_details.dart';
 import 'features/home/screens/home_screens.dart';
 import 'features/product_details/screens/product_details_screen.dart';

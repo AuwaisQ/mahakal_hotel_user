@@ -25,7 +25,6 @@ import 'package:mahakal/features/notification/screens/notification_screen.dart';
 import 'package:mahakal/features/onboarding/screens/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sip_ua/sip_ua.dart';
 import '../../../deeplinking/deeplink_service.dart';
 import '../../../push_notification/notification_helper.dart';
 import '../../auth/screens/auth_screen.dart';
