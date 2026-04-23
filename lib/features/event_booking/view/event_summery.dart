@@ -238,7 +238,7 @@ class _EventSummeryState extends State<EventSummery> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                             ),
                             IconButton(
@@ -264,12 +264,12 @@ class _EventSummeryState extends State<EventSummery> {
                                       margin: EdgeInsets.only(right: 8),
                                       decoration: BoxDecoration(
                                         color: _verificationStatus == 1
-                                            ? Colors.deepOrange.withOpacity(0.1)
+                                            ? Colors.blue.withOpacity(0.1)
                                             : Colors.grey.withOpacity(0.05),
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
                                           color: _verificationStatus == 1
-                                              ? Colors.deepOrange
+                                              ? Colors.blue
                                               : Colors.grey.withOpacity(0.3),
                                           width: 1,
                                         ),
@@ -278,7 +278,7 @@ class _EventSummeryState extends State<EventSummery> {
                                         dense: true,
                                         contentPadding:
                                             EdgeInsets.symmetric(horizontal: 8),
-                                        activeColor: Colors.deepOrange,
+                                        activeColor: Colors.blue,
                                         title: Text(
                                           "Verified Aadhaar",
                                           style: TextStyle(
@@ -302,12 +302,12 @@ class _EventSummeryState extends State<EventSummery> {
                                       margin: EdgeInsets.only(left: 8),
                                       decoration: BoxDecoration(
                                         color: _verificationStatus == 0
-                                            ? Colors.deepOrange.withOpacity(0.1)
+                                            ? Colors.blue.withOpacity(0.1)
                                             : Colors.grey.withOpacity(0.05),
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
                                           color: _verificationStatus == 0
-                                              ? Colors.deepOrange
+                                              ? Colors.blue
                                               : Colors.grey.withOpacity(0.3),
                                           width: 1,
                                         ),
@@ -316,7 +316,7 @@ class _EventSummeryState extends State<EventSummery> {
                                         dense: true,
                                         contentPadding:
                                             EdgeInsets.symmetric(horizontal: 8),
-                                        activeColor: Colors.deepOrange,
+                                        activeColor: Colors.blue,
                                         title: Text(
                                           "Non-Verified Aadhaar",
                                           style: TextStyle(
@@ -366,7 +366,7 @@ class _EventSummeryState extends State<EventSummery> {
                               hintText: ' Enter phone number',
                               prefixIcon: const Icon(
                                 Icons.phone_rounded,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               counterText: '',
                             ),
@@ -400,7 +400,7 @@ class _EventSummeryState extends State<EventSummery> {
                               hintText: ' Enter 12-digit Aadhar',
                               prefixIcon: const Icon(
                                 Icons.credit_card,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               counterText: '',
                             ),
@@ -477,7 +477,7 @@ class _EventSummeryState extends State<EventSummery> {
                                 getAadhar(aadhar, context, modalSetter);
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepOrange,
+                                backgroundColor: Colors.blue,
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
@@ -527,7 +527,7 @@ class _EventSummeryState extends State<EventSummery> {
                               hintText: 'Enter full name',
                               prefixIcon: const Icon(
                                 Icons.person,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                             ),
                           ),
@@ -561,7 +561,7 @@ class _EventSummeryState extends State<EventSummery> {
                                 hintText: 'Enter phone number',
                                 prefixIcon: const Icon(
                                   Icons.phone,
-                                  color: Colors.deepOrange,
+                                  color: Colors.blue,
                                 ),
                                 counterText: '',
                               ),
@@ -597,7 +597,7 @@ class _EventSummeryState extends State<EventSummery> {
                               hintText: 'Enter 12-digit Aadhar',
                               prefixIcon: const Icon(
                                 Icons.credit_card,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               counterText: '',
                             ),
@@ -707,7 +707,7 @@ class _EventSummeryState extends State<EventSummery> {
                                 aadharController.clear();
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepOrange,
+                                backgroundColor: Colors.blue,
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
@@ -1073,7 +1073,7 @@ class _EventSummeryState extends State<EventSummery> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
@@ -1140,7 +1140,7 @@ class _EventSummeryState extends State<EventSummery> {
                               children: [
                                 Icon(Icons.person,
                                     size: 18,
-                                    color: Colors.deepOrange.withOpacity(0.8)),
+                                    color: Colors.blue.withOpacity(0.8)),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
@@ -1211,7 +1211,7 @@ class _EventSummeryState extends State<EventSummery> {
                                 '( Primary Devotee)',
                                 style: TextStyle(
                                     fontSize: 11,
-                                    color: Colors.deepOrange,
+                                    color: Colors.blue,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.italic),
                               ),
@@ -1348,16 +1348,16 @@ class _EventSummeryState extends State<EventSummery> {
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
           // Soft tint background on selection, pure white otherwise
-          color: selected ? Colors.deepOrange.withOpacity(0.05) : Colors.white,
+          color: selected ? Colors.blue.withOpacity(0.05) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected ? Colors.deepOrange : Colors.grey.shade300,
+            color: selected ? Colors.blue : Colors.grey.shade300,
             width: selected ? 2.5 : 1.0, // Thicker border when selected
           ),
           boxShadow: [
             BoxShadow(
               color: selected
-                  ? Colors.deepOrange.withOpacity(0.1)
+                  ? Colors.blue.withOpacity(0.1)
                   : Colors.black.withOpacity(0.03),
               blurRadius: 8,
               offset: const Offset(0, 4),
@@ -1372,7 +1372,7 @@ class _EventSummeryState extends State<EventSummery> {
                 top: 6,
                 right: 6,
                 child: Icon(Icons.check_circle,
-                    size: 16, color: Colors.deepOrange),
+                    size: 16, color: Colors.blue),
               ),
 
             Center(
@@ -1383,7 +1383,7 @@ class _EventSummeryState extends State<EventSummery> {
                     DateFormat('EEE').format(dateData.date).toUpperCase(),
                     style: TextStyle(
                       color:
-                          selected ? Colors.deepOrange : Colors.grey.shade500,
+                          selected ? Colors.blue : Colors.grey.shade500,
                       fontSize: 10,
                       letterSpacing: 1.2,
                       fontWeight: FontWeight.bold,
@@ -1404,14 +1404,14 @@ class _EventSummeryState extends State<EventSummery> {
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
                       color: selected
-                          ? Colors.deepOrange.withOpacity(0.1)
+                          ? Colors.blue.withOpacity(0.1)
                           : Colors.grey.shade100,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       "${dateData.startTime}",
                       style: TextStyle(
-                        color: selected ? Colors.deepOrange : Colors.black54,
+                        color: selected ? Colors.blue : Colors.black54,
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                       ),
@@ -1447,13 +1447,13 @@ class _EventSummeryState extends State<EventSummery> {
           color: selected ? Colors.white : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: selected ? Colors.deepOrange : Colors.transparent,
+            color: selected ? Colors.blue : Colors.transparent,
             width: 2,
           ),
           boxShadow: [
             selected
                 ? BoxShadow(
-                    color: Colors.deepOrange.withOpacity(0.15),
+                    color: Colors.blue.withOpacity(0.15),
                     blurRadius: 15,
                     offset: const Offset(0, 8),
                   )
@@ -1474,7 +1474,7 @@ class _EventSummeryState extends State<EventSummery> {
                 Icons.confirmation_number_outlined,
                 size: 80,
                 color: selected
-                    ? Colors.deepOrange.withOpacity(0.05)
+                    ? Colors.blue.withOpacity(0.05)
                     : Colors.grey.withOpacity(0.05),
               ),
             ),
@@ -1506,7 +1506,7 @@ class _EventSummeryState extends State<EventSummery> {
                     ),
                     if (selected)
                       const Icon(Icons.check_circle,
-                          color: Colors.deepOrange, size: 20),
+                          color: Colors.blue, size: 20),
                   ],
                 ),
 
@@ -1534,7 +1534,7 @@ class _EventSummeryState extends State<EventSummery> {
                       "₹${pkg.price}",
                       style: const TextStyle(
                         fontSize: 24,
-                        color: Colors.deepOrange,
+                        color: Colors.blue,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -1809,13 +1809,13 @@ class _EventSummeryState extends State<EventSummery> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isPrimary ? Colors.deepOrange : Colors.white,
+          color: isPrimary ? Colors.blue : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: isPrimary ? Colors.white : Colors.black),
           boxShadow: [
             if (isPrimary)
               BoxShadow(
-                color: Colors.deepOrange.withOpacity(0.3),
+                color: Colors.blue.withOpacity(0.3),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -1838,11 +1838,11 @@ class _EventSummeryState extends State<EventSummery> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
-          colors: [Colors.white, Colors.orange.shade50.withOpacity(0.3)],
+          colors: [Colors.white, Colors.blue.shade50.withOpacity(0.3)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        border: Border.all(color: Colors.deepOrange.withOpacity(0.2)),
+        border: Border.all(color: Colors.blue.withOpacity(0.2)),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
@@ -1855,11 +1855,11 @@ class _EventSummeryState extends State<EventSummery> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.deepOrange.withOpacity(0.1),
+                  color: Colors.blue.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.person_add_alt_1,
-                    color: Colors.deepOrange),
+                    color: Colors.blue),
               ),
               const SizedBox(width: 16),
 
@@ -1889,7 +1889,7 @@ class _EventSummeryState extends State<EventSummery> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.deepOrange,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Text(
@@ -1953,7 +1953,7 @@ class _EventSummeryState extends State<EventSummery> {
                     isInfoExpanded
                         ? Icons.keyboard_arrow_up
                         : Icons.keyboard_arrow_down,
-                    color: Colors.deepOrange,
+                    color: Colors.blue,
                   ),
                 ],
               ),
@@ -1979,7 +1979,7 @@ class _EventSummeryState extends State<EventSummery> {
                   _infoRow(
                       Icons.sunny,
                       "Save the planet, use your phone as a ticket",
-                      Colors.orange),
+                      Colors.blue),
                   const Divider(height: 24),
 
                   _detailText("Venue", widget.eventVenue ?? "N/A", isBold: true),
@@ -2137,14 +2137,14 @@ class _EventSummeryState extends State<EventSummery> {
               height: 64,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Colors.deepOrange, Color(0xFFFF8C42)],
+                  colors: [Colors.blue, Color(0xFFFF8C42)],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                 ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.deepOrange.withOpacity(0.3),
+                    color: Colors.blue.withOpacity(0.3),
                     blurRadius: 12,
                     offset: const Offset(0, 6),
                   )

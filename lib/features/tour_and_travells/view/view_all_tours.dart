@@ -124,7 +124,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.orange.withOpacity(0.2),
+                color: Colors.blue.withOpacity(0.2),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
@@ -137,13 +137,13 @@ class _ViewAllToursState extends State<ViewAllTours> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
+                  color: Colors.blue.shade50,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.location_off_rounded,
                   size: 40,
-                  color: Colors.orange.shade700,
+                  color: Colors.blue.shade700,
                 ),
               ),
 
@@ -155,7 +155,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.orange.shade800,
+                  color: Colors.blue.shade800,
                 ),
               ),
 
@@ -179,7 +179,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange.shade600,
+                    backgroundColor: Colors.blue.shade600,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -283,7 +283,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
                                   color: Colors.grey.withOpacity(0.5)),
                               suffixIcon: const Icon(
                                 CupertinoIcons.search_circle_fill,
-                                color: Colors.orange,
+                                color: Colors.blue,
                                 size: 40,
                               ),
                               counterText: '',
@@ -298,7 +298,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                   width: 2.0,
                                 ),
                               ),
@@ -528,7 +528,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         title: Text(
           widget.stateName ?? "N/A",
           style: const TextStyle(
@@ -582,7 +582,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
       ),
       body: isLoading
           ? const Center(
-              child: CircularProgressIndicator(color: Colors.orange),
+              child: CircularProgressIndicator(color: Colors.blue),
             )
           : Column(
               children: [
@@ -712,7 +712,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
                                             children: [
                                               const Icon(Icons.tour,
                                                   size: 14,
-                                                  color: Colors.deepOrange),
+                                                  color: Colors.blue),
                                               const SizedBox(width: 4),
                                               Text(
                                                 "${city?.totalTourCount}+ Tour's available",
@@ -736,13 +736,13 @@ class _ViewAllToursState extends State<ViewAllTours> {
                                                   BorderRadius.circular(12),
                                               gradient: LinearGradient(
                                                 colors: [
-                                                  Colors.deepOrange.shade500,
-                                                  Colors.deepOrange.shade700
+                                                  Colors.blue.shade500,
+                                                  Colors.blue.shade700
                                                 ],
                                               ),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.deepOrange
+                                                  color: Colors.blue
                                                       .withOpacity(0.25),
                                                   blurRadius: 6,
                                                   offset: const Offset(0, 3),
@@ -882,13 +882,13 @@ class _ViewAllToursState extends State<ViewAllTours> {
                                       Container(
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                          color: Colors.deepOrange.shade100
+                                          color: Colors.blue.shade100
                                               .withOpacity(0.3),
                                           shape: BoxShape.circle,
                                         ),
                                         child: const Icon(
                                           Icons.arrow_forward_ios,
-                                          color: Colors.deepOrange,
+                                          color: Colors.blue,
                                           size: 20,
                                         ),
                                       ),

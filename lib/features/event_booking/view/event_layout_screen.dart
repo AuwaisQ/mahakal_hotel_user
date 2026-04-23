@@ -358,7 +358,7 @@ class _EventLayoutScreenState extends State<EventLayoutScreen> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.deepOrange.withOpacity(0.15),
+                        color: Colors.blue.withOpacity(0.15),
                         blurRadius: 30,
                         spreadRadius: 10,
                       ),

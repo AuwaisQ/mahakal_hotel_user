@@ -525,8 +525,8 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    Colors.deepOrange.shade400,
-                                    Colors.orange.shade800,
+                                    Colors.blue.shade400,
+                                    Colors.blue.shade800,
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -676,8 +676,8 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                                 });
                               },
                               icon: Icons.account_balance_wallet,
-                              iconColor: Colors.orange,
-                              iconBgColor: Colors.orange.shade50,
+                              iconColor: Colors.blue,
+                              iconBgColor: Colors.blue.shade50,
                               title: 'Mahakal Ride Wallet',
                               subtitle: 'Balance: ₹200',
                               extra: Container(
@@ -970,14 +970,14 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.orange.shade400, Colors.deepOrange.shade400],
+          colors: [Colors.blue.shade400, Colors.blue.shade400],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.orange.shade300.withOpacity(0.3),
+            color: Colors.blue.shade300.withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -1031,7 +1031,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                 'Use',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                 ),
               ),
             ),
@@ -1482,7 +1482,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: isSelected
-                                          ? Colors.orange.shade700
+                                          ? Colors.blue.shade700
                                           : Colors.black,
                                     ),
                                   ),

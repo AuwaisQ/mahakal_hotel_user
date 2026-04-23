@@ -131,7 +131,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
       case 'confirmed':
         return Colors.green;
       default:
-        return Colors.orange; // Default color for unknown statuses
+        return Colors.blue; // Default color for unknown statuses
     }
   }
 
@@ -406,14 +406,14 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                 fontSize: 20,
                                                 fontFamily: 'Roboto',
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.orange),
+                                                color: Colors.blue),
                                           ),
                                           const Spacer(),
                                           GestureDetector(
                                             child: const Icon(
                                               Icons.keyboard_arrow_down,
                                               size: 30,
-                                              color: Colors.orange,
+                                              color: Colors.blue,
                                             ),
                                             onTap: () {
                                               modalSetter(() {
@@ -432,7 +432,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                 ),
                                                 // Row(
                                                 //   children: [
-                                                //     Icon(Icons.location_pin ,color: Colors.orange,size: 20,),
+                                                //     Icon(Icons.location_pin ,color: Colors.blue,size: 20,),
                                                 //     SizedBox(
                                                 //         width: screenWidth * 0.7,
                                                 //         child: Text(
@@ -452,7 +452,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                   children: [
                                                     const Icon(
                                                       Icons.calendar_month,
-                                                      color: Colors.orange,
+                                                      color: Colors.blue,
                                                       size: 20,
                                                     ),
                                                     const SizedBox(
@@ -551,12 +551,12 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                                 borderSide: const BorderSide(
-                                                    color: Colors.orange,
+                                                    color: Colors.blue,
                                                     width: 1.5),
                                               ),
                                               suffixIcon: const Icon(
                                                   Icons.person_2,
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                   size: 25),
                                             ),
                                           ),
@@ -627,12 +627,12 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             borderSide: const BorderSide(
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                                 width: 1.5),
                                           ),
                                           suffixIcon: const Icon(
                                               Icons.report_outlined,
-                                              color: Colors.orange,
+                                              color: Colors.blue,
                                               size: 25),
                                         ),
                                       ),
@@ -640,7 +640,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                         children: [
                                           Checkbox(
                                             checkColor: Colors.white,
-                                            activeColor: Colors.orange,
+                                            activeColor: Colors.blue,
                                             value: isChecked,
                                             onChanged: (bool? newValue) {
                                               modalSetter(() {
@@ -736,11 +736,11 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             borderSide: const BorderSide(
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                                 width: 1.5),
                                           ),
                                           suffixIcon: const Icon(Icons.phone,
-                                              color: Colors.orange, size: 25),
+                                              color: Colors.blue, size: 25),
                                         ),
                                       ),
                                     ],
@@ -793,7 +793,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       BorderRadius.circular(
                                                           8.0),
                                                   color: isYesNo
-                                                      ? Colors.orange
+                                                      ? Colors.blue
                                                       : Colors.white,
                                                   border: Border.all(
                                                       color:
@@ -830,7 +830,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                           8.0),
                                                   color: isYesNo
                                                       ? Colors.white
-                                                      : Colors.orange,
+                                                      : Colors.blue,
                                                   border: Border.all(
                                                       color:
                                                           Colors.grey.shade400,
@@ -914,7 +914,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       borderSide:
                                                           const BorderSide(
                                                               color:
-                                                                  Colors.orange,
+                                                                  Colors.blue,
                                                               width: 1.5),
                                                     ),
                                                   ),
@@ -968,7 +968,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       borderSide:
                                                           const BorderSide(
                                                               color:
-                                                                  Colors.orange,
+                                                                  Colors.blue,
                                                               width: 1.5),
                                                     ),
                                                   ),
@@ -1022,7 +1022,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       borderSide:
                                                           const BorderSide(
                                                               color:
-                                                                  Colors.orange,
+                                                                  Colors.blue,
                                                               width: 1.5),
                                                     ),
                                                   ),
@@ -1077,7 +1077,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       borderSide:
                                                           const BorderSide(
                                                               color:
-                                                                  Colors.orange,
+                                                                  Colors.blue,
                                                               width: 1.5),
                                                     ),
                                                   ),
@@ -1131,7 +1131,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       borderSide:
                                                           const BorderSide(
                                                               color:
-                                                                  Colors.orange,
+                                                                  Colors.blue,
                                                               width: 1.5),
                                                     ),
                                                   ),
@@ -1185,7 +1185,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       borderSide:
                                                           const BorderSide(
                                                               color:
-                                                                  Colors.orange,
+                                                                  Colors.blue,
                                                               width: 1.5),
                                                     ),
                                                   ),
@@ -1205,7 +1205,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
-                                                color: Colors.orange.shade400,
+                                                color: Colors.blue.shade400,
                                               ),
                                               child: const Center(
                                                   child:
@@ -1226,7 +1226,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           8.0),
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                 ),
                                                 child: const Center(
                                                   child: Text(
@@ -1310,7 +1310,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.orange),
+                                  color: Colors.blue),
                             ),
                             Text(
                               "${trackModelData?.order?.packages?.title}",
@@ -1412,7 +1412,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                             : options;
                                 return CheckboxListTile(
                                   checkColor: Colors.white,
-                                  activeColor: Colors.orange,
+                                  activeColor: Colors.blue,
                                   title: Text(
                                     reviewOption[index],
                                     style: const TextStyle(fontSize: 14),
@@ -1480,10 +1480,10 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.orange)),
+                                        BorderSide(color: Colors.blue)),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.orange)),
+                                        BorderSide(color: Colors.blue)),
                                 hintText: "Write here...",
                               ),
                             ),
@@ -1501,7 +1501,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                color: Colors.orange.shade400,
+                                color: Colors.blue.shade400,
                               ),
                               child: const Center(
                                   child: CircularProgressIndicator(
@@ -1524,7 +1524,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                 margin: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                 ),
                                 child: const Center(
                                   child: Text(
@@ -1748,9 +1748,9 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                   color: Theme.of(context).primaryColor,
                   // gradient: LinearGradient(
                   //   colors: [
-                  //     Colors.orange,
+                  //     Colors.blue,
                   //     Colors.red,
-                  //     Colors.orange
+                  //     Colors.blue
                   //   ],
                   //   begin: Alignment.bottomLeft,
                   //   end: Alignment.topRight,
@@ -1854,7 +1854,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.article,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                       SizedBox(
                                         width: 10,
@@ -1864,7 +1864,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                               fontSize: 20,
                                               overflow: TextOverflow.ellipsis,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.deepOrange))
+                                              color: Colors.blue))
                                     ],
                                   ),
                                   const Divider(
@@ -1877,7 +1877,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.person,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -1900,7 +1900,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.email_outlined,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -1919,7 +1919,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.phone,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -1957,7 +1957,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                           children: [
                                             Icon(
                                               Icons.article,
-                                              color: Colors.deepOrange,
+                                              color: Colors.blue,
                                             ),
                                             SizedBox(
                                               width: 10,
@@ -1968,7 +1968,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.deepOrange)),
+                                                    color: Colors.blue)),
                                           ],
                                         ),
                                         const Divider(
@@ -1998,7 +1998,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       horizontal: 10,
                                                       vertical: 5),
                                               decoration: BoxDecoration(
-                                                  color: Colors.deepOrange,
+                                                  color: Colors.blue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           8.0)),
@@ -2228,7 +2228,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                 children: [
                                                   Icon(
                                                     Icons.article,
-                                                    color: Colors.deepOrange,
+                                                    color: Colors.blue,
                                                   ),
                                                   SizedBox(
                                                     width: 10,
@@ -2256,7 +2256,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       flex: 0,
                                                       child: Icon(
                                                         Icons.groups,
-                                                        color: Colors.deepOrange
+                                                        color: Colors.blue
                                                             .shade100,
                                                       )),
                                                   const SizedBox(
@@ -2286,7 +2286,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       child: Icon(
                                                         Icons
                                                             .swipe_down_alt_outlined,
-                                                        color: Colors.deepOrange
+                                                        color: Colors.blue
                                                             .shade100,
                                                       )),
                                                   const SizedBox(
@@ -2612,7 +2612,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                 children: [
                                                   Icon(
                                                     Icons.article,
-                                                    color: Colors.deepOrange,
+                                                    color: Colors.blue,
                                                   ),
                                                   SizedBox(
                                                     width: 10,
@@ -2640,7 +2640,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       flex: 0,
                                                       child: Icon(
                                                         Icons.groups,
-                                                        color: Colors.deepOrange
+                                                        color: Colors.blue
                                                             .shade100,
                                                       )),
                                                   const SizedBox(
@@ -2670,7 +2670,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                       child: Icon(
                                                         Icons
                                                             .swipe_down_alt_outlined,
-                                                        color: Colors.deepOrange
+                                                        color: Colors.blue
                                                             .shade100,
                                                       )),
                                                   const SizedBox(
@@ -3059,7 +3059,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                             children: [
                               Icon(
                                 Icons.redeem,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               SizedBox(
                                 width: 10,
@@ -3069,7 +3069,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                       fontSize: 20,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.deepOrange)),
+                                      color: Colors.blue)),
                             ],
                           ),
                           const SizedBox(
@@ -3139,7 +3139,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                           "₹${trackModelData?.order?.payAmount}",
                                                       style: const TextStyle(
                                                           color:
-                                                              Colors.deepOrange,
+                                                              Colors.blue,
                                                           fontSize: 18,
                                                           fontWeight:
                                                               FontWeight.bold))
@@ -3148,7 +3148,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                           "₹${trackModelData?.order?.packagePrice}",
                                                       style: const TextStyle(
                                                           color:
-                                                              Colors.deepOrange,
+                                                              Colors.blue,
                                                           fontSize: 18,
                                                           fontWeight:
                                                               FontWeight.bold)),
@@ -3371,7 +3371,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                   style: const TextStyle(
                                       fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
-                                      color: Colors.deepOrange,
+                                      color: Colors.blue,
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
@@ -3476,7 +3476,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                   style: TextStyle(
                                       fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
-                                      color: Colors.deepOrange))),
+                                      color: Colors.blue))),
 
                           const SizedBox(
                             height: 80,

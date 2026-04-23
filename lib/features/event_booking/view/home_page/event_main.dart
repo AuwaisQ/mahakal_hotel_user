@@ -120,7 +120,7 @@ class _EventMainState extends State<EventMain> {
         body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                color: Colors.orange,
+                color: Colors.blue,
               ))
             : (eventSubCategory.isEmpty
                 ? const Center(child: Text('No Data'))
@@ -560,7 +560,7 @@ class _EventMainState extends State<EventMain> {
                                                             screenwidth * 0.04,
                                                       ),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.deepOrange
+                                                        color: Colors.blue
                                                             .withOpacity(0.08),
                                                         borderRadius:
                                                             BorderRadius
@@ -639,7 +639,7 @@ class _EventMainState extends State<EventMain> {
                                                             screenwidth * 0.04,
                                                       ),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.deepOrange
+                                                        color: Colors.blue
                                                             .withOpacity(0.08),
                                                         borderRadius:
                                                             BorderRadius

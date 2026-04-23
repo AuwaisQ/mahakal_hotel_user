@@ -82,7 +82,7 @@
 //     return Scaffold(
 //       backgroundColor: Colors.white,
 //       appBar: AppBar(
-//         backgroundColor: Colors.deepOrange,
+//         backgroundColor: Colors.blue,
 //         leading: IconButton(onPressed: () {
 //           Navigator.pop(context);
 //         }, icon: Icon(Icons.arrow_back_ios,color: Colors.white,)),
@@ -140,7 +140,7 @@
 //                               borderRadius: BorderRadius.circular(10),
 //                             ),
 //                             focusedBorder: OutlineInputBorder(
-//                               borderSide: BorderSide(color: Colors.orange, width: 2.0),
+//                               borderSide: BorderSide(color: Colors.blue, width: 2.0),
 //                               borderRadius: BorderRadius.circular(10),
 //                             )),
 //                       ),
@@ -347,7 +347,7 @@
 //                                                       horizontal: 20),
 //                                                   decoration: BoxDecoration(
 //                                                     borderRadius: BorderRadius.circular(10),
-//                                                     color: Colors.deepOrange,
+//                                                     color: Colors.blue,
 //                                                     boxShadow: [
 //                                                       BoxShadow(
 //                                                         color: Colors.black
@@ -375,7 +375,7 @@
 //                                                         const Text('|',
 //                                                             style: TextStyle(
 //                                                                 color:
-//                                                                     Colors.deepOrange,
+//                                                                     Colors.blue,
 //                                                                 fontWeight:
 //                                                                     FontWeight.bold)),
 //                                                         SizedBox(
@@ -401,7 +401,7 @@
 //                                                   padding: EdgeInsets.all(screenWidth * 0.02),
 //                                                   decoration: BoxDecoration(
 //                                                     borderRadius: BorderRadius.circular(10),
-//                                                     color: Colors.deepOrange,
+//                                                     color: Colors.blue,
 //                                                     boxShadow: [
 //                                                       BoxShadow(
 //                                                         color: Colors.black
@@ -435,7 +435,7 @@
 //                                               decoration: BoxDecoration(
 //                                                 borderRadius:
 //                                                     BorderRadius.circular(10),
-//                                                 color: Colors.deepOrange,
+//                                                 color: Colors.blue,
 //                                                 boxShadow: [
 //                                                   BoxShadow(
 //                                                     color:
@@ -562,7 +562,7 @@ class _SeeScreenState extends State<SeeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back_ios, color: Colors.white)),
@@ -620,7 +620,7 @@ class _SeeScreenState extends State<SeeScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: const BorderSide(color: Colors.blue),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
@@ -813,7 +813,7 @@ class _SeeScreenState extends State<SeeScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              color: Colors.deepOrange,
+                                              color: Colors.blue,
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Colors.black

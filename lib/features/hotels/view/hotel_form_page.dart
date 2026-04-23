@@ -304,8 +304,8 @@ class _HotelFormState extends State<HotelForm> {
                 //         decoration: BoxDecoration(
                 //           gradient: LinearGradient(
                 //             colors: [
-                //               Colors.deepOrange,
-                //               Colors.orange.shade400,
+                //               Colors.blue,
+                //               Colors.blue.shade400,
                 //             ],
                 //             begin: Alignment.topLeft,
                 //             end: Alignment.bottomRight,
@@ -351,8 +351,8 @@ class _HotelFormState extends State<HotelForm> {
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    Colors.deepOrange,
-                                    Colors.orange,
+                                    Colors.blue,
+                                    Colors.blue,
                                   ],
                                 ),
                                 borderRadius: BorderRadius.circular(2),
@@ -673,7 +673,7 @@ class _HotelFormState extends State<HotelForm> {
                               height: 60,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Center(

@@ -450,7 +450,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                       content: Text("Cancellation request sent successfully!")),
                 );
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: const Text(
                 "Send",
                 style:
@@ -578,7 +578,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                 Navigator.of(context).pop(); // Close the dialog
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange, // Primary color
+                backgroundColor: Colors.blue, // Primary color
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -729,7 +729,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.orange),
+                                      color: Colors.blue),
                                 ),
                                 Text(
                                   userEmail,
@@ -822,7 +822,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                       List.generate(options.length, (index) {
                                     return CheckboxListTile(
                                       checkColor: Colors.white,
-                                      activeColor: Colors.orange,
+                                      activeColor: Colors.blue,
                                       title: Text(
                                         options[index],
                                         style: const TextStyle(fontSize: 14),
@@ -871,10 +871,10 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                   decoration: const InputDecoration(
                                       border: OutlineInputBorder(
                                           borderSide:
-                                              BorderSide(color: Colors.orange)),
+                                              BorderSide(color: Colors.blue)),
                                       enabledBorder: OutlineInputBorder(
                                           borderSide:
-                                              BorderSide(color: Colors.orange)),
+                                              BorderSide(color: Colors.blue)),
                                       hintText: "Write here...",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never),
@@ -893,7 +893,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
-                                    color: Colors.orange.shade400,
+                                    color: Colors.blue.shade400,
                                   ),
                                   child: const Center(
                                       child: CircularProgressIndicator(
@@ -917,7 +917,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                     margin: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      color: Colors.orange,
+                                      color: Colors.blue,
                                     ),
                                     child: const Center(
                                       child: Text(
@@ -975,7 +975,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                 //                 style: const TextStyle(
                 //                   fontSize: 20,
                 //                   fontWeight: FontWeight.bold,
-                //                   color: Colors.orange,
+                //                   color: Colors.blue,
                 //                 ),
                 //               ),
                 //               Text(
@@ -1059,7 +1059,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                 //                 children: List.generate(options.length, (index) {
                 //                   return CheckboxListTile(
                 //                     checkColor: Colors.white,
-                //                     activeColor: Colors.orange,
+                //                     activeColor: Colors.blue,
                 //                     title: Text(
                 //                       options[index],
                 //                       style: const TextStyle(fontSize: 14),
@@ -1098,9 +1098,9 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                 //                 maxLines: 4,
                 //                 decoration: const InputDecoration(
                 //                   border: OutlineInputBorder(
-                //                       borderSide: BorderSide(color: Colors.orange)),
+                //                       borderSide: BorderSide(color: Colors.blue)),
                 //                   enabledBorder: OutlineInputBorder(
-                //                       borderSide: BorderSide(color: Colors.orange)),
+                //                       borderSide: BorderSide(color: Colors.blue)),
                 //                   hintText: "Write here...",
                 //                   floatingLabelBehavior: FloatingLabelBehavior.never,
                 //                 ),
@@ -1118,7 +1118,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                 //           width: double.infinity,
                 //           decoration: BoxDecoration(
                 //             borderRadius: BorderRadius.circular(8),
-                //             color: Colors.orange.shade400,
+                //             color: Colors.blue.shade400,
                 //           ),
                 //           child: const Center(
                 //             child: CircularProgressIndicator(color: Colors.white),
@@ -1139,7 +1139,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                 //             margin: const EdgeInsets.all(10),
                 //             decoration: BoxDecoration(
                 //               borderRadius: BorderRadius.circular(8),
-                //               color: Colors.orange,
+                //               color: Colors.blue,
                 //             ),
                 //             child: const Center(
                 //               child: Text(
@@ -1306,7 +1306,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                 tourOrderData?.data?.enTourName ?? "",
                                 //  : delhiModal?.data?.hiTourName ?? "",
                                 style: const TextStyle(
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                   fontSize: 22,
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.bold,
@@ -2026,7 +2026,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                 ),
                                 child: Center(
                                   child: Text(
@@ -2121,7 +2121,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                 getOrderDetails();
               },
               color: Colors.white,
-              backgroundColor: Colors.deepOrange,
+              backgroundColor: Colors.blue,
               displacement: 40.0,
               child: SingleChildScrollView(
                 child: Column(
@@ -2154,7 +2154,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                     children: [
                                       Icon(
                                         Icons.article,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                       SizedBox(
                                         width: 10,
@@ -2164,7 +2164,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                               fontSize: 20,
                                               overflow: TextOverflow.ellipsis,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.deepOrange))
+                                              color: Colors.blue))
                                     ],
                                   ),
                                   const Divider(
@@ -2177,7 +2177,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                     children: [
                                       Icon(
                                         Icons.star_border,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -2209,7 +2209,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                     children: [
                                       Icon(
                                         Icons.important_devices,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -2280,7 +2280,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                                   return Colors.green;
                                                 } else if (data.partPayment ==
                                                     "custom") {
-                                                  return Colors.orange;
+                                                  return Colors.blue;
                                                 } else if (data.amountStatus ==
                                                     1) {
                                                   return Colors.green;
@@ -2303,7 +2303,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                     children: [
                                       Icon(
                                         Icons.date_range,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -2342,7 +2342,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                             children: [
                               Icon(
                                 Icons.redeem,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               SizedBox(
                                 width: 10,
@@ -2352,7 +2352,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                       fontSize: 20,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.deepOrange)),
+                                      color: Colors.blue)),
                             ],
                           ),
                           const SizedBox(
@@ -2599,14 +2599,14 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                           Row(
                             children: [
                               const Icon(Icons.article,
-                                  color: Colors.deepOrange),
+                                  color: Colors.blue),
                               const SizedBox(width: 10),
                               const Text(
                                 "Payment Info",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.deepOrange,
+                                  color: Colors.blue,
                                 ),
                               ),
                               const Spacer(),
@@ -2619,7 +2619,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                       vertical: 8, horizontal: 8),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    color: Colors.orange, // Background color
+                                    color: Colors.blue, // Background color
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.red.shade100,
@@ -2715,7 +2715,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                   Row(
                                     children: [
                                       const Icon(Icons.credit_card,
-                                          color: Colors.orange, size: 18),
+                                          color: Colors.blue, size: 18),
                                       const SizedBox(width: 8),
                                       const Text(
                                         "Payment Method: ",
@@ -2741,7 +2741,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                     const Row(
                                       children: [
                                         Icon(Icons.receipt,
-                                            color: Colors.orange, size: 18),
+                                            color: Colors.blue, size: 18),
                                         SizedBox(width: 8),
                                         Text(
                                           "Refund Status: ",
@@ -2752,7 +2752,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                         Text(
                                           "Refunded",
                                           style: TextStyle(
-                                              color: Colors.orange,
+                                              color: Colors.blue,
                                               fontWeight: FontWeight.w600),
                                         ),
                                       ],
@@ -2781,7 +2781,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                             Row(
                                               children: [
                                                 const Icon(Icons.date_range,
-                                                    color: Colors.orange,
+                                                    color: Colors.blue,
                                                     size: 16),
                                                 const SizedBox(width: 5),
                                                 Text(
@@ -2999,7 +2999,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                             children: [
                               Icon(
                                 Icons.pending_actions_rounded,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               SizedBox(
                                 width: 10,
@@ -3009,7 +3009,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                       fontSize: 20,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.deepOrange)),
+                                      color: Colors.blue)),
                             ],
                           ),
                           const SizedBox(
@@ -3256,7 +3256,7 @@ class _TrackTourDetailsState extends State<TrackTourDetails> {
                                       style: TextStyle(
                                           fontSize: 16,
                                           overflow: TextOverflow.ellipsis,
-                                          color: Colors.deepOrange)))),
+                                          color: Colors.blue)))),
                           const SizedBox(
                             height: 80,
                           ),

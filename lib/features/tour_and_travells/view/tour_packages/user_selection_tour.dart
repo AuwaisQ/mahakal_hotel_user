@@ -354,15 +354,15 @@ class _UseTypeTwoState extends State<UseTypeTwo>
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: Colors.orange.shade100,
-              onPrimary: Colors.orange,
+              primary: Colors.blue.shade100,
+              onPrimary: Colors.blue,
               surface: const Color(0xFFFFF7EC),
-              onSurface: Colors.orange,
+              onSurface: Colors.blue,
             ),
             dialogBackgroundColor: const Color(0xFFFFF7EC),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.orange,
+                foregroundColor: Colors.blue,
                 backgroundColor: Colors.white,
               ),
             ),
@@ -388,26 +388,26 @@ class _UseTypeTwoState extends State<UseTypeTwo>
         return Theme(
           data: ThemeData.light().copyWith(
             timePickerTheme: TimePickerThemeData(
-              dialHandColor: Colors.orange.shade100,
-              dialTextColor: Colors.orange,
+              dialHandColor: Colors.blue.shade100,
+              dialTextColor: Colors.blue,
               dialBackgroundColor: Colors.white,
               dayPeriodColor: Colors.white,
-              dayPeriodTextColor: Colors.orange,
+              dayPeriodTextColor: Colors.blue,
               backgroundColor: const Color(0xFFFFF7EC),
-              hourMinuteTextColor: Colors.orange,
+              hourMinuteTextColor: Colors.blue,
               hourMinuteColor: Colors.white,
               inputDecorationTheme: const InputDecorationTheme(
                 border: InputBorder.none,
                 filled: true,
                 fillColor: Colors.white,
-                hintStyle: TextStyle(color: Colors.orange),
-                labelStyle: TextStyle(color: Colors.orange),
+                hintStyle: TextStyle(color: Colors.blue),
+                labelStyle: TextStyle(color: Colors.blue),
               ),
             ),
             dialogBackgroundColor: Colors.white,
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.orange,
+                foregroundColor: Colors.blue,
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -1140,7 +1140,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                     "wallet"); // Wait for API or function to complete
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange, // Primary color
+                backgroundColor: Colors.blue, // Primary color
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -1293,7 +1293,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                   "${widget.tourName}",
                   style: TextStyle(
                       fontSize: screenWidth * 0.06,
-                      color: Colors.deepOrange),
+                      color: Colors.blue),
                 ),
                 centerTitle: true,
                 bottom: PreferredSize(
@@ -1320,7 +1320,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                       decoration: BoxDecoration(
                                         color: selectedIndexes.contains(index)
                                             ? Colors.grey.shade400
-                                            : Colors.deepOrange
+                                            : Colors.blue
                                                 .withOpacity(0.07),
                                         borderRadius: BorderRadius.circular(5),
                                       ),
@@ -1408,7 +1408,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                         height: 1.5,
                                         width: 40,
                                         color: selectedIndexes.contains(index)
-                                            ? Colors.orange
+                                            ? Colors.blue
                                             : Colors.grey,
                                       ),
                                   ],
@@ -1422,8 +1422,8 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                       width: 40,
                                       decoration: BoxDecoration(
                                         color: selectedIndexes.contains(index)
-                                            ? Colors.deepOrange
-                                            : Colors.deepOrange
+                                            ? Colors.blue
+                                            : Colors.blue
                                                 .withOpacity(0.07),
                                         borderRadius: BorderRadius.circular(5),
                                       ),
@@ -1446,7 +1446,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                         height: 1.5,
                                         width: 40,
                                         color: selectedIndexes.contains(index)
-                                            ? Colors.orange
+                                            ? Colors.blue
                                             : Colors.grey,
                                       ),
                                   ],
@@ -1458,8 +1458,8 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                   width: 40,
                                   decoration: BoxDecoration(
                                     color: selectedIndexes.contains(index)
-                                        ? Colors.deepOrange
-                                        : Colors.deepOrange.withOpacity(0.07),
+                                        ? Colors.blue
+                                        : Colors.blue.withOpacity(0.07),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Center(
@@ -1526,7 +1526,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -1712,7 +1712,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -1871,7 +1871,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -2061,7 +2061,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -2249,7 +2249,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                               style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -2296,7 +2296,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                   ),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.deepOrange
+                                                      color: Colors.blue
                                                           .withOpacity(0.4),
                                                       blurRadius: 8,
                                                       offset:
@@ -2398,7 +2398,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                     BorderRadius.circular(25),
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Colors.deepOrange
+                                                    color: Colors.blue
                                                         .withOpacity(0.3),
                                                     blurRadius: 6,
                                                     offset: const Offset(0, 2),
@@ -2750,7 +2750,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.deepOrange
+                                                color: Colors.blue
                                                     .withOpacity(0.4),
                                                 blurRadius: 8,
                                                 offset: const Offset(0, 4),
@@ -2828,7 +2828,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orange),
+                                              color: Colors.blue),
                                           textAlign: TextAlign.center,
                                         )),
                                         Expanded(
@@ -3111,7 +3111,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                         children: [
                                           const Icon(
                                             Icons.location_on_outlined,
-                                            color: Colors.orange,
+                                            color: Colors.blue,
                                           ),
                                           Column(
                                             crossAxisAlignment:
@@ -3297,14 +3297,14 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                         const EdgeInsets.all(2),
                                                     decoration: BoxDecoration(
                                                       color: isPickAirport
-                                                          ? Colors.orange[50]
+                                                          ? Colors.blue[50]
                                                           : Colors.grey[50],
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               12),
                                                       border: Border.all(
                                                         color: isPickAirport
-                                                            ? Colors.orange
+                                                            ? Colors.blue
                                                             : Colors.grey,
                                                         width: 2,
                                                       ),
@@ -3339,7 +3339,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                             });
                                                           },
                                                           activeColor:
-                                                              Colors.orange,
+                                                              Colors.blue,
                                                         ),
                                                         const SizedBox(
                                                             width: 4),
@@ -3347,7 +3347,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                           Icons
                                                               .airplanemode_active,
                                                           color: isPickAirport
-                                                              ? Colors.orange
+                                                              ? Colors.blue
                                                               : Colors.grey,
                                                           size: 24,
                                                         ),
@@ -3389,7 +3389,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                               children: [
                                                 const Icon(
                                                   Icons.location_on_outlined,
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                 ),
                                                 const SizedBox(width: 8),
                                                 Expanded(
@@ -3576,14 +3576,14 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                         const EdgeInsets.all(2),
                                                     decoration: BoxDecoration(
                                                       color: isDropAirport
-                                                          ? Colors.orange[50]
+                                                          ? Colors.blue[50]
                                                           : Colors.grey[50],
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               12),
                                                       border: Border.all(
                                                         color: isDropAirport
-                                                            ? Colors.orange
+                                                            ? Colors.blue
                                                             : Colors.grey,
                                                         width: 2,
                                                       ),
@@ -3617,7 +3617,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                             });
                                                           },
                                                           activeColor:
-                                                              Colors.orange,
+                                                              Colors.blue,
                                                         ),
                                                         const SizedBox(
                                                             width: 4),
@@ -3628,7 +3628,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                             Icons
                                                                 .airplanemode_active,
                                                             color: isDropAirport
-                                                                ? Colors.orange
+                                                                ? Colors.blue
                                                                 : Colors.grey,
                                                             size: 24,
                                                           ),
@@ -3671,7 +3671,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                               children: [
                                                 const Icon(
                                                   Icons.location_on_outlined,
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                 ),
                                                 const SizedBox(width: 8),
                                                 Expanded(
@@ -3938,10 +3938,10 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                             BorderRadius.circular(8.0),
                                         border: Border.all(
                                             color: selectedAmountIndex == 0
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors.transparent),
                                         color: selectedAmountIndex == 0
-                                            ? Colors.orange
+                                            ? Colors.blue
                                             : Colors.grey.shade200,
                                       ),
                                       child: Center(
@@ -3951,7 +3951,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                             fontSize: 18,
                                             color: selectedAmountIndex == 0
                                                 ? Colors.white
-                                                : Colors.orange,
+                                                : Colors.blue,
                                           ),
                                         ),
                                       ),
@@ -3975,10 +3975,10 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                         border: Border.all(
                                             color: selectedAmountIndex == 0
                                                 ? Colors.transparent
-                                                : Colors.orange),
+                                                : Colors.blue),
                                         color: selectedAmountIndex == 0
                                             ? Colors.grey.shade200
-                                            : Colors.orange,
+                                            : Colors.blue,
                                       ),
                                       child: Center(
                                         child: Text(
@@ -3986,7 +3986,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           style: TextStyle(
                                             fontSize: 18,
                                             color: selectedAmountIndex == 0
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors.white,
                                           ),
                                         ),
@@ -4049,7 +4049,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Roboto',
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                   ),
                                 ),
                                 const SizedBox(height: 12),
@@ -4295,7 +4295,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Roboto',
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ],
@@ -4328,7 +4328,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           letterSpacing: 0.5,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Roboto',
-                                          color: Colors.orange),
+                                          color: Colors.blue),
                                     ),
                                   ),
                                 ),
@@ -4497,7 +4497,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                                 BorderRadius.circular(8.0),
                                             color: selectOrder == 0
                                                 ? Colors.grey
-                                                : Colors.orange,
+                                                : Colors.blue,
                                           ),
                                           child: Center(
                                             child: Text(
@@ -4560,7 +4560,7 @@ class _UseTypeTwoState extends State<UseTypeTwo>
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            color: Colors.orange,
+                                            color: Colors.blue,
                                           ),
                                           child: Center(
                                             child: Text(
@@ -4610,7 +4610,7 @@ Widget _buildRowWithIcon(BuildContext context,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.orange),
+            border: Border.all(color: Colors.blue),
           ),
           child: Align(
             alignment: Alignment.centerLeft,
@@ -4623,7 +4623,7 @@ Widget _buildRowWithIcon(BuildContext context,
                   ),
                 ),
                 const Spacer(),
-                Icon(icon, color: Colors.orange, size: 28),
+                Icon(icon, color: Colors.blue, size: 28),
                 const SizedBox(
                   width: 5,
                 )

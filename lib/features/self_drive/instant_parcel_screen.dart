@@ -203,12 +203,12 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
                             height: 60,
                             width: 60,
                             decoration: BoxDecoration(
-                              color: Colors.orange.withOpacity(0.1),
+                              color: Colors.blue.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
                               Icons.location_off,
-                              color: Colors.orange,
+                              color: Colors.blue,
                               size: 30,
                             ),
                           ),
@@ -308,12 +308,12 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
                                   width: 42,
                                   height: 42,
                                   decoration: BoxDecoration(
-                                    color: Colors.orange.withOpacity(0.1),
+                                    color: Colors.blue.withOpacity(0.1),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.history,
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                     size: 20,
                                   ),
                                 ),
@@ -645,7 +645,7 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    colors: [Colors.orange, Colors.deepOrange],
+                                    colors: [Colors.blue, Colors.blue],
                                   ),
                                   border: Border.all(color: Colors.black),
                                   borderRadius: BorderRadius.circular(100)

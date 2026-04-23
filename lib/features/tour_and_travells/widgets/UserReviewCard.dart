@@ -68,9 +68,9 @@ class UserReviewCard extends StatelessWidget {
           trimExpandedText: "Show less",
           trimCollapsedText: "Show more",
           moreStyle: const TextStyle(
-              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.orange),
+              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
           lessStyle: const TextStyle(
-              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.orange),
+              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
         ),
 
         const SizedBox(height: 10),

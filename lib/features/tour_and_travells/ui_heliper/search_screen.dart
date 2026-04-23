@@ -117,7 +117,7 @@
 //     var screenHeight = MediaQuery.of(context).size.height;
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: const Text("Tour Search",style: TextStyle(color: Colors.orange),),
+//         title: const Text("Tour Search",style: TextStyle(color: Colors.blue),),
 //         centerTitle: true,
 //       ),
 //       body: SafeArea(
@@ -159,7 +159,7 @@
 //                   child: Row(
 //                     children: [
 //                       Container(
-//                         color: Colors.orange,
+//                         color: Colors.blue,
 //                         height: 18,
 //                         width: 3,
 //                       ),
@@ -243,7 +243,7 @@
 //                   child: Row(
 //                     children: [
 //                       Container(
-//                         color: Colors.orange,
+//                         color: Colors.blue,
 //                         height: 18,
 //                         width: 3,
 //                       ),
@@ -441,7 +441,7 @@ class _TourSearchScreenState extends State<TourSearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title:
-            const Text("Tour Search", style: TextStyle(color: Colors.orange)),
+            const Text("Tour Search", style: TextStyle(color: Colors.blue)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -487,7 +487,7 @@ class _TourSearchScreenState extends State<TourSearchScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      Container(color: Colors.orange, height: 18, width: 3),
+                      Container(color: Colors.blue, height: 18, width: 3),
                       const SizedBox(width: 8),
                       const Text(
                         "Recent Searches",
@@ -547,7 +547,7 @@ class _TourSearchScreenState extends State<TourSearchScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      Container(color: Colors.orange, height: 18, width: 3),
+                      Container(color: Colors.blue, height: 18, width: 3),
                       const SizedBox(width: 8),
                       const Text(
                         "Search Results",

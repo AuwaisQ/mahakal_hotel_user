@@ -106,10 +106,10 @@ class DummyData {
   ];
 
   static List<Map<String, dynamic>> categories = [
-    {'icon': Icons.business_center, 'title': 'Business', 'color': AppColors.orange},
+    {'icon': Icons.business_center, 'title': 'Business', 'color': AppColors.blue},
     {'icon': Icons.favorite, 'title': 'Romantic', 'color': AppColors.red},
     {'icon': Icons.family_restroom, 'title': 'Family', 'color': AppColors.green},
     {'icon': Icons.beach_access, 'title': 'Beach', 'color': AppColors.yellow},
-    {'icon': Icons.landscape, 'title': 'Mountain', 'color': AppColors.deepOrange},
+    {'icon': Icons.landscape, 'title': 'Mountain', 'color': AppColors.black},
   ];
 }

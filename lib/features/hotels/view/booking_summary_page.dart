@@ -124,7 +124,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.orange,
+              color: Colors.blue,
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
@@ -309,7 +309,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.deepOrange.withOpacity(0.08),
+                    color: Colors.blue.withOpacity(0.08),
                     blurRadius: 15,
                     offset: const Offset(0, 4),
                   ),
@@ -357,7 +357,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                               letterSpacing: -0.5,
                               shadows: [
                                 Shadow(
-                                  color: Colors.deepOrange.withOpacity(0.1),
+                                  color: Colors.blue.withOpacity(0.1),
                                   blurRadius: 3,
                                 ),
                               ],
@@ -370,8 +370,8 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
                                 colors: [
-                                  Colors.deepOrange,
-                                  Colors.orange,
+                                  Colors.blue,
+                                  Colors.blue,
                                 ],
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
@@ -392,8 +392,8 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Colors.deepOrange,
-                            Colors.orange.shade400,
+                            Colors.blue,
+                            Colors.blue.shade400,
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -401,7 +401,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.deepOrange.withOpacity(0.3),
+                            color: Colors.blue.withOpacity(0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 3),
                           ),
@@ -489,8 +489,8 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Colors.deepOrange,
-                                          Colors.orange.shade400,
+                                          Colors.blue,
+                                          Colors.blue.shade400,
                                         ],
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
@@ -714,7 +714,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                                             child: Container(
                                               padding: const EdgeInsets.all(12),
                                               decoration: BoxDecoration(
-                                                color: Colors.deepOrange
+                                                color: Colors.blue
                                                     .withOpacity(0.05),
                                                 borderRadius:
                                                     BorderRadius.circular(12),
@@ -730,7 +730,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                                                         Icons.nightlight_round,
                                                         size: 14,
                                                         color:
-                                                            Colors.deepOrange,
+                                                            Colors.blue,
                                                       ),
                                                       SizedBox(width: 2),
                                                       Text(
@@ -740,7 +740,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           color:
-                                                              Colors.deepOrange,
+                                                              Colors.blue,
                                                           letterSpacing: 0.5,
                                                         ),
                                                       ),
@@ -767,7 +767,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color:
-                                                              Colors.deepOrange,
+                                                              Colors.blue,
                                                         ),
                                                       );
                                                     },
@@ -1011,7 +1011,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ],
@@ -1027,10 +1027,10 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                             margin: const EdgeInsets.only(bottom: 16),
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Colors.deepOrange.withOpacity(0.05),
+                              color: Colors.blue.withOpacity(0.05),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Colors.deepOrange.withOpacity(0.2),
+                                color: Colors.blue.withOpacity(0.2),
                               ),
                             ),
                             child: Column(
@@ -1057,7 +1057,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ],
@@ -1562,7 +1562,7 @@ class _BookingSummaryDialogState extends State<BookingSummaryDialog> {
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      hasBookedRooms ? Colors.deepOrange : Colors.grey[400],
+                      hasBookedRooms ? Colors.blue : Colors.grey[400],
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 56),
                   shape: RoundedRectangleBorder(

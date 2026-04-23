@@ -188,7 +188,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.orange.shade50,
+                          color: Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -196,7 +196,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: Colors.orange.shade800,
+                            color: Colors.blue.shade800,
                           ),
                         ),
                       ),
@@ -260,19 +260,19 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                   padding: const EdgeInsets.all(14),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? Colors.orange.withOpacity(0.1)
+                                        ? Colors.blue.withOpacity(0.1)
                                         : Colors.grey.shade50,
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
                                       color: isSelected
-                                          ? Colors.orange
+                                          ? Colors.blue
                                           : Colors.transparent,
                                       width: 1.5,
                                     ),
                                     boxShadow: isSelected
                                         ? [
                                             BoxShadow(
-                                              color: Colors.orange
+                                              color: Colors.blue
                                                   .withOpacity(0.2),
                                               blurRadius: 8,
                                               offset: const Offset(0, 2),
@@ -287,7 +287,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                           color: isSelected
-                                              ? Colors.orange
+                                              ? Colors.blue
                                               : Colors.grey.shade200,
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -316,7 +316,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                                 color: isSelected
-                                                    ? Colors.orange.shade700
+                                                    ? Colors.blue.shade700
                                                     : const Color(0xFF1A1A1A),
                                               ),
                                             ),
@@ -327,7 +327,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                                 "Selected",
                                                 style: TextStyle(
                                                   fontSize: 12,
-                                                  color: Colors.orange.shade400,
+                                                  color: Colors.blue.shade400,
                                                 ),
                                               ),
                                           ],
@@ -342,7 +342,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                           shape: BoxShape.circle,
                                           border: Border.all(
                                             color: isSelected
-                                                ? Colors.orange
+                                                ? Colors.blue
                                                 : Colors.grey.shade400,
                                             width: 2,
                                           ),
@@ -352,7 +352,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                                 margin: const EdgeInsets.all(4),
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: Colors.orange,
+                                                  color: Colors.blue,
                                                 ),
                                               )
                                             : null,
@@ -410,7 +410,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                   }
                                 },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
+                            backgroundColor: Colors.blue,
                             disabledBackgroundColor: Colors.grey.shade300,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
@@ -526,12 +526,12 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                               EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Colors.orange, Colors.deepOrange],
+                              colors: [Colors.blue, Colors.blue],
                             ),
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.orange.withOpacity(0.3),
+                                color: Colors.blue.withOpacity(0.3),
                                 blurRadius: 6,
                                 offset: Offset(0, 3),
                               )
@@ -588,7 +588,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                     color: Colors.grey.shade200,
                                     border: Border.all(
                                       color: selected
-                                          ? Colors.deepOrange
+                                          ? Colors.blue
                                           : Colors.grey.shade400,
                                       width: selected ? 2 : 1,
                                     ),
@@ -630,7 +630,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                     fontWeight: FontWeight.w700,
                                     fontSize: selected ? 16 : 14,
                                     color: selected
-                                        ? Colors.deepOrange
+                                        ? Colors.blue
                                         : Colors.black87,
                                   ),
                                   child: SizedBox(
@@ -664,7 +664,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                               ConnectionState.waiting) {
                             return const Center(
                               child: CircularProgressIndicator(
-                                  color: Colors.orange),
+                                  color: Colors.blue),
                             );
                           }
 
@@ -1290,12 +1290,12 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                 width: 90,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.orange.withOpacity(0.12),
+                  color: Colors.blue.withOpacity(0.12),
                 ),
                 child: const Icon(
                   Icons.directions_car_outlined,
                   size: 48,
-                  color: Colors.orange,
+                  color: Colors.blue,
                 ),
               ),
 
@@ -1328,7 +1328,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
               /// CONFIRM BUTTON
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepOrange,
+                  backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),

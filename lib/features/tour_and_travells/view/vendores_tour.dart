@@ -183,13 +183,13 @@ class _VendoresTourState extends State<VendoresTour> {
 
                       if (rating >= index + 1) {
                         return const Icon(Icons.star,
-                            color: Colors.orange, size: 20);
+                            color: Colors.blue, size: 20);
                       } else if (rating > index && rating < index + 1) {
                         return const Icon(Icons.star_half,
-                            color: Colors.orange, size: 20);
+                            color: Colors.blue, size: 20);
                       } else {
                         return const Icon(Icons.star_border,
-                            color: Colors.orange, size: 20);
+                            color: Colors.blue, size: 20);
                       }
                     }),
                     const SizedBox(width: 6),
@@ -227,7 +227,7 @@ class _VendoresTourState extends State<VendoresTour> {
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                           ),
                         ),
                       ],
@@ -246,7 +246,7 @@ class _VendoresTourState extends State<VendoresTour> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepOrange,
+                          backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -330,12 +330,12 @@ class _VendoresTourState extends State<VendoresTour> {
             icon: Icon(Icons.arrow_back_ios)),
         title: Text("Vendores Tour"),
         centerTitle: true,
-        backgroundColor: Colors.deepOrange.shade50,
+        backgroundColor: Colors.blue.shade50,
       ),
       body: isLoading
           ? Center(
               child: CircularProgressIndicator(
-              color: Colors.orange,
+              color: Colors.blue,
             ))
           : Column(
               children: [
@@ -393,14 +393,14 @@ class _VendoresTourState extends State<VendoresTour> {
 
                                   if (rating >= index + 1) {
                                     return const Icon(Icons.star,
-                                        color: Colors.orange, size: 20);
+                                        color: Colors.blue, size: 20);
                                   } else if (rating > index &&
                                       rating < index + 1) {
                                     return const Icon(Icons.star_half,
-                                        color: Colors.orange, size: 20);
+                                        color: Colors.blue, size: 20);
                                   } else {
                                     return const Icon(Icons.star_border,
-                                        color: Colors.orange, size: 20);
+                                        color: Colors.blue, size: 20);
                                   }
                                 }),
                                 const SizedBox(width: 6),
@@ -473,7 +473,7 @@ class _VendoresTourState extends State<VendoresTour> {
                                       TextSpan(
                                         text: "Reviews",
                                         style: const TextStyle(
-                                          color: Colors.orange,
+                                          color: Colors.blue,
                                           fontSize: 14,
                                         ),
                                       ),

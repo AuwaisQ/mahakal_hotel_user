@@ -291,7 +291,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
       case 'confirmed':
         return Colors.green;
       default:
-        return Colors.orange; // Default color for unknown statuses
+        return Colors.blue; // Default color for unknown statuses
     }
   }
 
@@ -377,7 +377,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 TextField(
-                                  cursorColor: Colors.orange,
+                                  cursorColor: Colors.blue,
                                   controller: _nameController,
                                   style: const TextStyle(
                                       fontFamily: 'Roboto-Regular'),
@@ -400,7 +400,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                       borderSide: const BorderSide(
-                                          color: Colors.orange, width: 1),
+                                          color: Colors.blue, width: 1),
                                     ),
                                     suffixIcon: const Icon(Icons.person_outline,
                                         color: Colors.grey, size: 30),
@@ -413,7 +413,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 TextFormField(
-                                  cursorColor: Colors.orange,
+                                  cursorColor: Colors.blue,
                                   inputFormatters: [
                                     FilteringTextInputFormatter
                                         .digitsOnly, // Allow only digits
@@ -442,7 +442,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                       borderSide: const BorderSide(
-                                          color: Colors.orange, width: 1),
+                                          color: Colors.blue, width: 1),
                                     ),
                                     suffixIcon: const Icon(Icons.phone,
                                         color: Colors.grey, size: 30),
@@ -457,7 +457,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                     Radio(
                                       materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
-                                      activeColor: Colors.orange,
+                                      activeColor: Colors.blue,
                                       value: 1, // Value assigned to "Male"
                                       groupValue: _maleValue,
                                       onChanged: (value) {
@@ -473,7 +473,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                       materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
                                       value: 2, // Value assigned to "Female"
-                                      activeColor: Colors.orange,
+                                      activeColor: Colors.blue,
                                       groupValue: _maleValue,
                                       onChanged: (value) {
                                         modalSetter(() {
@@ -514,15 +514,15 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                               colorScheme:
                                                   const ColorScheme.light(
                                                 primary: Colors.white,
-                                                onPrimary: Colors.orange,
+                                                onPrimary: Colors.blue,
                                                 surface: Color(0xFFFFF7EC),
-                                                onSurface: Colors.orange,
+                                                onSurface: Colors.blue,
                                               ),
                                               textButtonTheme:
                                                   TextButtonThemeData(
                                                 style: TextButton.styleFrom(
                                                   foregroundColor:
-                                                      Colors.orange,
+                                                      Colors.blue,
                                                   backgroundColor: Colors.white,
                                                 ),
                                               ),
@@ -607,17 +607,17 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                             data: ThemeData.light().copyWith(
                                               timePickerTheme:
                                                   const TimePickerThemeData(
-                                                dialHandColor: Colors.orange,
-                                                dialTextColor: Colors.orange,
+                                                dialHandColor: Colors.blue,
+                                                dialTextColor: Colors.blue,
                                                 dialBackgroundColor:
                                                     Colors.white,
                                                 dayPeriodColor: Colors.white,
                                                 dayPeriodTextColor:
-                                                    Colors.orange,
+                                                    Colors.blue,
                                                 backgroundColor:
                                                     Color(0xFFFFF7EC),
                                                 hourMinuteTextColor:
-                                                    Colors.orange,
+                                                    Colors.blue,
                                                 hourMinuteColor: Colors.white,
                                                 inputDecorationTheme:
                                                     InputDecorationTheme(
@@ -625,16 +625,16 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                   filled: true,
                                                   fillColor: Colors.white,
                                                   hintStyle: TextStyle(
-                                                      color: Colors.orange),
+                                                      color: Colors.blue),
                                                   labelStyle: TextStyle(
-                                                      color: Colors.orange),
+                                                      color: Colors.blue),
                                                 ),
                                               ),
                                               textButtonTheme:
                                                   TextButtonThemeData(
                                                 style: TextButton.styleFrom(
                                                   foregroundColor:
-                                                      Colors.orange,
+                                                      Colors.blue,
                                                   backgroundColor: Colors.white,
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
@@ -831,7 +831,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                   height: searchbox == false ? 0 : 160,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      border: Border.all(color: Colors.orange),
+                                      border: Border.all(color: Colors.blue),
                                       borderRadius: BorderRadius.circular(6.0)),
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -896,7 +896,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
-                                          color: Colors.orange.shade400,
+                                          color: Colors.blue.shade400,
                                         ),
                                         child: const Center(
                                             child: CircularProgressIndicator(
@@ -912,7 +912,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            color: Colors.orange,
+                                            color: Colors.blue,
                                           ),
                                           child: const Center(
                                             child: Text(
@@ -988,7 +988,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.orange),
+                                  color: Colors.blue),
                             ),
                             Text(
                               "${trackModelData?.order?.type}",
@@ -1076,7 +1076,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                               children: List.generate(options.length, (index) {
                                 return CheckboxListTile(
                                   checkColor: Colors.white,
-                                  activeColor: Colors.orange,
+                                  activeColor: Colors.blue,
                                   title: Text(
                                     options[index],
                                     style: const TextStyle(fontSize: 14),
@@ -1144,10 +1144,10 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.orange)),
+                                        BorderSide(color: Colors.blue)),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.orange)),
+                                        BorderSide(color: Colors.blue)),
                                 hintText: "Write here...",
                               ),
                             ),
@@ -1165,7 +1165,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                color: Colors.orange.shade400,
+                                color: Colors.blue.shade400,
                               ),
                               child: const Center(
                                   child: CircularProgressIndicator(
@@ -1188,7 +1188,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                 margin: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                 ),
                                 child: const Center(
                                   child: Text(
@@ -1490,7 +1490,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.article,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                       SizedBox(
                                         width: 10,
@@ -1500,7 +1500,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                               fontSize: 20,
                                               overflow: TextOverflow.ellipsis,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.deepOrange))
+                                              color: Colors.blue))
                                     ],
                                   ),
                                   const Divider(
@@ -1513,7 +1513,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.person,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -1536,7 +1536,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.email_outlined,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -1555,7 +1555,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                     children: [
                                       Icon(
                                         Icons.phone,
-                                        color: Colors.deepOrange.shade200,
+                                        color: Colors.blue.shade200,
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -1593,7 +1593,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                           children: [
                                             Icon(
                                               Icons.article,
-                                              color: Colors.deepOrange,
+                                              color: Colors.blue,
                                             ),
                                             SizedBox(
                                               width: 10,
@@ -1604,7 +1604,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.deepOrange)),
+                                                    color: Colors.blue)),
                                           ],
                                         ),
                                         const Divider(
@@ -1642,7 +1642,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                       horizontal: 10,
                                                       vertical: 5),
                                               decoration: BoxDecoration(
-                                                  color: Colors.deepOrange,
+                                                  color: Colors.blue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           8.0)),
@@ -1690,7 +1690,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                           children: [
                                             Icon(
                                               Icons.article,
-                                              color: Colors.deepOrange,
+                                              color: Colors.blue,
                                             ),
                                             SizedBox(
                                               width: 10,
@@ -1701,7 +1701,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.deepOrange))
+                                                    color: Colors.blue))
                                           ],
                                         ),
                                         const Divider(
@@ -1741,7 +1741,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                           children: [
                                             Icon(
                                               Icons.phone,
-                                              color: Colors.deepOrange.shade100,
+                                              color: Colors.blue.shade100,
                                             ),
                                             const SizedBox(
                                               width: 10,
@@ -1761,7 +1761,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                           children: [
                                             Icon(
                                               Icons.location_on,
-                                              color: Colors.deepOrange.shade100,
+                                              color: Colors.blue.shade100,
                                             ),
                                             const SizedBox(
                                               width: 10,
@@ -1785,7 +1785,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                           children: [
                                             Icon(
                                               Icons.flag,
-                                              color: Colors.deepOrange.shade100,
+                                              color: Colors.blue.shade100,
                                             ),
                                             const SizedBox(
                                               width: 10,
@@ -1798,7 +1798,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                         TextOverflow.ellipsis)),
                                             // SizedBox(width: 120,),
                                             //
-                                            // Icon(Icons.location_city,color: Colors.deepOrange.shade100,),
+                                            // Icon(Icons.location_city,color: Colors.blue.shade100,),
                                             // SizedBox(width: 10,),
                                             // Text("${trackModelData?.order?.pincode}",style: TextStyle(fontSize: 16,overflow: TextOverflow.ellipsis))
                                           ],
@@ -1842,7 +1842,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                         vertical: 5),
                                                     decoration: BoxDecoration(
                                                         color:
-                                                            Colors.deepOrange,
+                                                            Colors.blue,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8.0)),
@@ -2061,7 +2061,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                             children: [
                               Icon(
                                 Icons.redeem,
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                               ),
                               SizedBox(
                                 width: 10,
@@ -2071,7 +2071,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                       fontSize: 20,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.deepOrange)),
+                                      color: Colors.blue)),
                             ],
                           ),
                           const SizedBox(
@@ -2292,7 +2292,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                   style: const TextStyle(
                                       fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
-                                      color: Colors.deepOrange,
+                                      color: Colors.blue,
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
@@ -2397,7 +2397,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                   style: TextStyle(
                                       fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
-                                      color: Colors.deepOrange))),
+                                      color: Colors.blue))),
 
                           const SizedBox(
                             height: 80,

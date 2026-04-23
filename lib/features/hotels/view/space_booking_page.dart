@@ -82,7 +82,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.orange, size: 16),
+              Icon(icon, color: Colors.blue, size: 16),
               SizedBox(width: 8),
               Text(
                 label,
@@ -154,10 +154,10 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
           Container(
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
+              color: Colors.blue.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.arrow_forward, color: Colors.orange, size: 20),
+            child: Icon(Icons.arrow_forward, color: Colors.blue, size: 20),
           ),
           _buildDateColumn(
             icon: Icons.calendar_today,
@@ -222,7 +222,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
     //                     Icon(
     //                       Icons.calendar_today,
     //                       size: 14,
-    //                       color: Colors.deepOrange.shade400,
+    //                       color: Colors.blue.shade400,
     //                     ),
     //                     const SizedBox(width: 6),
     //                     Column(
@@ -258,7 +258,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
     //         child: Icon(
     //           Icons.arrow_forward,
     //           size: 18,
-    //           color: Colors.deepOrange.shade400,
+    //           color: Colors.blue.shade400,
     //         ),
     //       ),
     //
@@ -286,7 +286,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
     //                     Icon(
     //                       Icons.calendar_today,
     //                       size: 14,
-    //                       color: Colors.deepOrange.shade400,
+    //                       color: Colors.blue.shade400,
     //                     ),
     //                     const SizedBox(width: 6),
     //                     Column(
@@ -340,7 +340,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.orange,
+              color: Colors.blue,
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
@@ -992,7 +992,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
+                backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
                 minimumSize: const Size(double.infinity, 56),
                 shape: RoundedRectangleBorder(
@@ -1128,7 +1128,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
                           Icons.star_rounded,
                           size: 16,
                           color:
-                              index < rating ? Colors.orange : Colors.grey[300],
+                              index < rating ? Colors.blue : Colors.grey[300],
                         );
                       }),
                     ),
@@ -1295,10 +1295,10 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
                 margin: const EdgeInsets.only(bottom: 16, top: 12),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Colors.deepOrange.withOpacity(0.05),
+                  color: Colors.blue.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.deepOrange.withOpacity(0.2),
+                    color: Colors.blue.withOpacity(0.2),
                   ),
                 ),
                 child: Column(
@@ -1331,7 +1331,7 @@ class _SpaceBookingPageState extends State<SpaceBookingPage> {
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.deepOrange,
+                            color: Colors.blue,
                           ),
                         ),
                       ],

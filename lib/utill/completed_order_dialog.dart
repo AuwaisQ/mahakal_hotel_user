@@ -48,7 +48,7 @@ Widget bookingSuccessDialog({
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.deepOrange,
+              color: Colors.blue,
             ),
           ),
 
@@ -98,7 +98,7 @@ Widget bookingSuccessDialog({
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrange,
+                      backgroundColor: Colors.blue,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

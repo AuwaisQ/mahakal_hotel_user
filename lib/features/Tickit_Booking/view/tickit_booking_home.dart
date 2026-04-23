@@ -162,7 +162,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                 ),
               ),
               const SizedBox(height: 20),
@@ -192,7 +192,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Search City...',
-                    prefixIcon: const Icon(Icons.search, color: Colors.deepOrange),
+                    prefixIcon: const Icon(Icons.search, color: Colors.blue),
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.close),
                       onPressed: () {
@@ -242,7 +242,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepOrange,
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -294,7 +294,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
           border: Border.all(
             color: (selectedCity == city) ||
                 (isAll && selectedCity.isEmpty)
-                ? Colors.deepOrange
+                ? Colors.blue
                 : Colors.grey,
             width: (selectedCity == city) ||
                 (isAll && selectedCity.isEmpty)
@@ -318,13 +318,13 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
               decoration: BoxDecoration(
                 color: isAll
                     ? Colors.grey[100]
-                    : Colors.orange.withOpacity(0.1),
+                    : Colors.blue.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 isAll ? Icons.public : Icons.location_city,
                 size: 28,
-                color: isAll ? Colors.grey : Colors.deepOrange,
+                color: isAll ? Colors.grey : Colors.blue,
               ),
             ),
             const SizedBox(height: 8),
@@ -336,7 +336,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                 fontWeight: FontWeight.w600,
                 color: (selectedCity == city) ||
                     (isAll && selectedCity.isEmpty)
-                    ? Colors.deepOrange
+                    ? Colors.blue
                     : Colors.black87,
               ),
             ),
@@ -484,7 +484,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: _showCitySelectionBottomSheet,
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         elevation: 6,
         child: const Icon(
           Icons.location_city,
@@ -493,96 +493,51 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
+        backgroundColor:Colors.white,
+        elevation: 0,
         title: GestureDetector(
           onTap: _showCitySelectionBottomSheet,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children: [
-                  const Text(
+                children: const [
+                  Text(
                     'Around You',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
-                  const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white),
+                  Icon(Icons.keyboard_arrow_down_rounded),
                 ],
               ),
-              const SizedBox(height: 2),
-              Consumer<ActivitiesListController>(
-                builder: (context, controller, child) {
-                  return Text(
-                    selectedCity.isEmpty ? 'All Cities' : selectedCity,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.white70,
-                    ),
-                  );
-                },
+              Text(
+                selectedCity.isEmpty ? 'All Cities' : selectedCity,
+                style: const TextStyle(fontSize: 11, color: Colors.black54),
               ),
             ],
           ),
         ),
-        actions: [
-          InkWell(
-            onTap: (){
-              setState(() {
-                isEnglish = !isEnglish;
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Icon(
-                  isEnglish ? Icons.language : Icons.translate_sharp,
-                  color: Colors.deepOrange,
-                ),
 
+        actions: [
+          IconButton(
+            onPressed: () => setState(() => isEnglish = !isEnglish),
+            icon: Icon(
+              isEnglish ? Icons.language : Icons.translate,
+              color: isGridView ? Colors.blue : Colors.blue,
             ),
           ),
-          const SizedBox(width: 10),
-          InkWell(
-            onTap: (){
-              setState(() {
-                isGridView = !isGridView;
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Icon(
-                  isGridView ? Icons.list : Icons.grid_view,
-                  color: Colors.deepOrange,
-                ),
+          IconButton(
+            onPressed: () => setState(() => isGridView = !isGridView),
+            icon: Icon(
+              isGridView ? Icons.list : Icons.grid_view,
+              color: isGridView ? Colors.blue : Colors.blue,
             ),
           ),
-          const SizedBox(width: 12),
         ],
-        elevation: 0,
-        backgroundColor: Colors.deepOrange,
+
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(80),
+          child: _categoryBar(),
+        ),
       ),
       body: Consumer<ActivitiesListController>(
         builder: (context, activitiesController, child) {
@@ -604,7 +559,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
           final hasMorePages = activitiesController.hasMorePages;
 
           return RefreshIndicator(
-            color: Colors.orange,
+            color: Colors.blue,
             onRefresh: _refreshActivities,
             child: CustomScrollView(
               controller: widget.scrollController ,
@@ -943,7 +898,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                                       text: "₹ ",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.deepOrangeAccent,
+                                          color: Colors.blueAccent,
                                           fontWeight: FontWeight.w900
                                       ),
                                     ),
@@ -1153,7 +1108,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.deepOrange),
+                                    color: Colors.blue),
                               ),
                               Text(
                                 activity.price,
@@ -1183,7 +1138,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                           BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.deepOrange
+                              color: Colors.blue
                                   .withOpacity(0.3),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
@@ -1354,12 +1309,12 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
         final categories = controller.activitiesCategoryList;
 
         return Container(
-          height: 100,
+          height: 60,
           color: Colors.white,
           child: Column(
             children: [
               Container(
-                height: 100,
+                height: 60,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: _buildCategoryList(isLoading, categories),
               ),
@@ -1388,7 +1343,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
     }
 
     return SizedBox(
-      height: 100,
+      height: 70,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -1445,24 +1400,24 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: isSelected
-                    ? Border.all(color: Colors.deepOrange, width: 2)
+                    ? Border.all(color: Colors.blue, width: 2)
                     : null,
                 boxShadow: [
                   if (isSelected)
                     BoxShadow(
-                      color: Colors.deepOrange.withOpacity(0.3),
+                      color: Colors.blue.withOpacity(0.3),
                       blurRadius: 10,
                       spreadRadius: 1,
                     ),
                 ],
               ),
               child: CircleAvatar(
-                radius: 25,
+                radius: 20,
                 backgroundColor: Colors.grey.shade100,
                 backgroundImage:
                 imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
                 child: imageUrl.isEmpty
-                    ? const Icon(Icons.grid_view, color: Colors.deepOrange)
+                    ? const Icon(Icons.grid_view, color: Colors.blue)
                     : null,
               ),
             ),
@@ -1476,7 +1431,7 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
                 fontSize: 12,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 color: isSelected
-                    ? Colors.deepOrange
+                    ? Colors.blue
                     : Colors.grey.shade800,
               ),
               textAlign: TextAlign.center,
@@ -1488,61 +1443,81 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
       ),
     );
   }
+  Widget _categoryBar() {
+    return Container(
+      height: 70,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      color: Colors.white,
+      child: Consumer<ActivitiesCategoryController>(
+        builder: (context, controller, _) {
+          if (controller.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-  Widget _buildCategoryChip(
-      String title,
-      int index,
-      IconData icon,
-      Color color, {
-        required bool isSelected,
-        required VoidCallback onTap,
-      }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsets.only(right: 10, top: 1, bottom: 1),
-        padding: const EdgeInsets.symmetric(horizontal: 16,),
-        decoration: BoxDecoration(
-          // Selected hone par subtle white background, warna bilkul transparent
-          color: isSelected ? Colors.white : const Color(0xFFF1F2F6),
-          borderRadius: BorderRadius.circular(10), // Perfect Round
-          border: Border.all(
-            // Selected par main color ki border, warna light grey
-            color: isSelected ? color : Colors.transparent,
-            width: 1.5,
-          ),
-          boxShadow: isSelected
-              ? [
-            BoxShadow(
-              color: color.withOpacity(0.15),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            )
-          ]
-              : [],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Dot indicator ya Icon
-            Icon(
-              icon,
-              size: 18,
-              color: isSelected ? color : Colors.grey.shade600,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                color: isSelected ? Colors.black : Colors.grey.shade600,
-                letterSpacing: 0.3,
-              ),
-            ),
-          ],
-        ),
+          final categories = controller.activitiesCategoryList;
+
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: categories.length + 1,
+            itemBuilder: (context, index) {
+              final isSelected = selectedCategory == index;
+
+              String label;
+              String image = "";
+
+              if (index == 0) {
+                label = isEnglish ? "All" : "सभी";
+              } else {
+                final cat = categories[index - 1];
+                label = isEnglish
+                    ? cat.enCategoryName
+                    : (cat.hiCategoryName ?? "Category");
+                image = cat.image ?? "";
+              }
+
+              return GestureDetector(
+                onTap: () {
+                  setState(() => selectedCategory = index);
+                  _applyCategoryFilter(index);
+                },
+                child: Container(
+                  width: 70,
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor:
+                        isSelected ? Colors.blue : Colors.grey.shade200,
+                        backgroundImage:
+                        image.isNotEmpty ? NetworkImage(image) : null,
+                        child: image.isEmpty
+                            ? Icon(Icons.grid_view,
+                            color: isSelected
+                                ? Colors.white
+                                : Colors.blue)
+                            : null,
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        label,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.w400,
+                          color:
+                          isSelected ? Colors.blue : Colors.black87,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -1580,93 +1555,5 @@ class _TickitBookingHomeState extends State<TickitBookingHome> {
         );
       }),
     );
-  }
-
-  // Helper method to get icon based on category name
-  IconData _getCategoryIcon(String? categoryName) {
-    if (categoryName == null) return Icons.category;
-
-    final name = categoryName.toLowerCase();
-    if (name.contains('ropeway') || name.contains('cable')) {
-      return Icons.cable;
-    } else if (name.contains('boat') || name.contains('sailing')) {
-      return Icons.sailing;
-    } else if (name.contains('mountain') || name.contains('hiking')) {
-      return Icons.terrain;
-    } else if (name.contains('beach') || name.contains('sea')) {
-      return Icons.beach_access;
-    } else if (name.contains('city') || name.contains('urban')) {
-      return Icons.location_city;
-    } else if (name.contains('adventure')) {
-      return Icons.sports;
-    } else if (name.contains('nature')) {
-      return Icons.nature;
-    } else if (name.contains('culture')) {
-      return Icons.museum;
-    } else if (name.contains('food')) {
-      return Icons.restaurant;
-    } else if (name.contains('shopping')) {
-      return Icons.shopping_bag;
-    }
-    return Icons.explore;
-  }
-
-  // Helper method to get color based on category name
-  Color _getCategoryColor(String? categoryName) {
-    if (categoryName == null) return const Color(0xFF4361EE);
-
-    final name = categoryName.toLowerCase();
-    if (name.contains('ropeway') || name.contains('cable')) {
-      return const Color(0xFF4CC9F0);
-    } else if (name.contains('boat') || name.contains('sailing')) {
-      return const Color(0xFF06D6A0);
-    } else if (name.contains('mountain') || name.contains('hiking')) {
-      return const Color(0xFF38B000);
-    } else if (name.contains('beach') || name.contains('sea')) {
-      return const Color(0xFFF72585);
-    } else if (name.contains('city') || name.contains('urban')) {
-      return const Color(0xFF7209B7);
-    } else if (name.contains('adventure')) {
-      return const Color(0xFFFF9E00);
-    } else if (name.contains('nature')) {
-      return const Color(0xFF2A9D8F);
-    } else if (name.contains('culture')) {
-      return const Color(0xFFE63946);
-    } else if (name.contains('food')) {
-      return const Color(0xFFF4A261);
-    } else if (name.contains('shopping')) {
-      return const Color(0xFF9B5DE5);
-    }
-    return const Color(0xFF4361EE);
-  }
-}
-
-class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  _StickyHeaderDelegate({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SizedBox.expand(child: child);
-  }
-
-  @override
-  double get maxExtent => maxHeight;
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  bool shouldRebuild(_StickyHeaderDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
   }
 }

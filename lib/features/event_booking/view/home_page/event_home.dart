@@ -170,7 +170,7 @@ class _EventHomeState extends State<EventHome> {
                     ),
                     centerTitle: true,
                     toolbarHeight: 65,
-                    backgroundColor: Colors.deepOrange,
+                    backgroundColor: Colors.blue,
                     // backgroundColor: Colors.white,
                     title: Consumer<LanguageProvider>(
                       builder: (BuildContext context, languageProvider, child) {

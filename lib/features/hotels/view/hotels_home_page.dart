@@ -208,7 +208,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
       children: [
         Row(
           children: [
-            Icon(icon, color: Colors.orange, size: 20),
+            Icon(icon, color: Colors.blue, size: 20),
             SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,12 +262,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
               width: 34,
               height: 34,
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.2),
+                color: Colors.blue.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(18),
               ),
               child: IconButton(
                 onPressed: onIncrement,
-                icon: Icon(Icons.add, color: Colors.orange, size: 16),
+                icon: Icon(Icons.add, color: Colors.blue, size: 16),
                 padding: EdgeInsets.zero,
               ),
             ),
@@ -290,7 +290,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.orange, size: 16),
+              Icon(icon, color: Colors.blue, size: 16),
               SizedBox(width: 8),
               Text(
                 label,
@@ -349,7 +349,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                             child: Text(
                               'See All',
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.orange,
+                                color: AppColors.blue,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -441,7 +441,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                                 child: Text(
                                   'See All',
                                   style: AppTextStyles.bodyMedium.copyWith(
-                                    color: AppColors.orange,
+                                    color: AppColors.blue,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -527,7 +527,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                             child: Text(
                               'See All',
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.orange,
+                                color: AppColors.blue,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -877,7 +877,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.deepOrange,
+                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -1160,7 +1160,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                           child: Row(
                             children: [
                               Icon(Icons.location_on,
-                                  color: Colors.orange, size: 20),
+                                  color: Colors.blue, size: 20),
                               SizedBox(width: 8),
 
                               ///  Search + Selected location field
@@ -1192,7 +1192,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                                 _showLocationList
                                     ? Icons.keyboard_arrow_up
                                     : Icons.keyboard_arrow_down,
-                                color: Colors.orange,
+                                color: Colors.blue,
                                 size: 20,
                               ),
                             ],
@@ -1370,11 +1370,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                               Container(
                                 padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.1),
+                                  color: Colors.blue.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(Icons.arrow_forward,
-                                    color: Colors.orange, size: 20),
+                                    color: Colors.blue, size: 20),
                               ),
                               _buildDateColumn(
                                 icon: Icons.calendar_today,
@@ -1423,7 +1423,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                                       Row(
                                         children: [
                                           Icon(Icons.person_outline,
-                                              color: Colors.orange, size: 18),
+                                              color: Colors.blue, size: 18),
                                           SizedBox(width: 8),
                                           Text(
                                             'GUESTS',
@@ -1447,7 +1447,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                                     showGuestDetails
                                         ? Icons.keyboard_arrow_up
                                         : Icons.keyboard_arrow_down,
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                     size: 24,
                                   ),
                                 ],
@@ -1673,11 +1673,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                           //           width: double.infinity,
                           //           padding: EdgeInsets.symmetric(vertical: 8),
                           //           decoration: BoxDecoration(
-                          //             color: Colors.orange,
+                          //             color: Colors.blue,
                           //             borderRadius: BorderRadius.circular(10),
                           //             boxShadow: [
                           //               BoxShadow(
-                          //                 color: Colors.orange.withOpacity(0.3),
+                          //                 color: Colors.blue.withOpacity(0.3),
                           //                 blurRadius: 10,
                           //                 offset: Offset(0, 4),
                           //               ),
@@ -1724,11 +1724,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> {
                           //           width: double.infinity,
                           //           padding: EdgeInsets.symmetric(vertical: 8),
                           //           decoration: BoxDecoration(
-                          //             color: Colors.orange,
+                          //             color: Colors.blue,
                           //             borderRadius: BorderRadius.circular(10),
                           //             boxShadow: [
                           //               BoxShadow(
-                          //                 color: Colors.orange.withOpacity(0.3),
+                          //                 color: Colors.blue.withOpacity(0.3),
                           //                 blurRadius: 10,
                           //                 offset: Offset(0, 4),
                           //               ),
@@ -2391,10 +2391,10 @@ class CategoryCard extends StatelessWidget {
       width: 80,
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
-        color: isActive ? AppColors.orange.withOpacity(0.1) : AppColors.white,
+        color: isActive ? AppColors.blue.withOpacity(0.1) : AppColors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isActive ? AppColors.orange : AppColors.lightGray,
+          color: isActive ? AppColors.blue : AppColors.lightGray,
           width: isActive ? 2 : 1,
         ),
       ),
@@ -2404,7 +2404,7 @@ class CategoryCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isActive ? AppColors.orange : AppColors.lightGray,
+              color: isActive ? AppColors.blue : AppColors.lightGray,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -2418,7 +2418,7 @@ class CategoryCard extends StatelessWidget {
             title,
             style: AppTextStyles.bodySmall.copyWith(
               fontWeight: FontWeight.w600,
-              color: isActive ? AppColors.orange : AppColors.black,
+              color: isActive ? AppColors.blue : AppColors.black,
             ),
           ),
         ],
@@ -2650,7 +2650,7 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
                 children: [
                   CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                   ),
                   SizedBox(height: 16),
                   Text(
@@ -2676,13 +2676,13 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
                       width: 120,
                       height: 120,
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange[50],
+                        color: Colors.blue[50],
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.drafts_outlined,
                         size: 56,
-                        color: Colors.deepOrange,
+                        color: Colors.blue,
                       ),
                     ),
                     SizedBox(height: 24),
@@ -2710,7 +2710,7 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
                         // Navigate to create new booking
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
+                        backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                         shape: RoundedRectangleBorder(
@@ -2780,7 +2780,7 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 12, vertical: 6),
                                         decoration: BoxDecoration(
-                                          color: Colors.deepOrange.withOpacity(0.1),
+                                          color: Colors.blue.withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(20),
                                         ),
                                         child: Row(
@@ -2788,7 +2788,7 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
                                             Icon(
                                               Icons.hotel_outlined,
                                               size: 14,
-                                              color: Colors.deepOrange,
+                                              color: Colors.blue,
                                             ),
                                             SizedBox(width: 6),
                                             Text(
@@ -2796,7 +2796,7 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.deepOrange,
+                                                color: Colors.blue,
                                               ),
                                             ),
                                           ],
@@ -2846,13 +2846,13 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
                                         width: 40,
                                         height: 40,
                                         decoration: BoxDecoration(
-                                          color: Colors.deepOrange.withOpacity(0.1),
+                                          color: Colors.blue.withOpacity(0.1),
                                           shape: BoxShape.circle,
                                         ),
                                         child: Icon(
                                           Icons.arrow_forward_ios_rounded,
                                           size: 16,
-                                          color: Colors.deepOrange,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ],
@@ -2877,7 +2877,7 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
       //   onPressed: () {
       //     // Navigate to create new booking
       //   },
-      //   backgroundColor: Colors.deepOrange,
+      //   backgroundColor: Colors.blue,
       //   foregroundColor: Colors.white,
       //   elevation: 2,
       //   shape: RoundedRectangleBorder(
@@ -2950,7 +2950,7 @@ class _DraftOrdersPageState extends State<DraftOrdersPage> {
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'draft':
-        return Colors.orange;
+        return Colors.blue;
       case 'pending':
         return Colors.blue;
       case 'confirmed':

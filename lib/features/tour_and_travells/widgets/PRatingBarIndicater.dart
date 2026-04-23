@@ -16,7 +16,7 @@ class PRatingBarIndicater extends StatelessWidget {
         unratedColor: Colors.grey,
         itemBuilder: (_, __) => const Icon(
               Icons.star,
-              color: Colors.orange,
+              color: Colors.blue,
             ));
   }
 }

@@ -194,7 +194,7 @@ class _TourHomePageState extends State<TourHomePage>
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.orange.withOpacity(0.25),
+                                  color: Colors.blue.withOpacity(0.25),
                                   blurRadius: 10,
                                   offset: const Offset(0, 4),
                                 )
@@ -215,7 +215,7 @@ class _TourHomePageState extends State<TourHomePage>
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.orange.shade100.withOpacity(0.4),
+                              color: Colors.blue.shade100.withOpacity(0.4),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -342,8 +342,8 @@ class _TourHomePageState extends State<TourHomePage>
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Colors.orange.shade600,
-                          Colors.orange.shade400,
+                          Colors.blue.shade600,
+                          Colors.blue.shade400,
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -351,7 +351,7 @@ class _TourHomePageState extends State<TourHomePage>
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.orange.withOpacity(0.4),
+                          color: Colors.blue.withOpacity(0.4),
                           blurRadius: 10,
                           spreadRadius: 2,
                           offset: const Offset(0, 4),
@@ -384,7 +384,7 @@ class _TourHomePageState extends State<TourHomePage>
                       isLoading
                           ? const Center(
                               child: CircularProgressIndicator(
-                              color: Colors.orange,
+                              color: Colors.blue,
                             ))
                           : NestedScrollView(
                               controller: widget.scrollController,
@@ -443,7 +443,7 @@ class _TourHomePageState extends State<TourHomePage>
                                                   borderRadius:
                                                       BorderRadius.circular(25),
                                                   color: selectedTabIndex == 0
-                                                      ? Colors.orange
+                                                      ? Colors.blue
                                                       : Colors.blueGrey[100],
                                                   boxShadow: [
                                                     BoxShadow(
@@ -493,7 +493,7 @@ class _TourHomePageState extends State<TourHomePage>
                                                         BorderRadius.circular(
                                                             25),
                                                     color: isSelected
-                                                        ? Colors.orange
+                                                        ? Colors.blue
                                                         : Colors.blueGrey[100],
                                                     boxShadow: [
                                                       BoxShadow(

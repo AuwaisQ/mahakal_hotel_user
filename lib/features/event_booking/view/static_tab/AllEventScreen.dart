@@ -258,7 +258,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
         body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                color: Colors.orange,
+                color: Colors.blue,
               ))
             : SafeArea(
                 child: SingleChildScrollView(
@@ -350,7 +350,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                       width: screenWidth * 0.01,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                     SizedBox(
@@ -1064,7 +1064,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                             Icons
                                                                                 .star,
                                                                             color:
-                                                                                Colors.orange,
+                                                                                Colors.blue,
                                                                             size: 22);
                                                                       } else if (rating >
                                                                               index &&
@@ -1074,14 +1074,14 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                             Icons
                                                                                 .star_half,
                                                                             color:
-                                                                                Colors.orange,
+                                                                                Colors.blue,
                                                                             size: 22);
                                                                       } else {
                                                                         return const Icon(
                                                                             Icons
                                                                                 .star_border,
                                                                             color:
-                                                                                Colors.orange,
+                                                                                Colors.blue,
                                                                             size: 22);
                                                                       }
                                                                     }),
@@ -1321,7 +1321,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                       Container(
                                         height: screenHeight * 0.03,
                                         width: screenWidth * 0.01,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                       SizedBox(
                                         width: screenWidth * 0.02,
@@ -1765,7 +1765,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                       Container(
                                         height: screenHeight * 0.03,
                                         width: screenWidth * 0.01,
-                                        color: Colors.deepOrange,
+                                        color: Colors.blue,
                                       ),
                                       SizedBox(
                                         width: screenWidth * 0.02,
@@ -2524,7 +2524,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                     //                                         ),
                                     //                                         const Spacer(),
                                     //                                         const Text('|',
-                                    //                                             style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold)),
+                                    //                                             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
                                     //                                         SizedBox(width: screenWidth * 0.02),
                                     //                                         // Display "Book now" button
                                     //                                         Text(

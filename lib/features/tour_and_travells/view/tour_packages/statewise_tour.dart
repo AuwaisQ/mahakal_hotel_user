@@ -69,7 +69,7 @@ class _StateWiseTourState extends State<StateWiseTour> {
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(
-            color: Colors.orange,
+            color: Colors.blue,
           ))
         : stateWiseData.isNotEmpty
             ? ListView.builder(
@@ -95,7 +95,7 @@ class _StateWiseTourState extends State<StateWiseTour> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: Colors.orange.withOpacity(0.8),
+                                  color: Colors.blue.withOpacity(0.8),
                                   width: 2,
                                 ),
                               ),
@@ -104,7 +104,7 @@ class _StateWiseTourState extends State<StateWiseTour> {
                                   height: 12,
                                   width: 12,
                                   decoration: const BoxDecoration(
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                     shape: BoxShape.circle,
                                   ),
                                 ),
@@ -123,8 +123,8 @@ class _StateWiseTourState extends State<StateWiseTour> {
                                 return ShaderMask(
                                   shaderCallback: (bounds) => LinearGradient(
                                     colors: [
-                                      Colors.orange.shade700,
-                                      Colors.deepOrange.shade400
+                                      Colors.blue.shade700,
+                                      Colors.blue.shade400
                                     ],
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
@@ -167,7 +167,7 @@ class _StateWiseTourState extends State<StateWiseTour> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
-                                        color: Colors.orange.withOpacity(0.3),
+                                        color: Colors.blue.withOpacity(0.3),
                                         width: 1.5,
                                       ),
                                     ),
@@ -181,14 +181,14 @@ class _StateWiseTourState extends State<StateWiseTour> {
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
-                                            color: Colors.orange.shade700,
+                                            color: Colors.blue.shade700,
                                           ),
                                         ),
                                         const SizedBox(width: 4),
                                         Icon(
                                           Icons.arrow_forward_rounded,
                                           size: 16,
-                                          color: Colors.orange.shade700,
+                                          color: Colors.blue.shade700,
                                         ),
                                       ],
                                     ),

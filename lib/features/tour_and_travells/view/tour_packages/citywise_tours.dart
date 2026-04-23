@@ -389,7 +389,7 @@ class _CityWiseTourState extends State<CityWiseTour>
                           Row(
                             children: [
                               Icon(Icons.location_on,
-                                  size: 14, color: Colors.orange),
+                                  size: 14, color: Colors.blue),
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
@@ -449,7 +449,7 @@ class _CityWiseTourState extends State<CityWiseTour>
                                           padding: const EdgeInsets.all(4),
                                           decoration: BoxDecoration(
                                             color:
-                                                Colors.orange.withOpacity(0.25),
+                                                Colors.blue.withOpacity(0.25),
                                             borderRadius:
                                                 BorderRadius.circular(6),
                                           ),
@@ -477,14 +477,14 @@ class _CityWiseTourState extends State<CityWiseTour>
 
                                     if (rating >= index + 1) {
                                       return const Icon(Icons.star,
-                                          color: Colors.orange, size: 20);
+                                          color: Colors.blue, size: 20);
                                     } else if (rating > index &&
                                         rating < index + 1) {
                                       return const Icon(Icons.star_half,
-                                          color: Colors.orange, size: 20);
+                                          color: Colors.blue, size: 20);
                                     } else {
                                       return const Icon(Icons.star_border,
-                                          color: Colors.orange, size: 20);
+                                          color: Colors.blue, size: 20);
                                     }
                                   }),
                                   const SizedBox(width: 6),
@@ -731,7 +731,7 @@ class _CityWiseTourState extends State<CityWiseTour>
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   decoration: BoxDecoration(
-                                    color: Colors.orange.shade700,
+                                    color: Colors.blue.shade700,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
@@ -889,7 +889,7 @@ class _CityWiseTourState extends State<CityWiseTour>
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 decoration: BoxDecoration(
-                                  color: Colors.deepOrange,
+                                  color: Colors.blue,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -915,14 +915,14 @@ class _CityWiseTourState extends State<CityWiseTour>
 
                                     if (rating >= index + 1) {
                                       return const Icon(Icons.star,
-                                          color: Colors.orange, size: 20);
+                                          color: Colors.blue, size: 20);
                                     } else if (rating > index &&
                                         rating < index + 1) {
                                       return const Icon(Icons.star_half,
-                                          color: Colors.orange, size: 20);
+                                          color: Colors.blue, size: 20);
                                     } else {
                                       return const Icon(Icons.star_border,
-                                          color: Colors.orange, size: 20);
+                                          color: Colors.blue, size: 20);
                                     }
                                   }),
                                   const SizedBox(width: 6),
@@ -974,7 +974,7 @@ class _CityWiseTourState extends State<CityWiseTour>
                         width: double.infinity,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color: Colors.blue,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
@@ -1080,15 +1080,15 @@ class _CityWiseTourState extends State<CityWiseTour>
         margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.orange : Colors.transparent,
+          color: isSelected ? Colors.blue : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? Colors.orange : Colors.grey.shade400,
+            color: isSelected ? Colors.blue : Colors.grey.shade400,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: Colors.orange.withOpacity(0.3),
+                    color: Colors.blue.withOpacity(0.3),
                     blurRadius: 5,
                     offset: const Offset(0, 3),
                   )
@@ -1124,7 +1124,7 @@ class _CityWiseTourState extends State<CityWiseTour>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         title: Text(
           isEngView
               ? widget.enCityName
@@ -1225,7 +1225,7 @@ class _CityWiseTourState extends State<CityWiseTour>
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(
-              color: Colors.orange,
+              color: Colors.blue,
             ))
           : cityWiseData.isEmpty
               ? const Text("No Data")
@@ -1234,7 +1234,7 @@ class _CityWiseTourState extends State<CityWiseTour>
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.orange, width: 0.5),
+                        border: Border.all(color: Colors.blue, width: 0.5),
                       ),
                       margin: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),

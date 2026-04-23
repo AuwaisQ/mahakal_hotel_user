@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Colors
+  static Color blue = Colors.blue;
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
   static const Color orange = Color(0xFFFF6B35);
@@ -79,16 +80,16 @@ class AppTextStyles {
   );
 
   // Special
-  static const TextStyle priceLarge = TextStyle(
+  static  TextStyle priceLarge = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w700,
-    color: AppColors.orange,
+    color: AppColors.blue,
   );
 
-  static const TextStyle priceMedium = TextStyle(
+  static  TextStyle priceMedium = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppColors.orange,
+    color: AppColors.blue,
   );
 
   static const TextStyle discount = TextStyle(
@@ -102,7 +103,7 @@ class AppTheme {
   static ThemeData get theme {
     return ThemeData(
       useMaterial3: false,
-      primaryColor: AppColors.orange,
+      primaryColor: AppColors.blue,
       scaffoldBackgroundColor: AppColors.white,
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.white,
@@ -117,7 +118,7 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.orange,
+          backgroundColor: AppColors.blue,
           foregroundColor: AppColors.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
@@ -143,7 +144,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.orange, width: 2),
+          borderSide: BorderSide(color: AppColors.blue, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         hintStyle: const TextStyle(color: AppColors.gray),

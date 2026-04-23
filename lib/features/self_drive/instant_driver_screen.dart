@@ -683,7 +683,7 @@ class _DriverFoundScreenState extends State<DriverFoundScreen> {
               color: isDiscount
                   ? Colors.red.shade700
                   : isRemaining
-                  ? Colors.orange.shade700
+                  ? Colors.blue.shade700
                   : isFinal
                   ? Colors.green.shade700
                   : Colors.grey.shade800,

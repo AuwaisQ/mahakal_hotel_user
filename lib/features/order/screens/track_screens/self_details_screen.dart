@@ -27,11 +27,11 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return Colors.orange;
+        return Colors.blue;
       case 'confirmed':
         return Colors.green;
       case 'completed':
-        return Colors.deepOrange;
+        return Colors.blue;
       case 'cancelled':
         return Colors.red;
       default:
@@ -108,7 +108,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
 
     return data == null ? Container(
         color: Colors.white,
-        child: Center(child: CircularProgressIndicator(color: Colors.deepOrange,))) : Scaffold(
+        child: Center(child: CircularProgressIndicator(color: Colors.blue,))) : Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.grey.shade50,
@@ -337,7 +337,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                         gradient: LinearGradient(
                           colors: data.bookingCabAc == 'AC'
                               ? [Colors.grey.shade400, Colors.grey.shade600]
-                              : [Colors.deepOrange.shade400, Colors.deepOrange.shade600]
+                              : [Colors.blue.shade400, Colors.blue.shade600]
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -453,13 +453,13 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                       Row(
                         children: [
                           const Icon(Icons.calendar_today,
-                              size: 14, color: Colors.deepOrange),
+                              size: 14, color: Colors.blue),
                           const SizedBox(width: 6),
                           Text(
                             _formatDate('${data.pickupDate}'),
                             style: TextStyle(
                               fontSize: 13,
-                              color: Colors.deepOrange.shade700,
+                              color: Colors.blue.shade700,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -526,13 +526,13 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                               child: Row(
                                 children: [
                                   const Icon(Icons.calendar_today,
-                                      size: 14, color: Colors.deepOrange),
+                                      size: 14, color: Colors.blue),
                                   const SizedBox(width: 6),
                                   Text(
                                     _formatDate('${data.returnDate}'),
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: Colors.deepOrange.shade700,
+                                      color: Colors.blue.shade700,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -588,7 +588,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
               /// 🔷 Header
               Row(
                 children: const [
-                  Icon(Icons.account_circle, color: Colors.deepOrange),
+                  Icon(Icons.account_circle, color: Colors.blue),
                   SizedBox(width: 8),
                   Text(
                     'Customer Information',
@@ -644,7 +644,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
             Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.deepOrange[50],
+                color: Colors.blue[50],
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -666,7 +666,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 2,
-                          color: Colors.deepOrange[800],
+                          color: Colors.blue[800],
                         ),
                       ),
                     ],
@@ -674,7 +674,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: data.pickupStatus == 1 ? Colors.green : Colors.orange,
+                      color: data.pickupStatus == 1 ? Colors.green : Colors.blue,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -727,7 +727,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: data.dropStatus == 1 ? Colors.green : Colors.orange,
+                      color: data.dropStatus == 1 ? Colors.green : Colors.blue,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -760,7 +760,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.deepOrange[800],
+                      color: Colors.blue[800],
                     ),
                   ),
                 ],
@@ -831,7 +831,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepOrange[800],
+                    color: Colors.blue[800],
                   ),
                 ),
               ],
@@ -852,8 +852,8 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
-              foregroundColor: Colors.deepOrange,
-              side: BorderSide(color: Colors.deepOrange),
+              foregroundColor: Colors.blue,
+              side: BorderSide(color: Colors.blue),
               padding: EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -869,7 +869,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
               // Contact support
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepOrange,
+              backgroundColor: Colors.blue,
               padding: EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -890,10 +890,10 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.deepOrange.withOpacity(0.1),
+              color: Colors.blue.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, size: 18, color: Colors.deepOrange),
+            child: Icon(icon, size: 18, color: Colors.blue),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -942,12 +942,12 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: highlight
-            ? Colors.deepOrange.withOpacity(0.06)
+            ? Colors.blue.withOpacity(0.06)
             : Colors.grey.withOpacity(0.04),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: highlight
-              ? Colors.deepOrange.withOpacity(0.3)
+              ? Colors.blue.withOpacity(0.3)
               : Colors.grey.withOpacity(0.15),
         ),
       ),
@@ -982,7 +982,7 @@ class _CabBookingDetailsScreenState extends State<CabBookingDetailsScreen> {
               fontWeight: FontWeight.bold,
               color: isNegative
                   ? Colors.green
-                  : (highlight ? Colors.deepOrange : Colors.black87),
+                  : (highlight ? Colors.blue : Colors.black87),
             ),
           ),
         ],

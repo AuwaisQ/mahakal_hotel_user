@@ -359,7 +359,7 @@ class _ProductListPageState extends State<ProductListPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Products'),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -710,7 +710,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       end: Alignment.bottomRight,
                       colors: [
                         Colors.grey.withOpacity(0.12),
-                        Colors.orange.withOpacity(0.04),
+                        Colors.blue.withOpacity(0.04),
                       ],
                     ),
                   ),
@@ -1041,13 +1041,13 @@ class _ProductListPageState extends State<ProductListPage> {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.12),
+              color: Colors.blue.withOpacity(0.12),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               icon,
               size: 18,
-              color: Colors.deepOrange,
+              color: Colors.blue,
             ),
           ),
           const SizedBox(width: 10),
@@ -1073,7 +1073,7 @@ class _ProductListPageState extends State<ProductListPage> {
                 },
               child: const Text(
                 'View all',
-                style: TextStyle(color: Colors.deepOrange),
+                style: TextStyle(color: Colors.blue),
               ),
             ),
 
@@ -1159,13 +1159,13 @@ class LocationLoadingWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.orange.withOpacity(0.2),
+              color: Colors.blue.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
           ],
           border: Border.all(
-            color: Colors.orange.shade200,
+            color: Colors.blue.shade200,
             width: 1.2,
           ),
         ),
@@ -1179,7 +1179,7 @@ class LocationLoadingWidget extends StatelessWidget {
               child: CircularProgressIndicator(
                 strokeWidth: 4,
                 valueColor:
-                    AlwaysStoppedAnimation<Color>(Colors.deepOrange.shade400),
+                    AlwaysStoppedAnimation<Color>(Colors.blue.shade400),
               ),
             ),
             const SizedBox(height: 18),
@@ -1190,7 +1190,7 @@ class LocationLoadingWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
-                color: Colors.deepOrange.shade700,
+                color: Colors.blue.shade700,
               ),
             ),
 

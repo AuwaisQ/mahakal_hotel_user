@@ -63,10 +63,10 @@ class _DevoteesCountWidgetState extends State<DevoteesCountWidget> {
         height: height,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.orange.shade600,
+          color: Colors.blue.shade600,
           boxShadow: [
             BoxShadow(
-              color: Colors.orange.withOpacity(0.3),
+              color: Colors.blue.withOpacity(0.3),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
