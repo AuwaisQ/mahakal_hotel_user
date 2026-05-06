@@ -75,13 +75,24 @@ class _AuthScreenState extends State<AuthScreen>
                   height: 250,
                   decoration:
                       BoxDecoration(color: Theme.of(context).primaryColor)),
-              Image.asset(Images.loginBg,
+              Positioned(
+                  left: -40,
+                  bottom: -40,
+                  child: Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                              color: Theme.of(context).cardColor.withOpacity(.09),
+                              width: 25)))),
+              Image.asset(Images.shadow,
                   fit: BoxFit.cover,
                   height: 220,
-                  opacity: const AlwaysStoppedAnimation(.15)),
+                  opacity: const AlwaysStoppedAnimation(5)),
               Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * .07),
+                      top: MediaQuery.of(context).size.height * .10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
