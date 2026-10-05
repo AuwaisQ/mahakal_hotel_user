@@ -110,7 +110,7 @@ class SplashScreenState extends State<SplashScreen> {
       listen: false,
     ).initConfig(context)
     .timeout(
-      const Duration(seconds: 15),
+      const Duration(seconds: 5),
       onTimeout: () {
         print('⏱️ Config API timeout - proceeding with defaults');
         return false;
@@ -132,7 +132,7 @@ class SplashScreenState extends State<SplashScreen> {
           Get.context!,
           listen: false,
         ).initSharedPrefData();
-        Timer(const Duration(seconds: 1), () {
+        Timer(const Duration(milliseconds: 100), () {
           if (compareVersions(minimumVersion!, AppConstants.appVersion) == 1) {
             Navigator.of(Get.context!).pushReplacement(
               CupertinoPageRoute(builder: (_) => const UpdateScreen()),
@@ -213,7 +213,7 @@ class SplashScreenState extends State<SplashScreen> {
       } else {
         // Config load failed - navigate based on auth status
         print('❌ Config load failed - proceeding with cached data');
-        Timer(const Duration(seconds: 1), () {
+        Timer(const Duration(milliseconds: 100), () {
           if (Provider.of<AuthController>(Get.context!, listen: false).isLoggedIn()) {
             Provider.of<AuthController>(Get.context!, listen: false).updateToken(Get.context!);
             checkDeepLinkAndNavigate();
@@ -235,7 +235,7 @@ class SplashScreenState extends State<SplashScreen> {
       }
     }).catchError((error) {
       print('⚠️ Config API error: $error - proceeding with cached data');
-      Timer(const Duration(seconds: 1), () {
+      Timer(const Duration(milliseconds: 100), () {
         if (mounted && Get.context != null) {
           if (Provider.of<AuthController>(Get.context!, listen: false).isLoggedIn()) {
             Provider.of<AuthController>(Get.context!, listen: false).updateToken(Get.context!);

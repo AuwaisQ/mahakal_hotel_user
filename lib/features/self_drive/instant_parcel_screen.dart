@@ -9,6 +9,7 @@ import '../../main.dart';
 import '../profile/controllers/profile_contrroller.dart';
 import 'instant_detail_screen.dart';
 import 'instanthome_page.dart';
+import 'widgets/parcel_search_screen.dart';
 
 class ParcelLocationPage extends StatefulWidget {
   final List<RecentLocation> recentList;
@@ -64,310 +65,12 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
             dropLat: toLatitude!,
             dropLong: toLongitude!,
             bookingPickKm: distanceKm,
-            bookingType: 'parcel')),
+            bookingType: 'parcel',
+          pickName: userName,pickPhone: userPhone,dropName: dropNameController.text,dropPhone: dropPhoneController.text,dropHouseNo: houseNoController.text,)),
       );
     } catch (e) {
       print('Error fetching categories: $e');
     }
-  }
-
-  void showSearchSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      enableDrag: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) {
-        return StatefulBuilder(
-          builder: (context, modalSetState) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-              ),
-              child: Column(
-                children: [
-
-
-                  const SizedBox(height: 15),
-
-                  /// HEADER
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.arrow_back),
-                      ),
-                      const Text(
-                        'Drop to',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Row(
-                          children: const [
-                            Text('For me'),
-                            Icon(Icons.keyboard_arrow_down)
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  /// 📍 TOP LOCATION BOX (LIKE IMAGE)
-                  LocationSearchWidget(
-                    hintText: 'Drop location',
-                    mapController: _mapController,
-                    controller: _toLocation,
-                    onLocationSelected: (lat, lng, address) {
-                      _toLocation.text = address;
-                      toLatitude = lat.toString();
-                      toLongitude = lng.toString();
-                      Navigator.pop(context);
-                      if(dropNameController.text.isEmpty || dropPhoneController.text.isEmpty){
-                        showInformation();
-                      }else{
-                        Map<String, dynamic> data = {
-                          'pick_lat':widget.fromLatitude,
-                          'pick_long':widget.fromLongitude,
-                          'drop_lat':toLatitude,
-                          'drop_long':toLongitude
-                        };
-                        getDistance(data);
-                      }
-                      setState(() {});
-                    },
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  /// ACTION BUTTONS
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.map),
-                          label: const Text('Select on map'),
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add),
-                          label: const Text('Add stops'),
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  /// 🔥 RECENT LIST (SCROLLABLE)
-                  Expanded(
-                    child: widget.recentList.isEmpty
-                        ? Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: Colors.grey.shade200),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-
-                          /// 📍 ICON
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.location_off,
-                              color: Colors.blue,
-                              size: 30,
-                            ),
-                          ),
-
-                          const SizedBox(height: 14),
-
-                          /// TITLE
-                          const Text(
-                            'No Recent Locations',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-
-                          const SizedBox(height: 6),
-
-                          /// SUBTITLE
-                          Text(
-                            'Your searched or selected locations will appear here.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          /// BUTTON (optional)
-                          ElevatedButton(
-                            onPressed: () {
-                              // 👉 open search or get current location
-                              // getCurrentLocation();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: const Text('Use Current Location'),
-                          )
-                        ],
-                      ),
-                    )
-                        : ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      itemCount: widget.recentList.length,
-                      itemBuilder: (context, index) {
-                        final item = widget.recentList[index];
-
-                        return GestureDetector(
-                          onTap: () {
-                            _toLocation.text = item.address;
-                            toLatitude = item.lat.toString();
-                            toLongitude = item.lng.toString();
-                            Navigator.pop(context);
-                            if(dropNameController.text.isEmpty || dropPhoneController.text.isEmpty){
-                              showInformation();
-                            }else{
-                              Map<String, dynamic> data = {
-                                'pick_lat':widget.fromLatitude,
-                                'pick_long':widget.fromLongitude,
-                                'drop_lat':toLatitude,
-                                'drop_long':toLongitude
-                              };
-                              getDistance(data);
-                            }
-                            // Map<String, dynamic> data = {
-                            //   'pick_lat':fromLatitude,
-                            //   'pick_long':fromLongitude,
-                            //   'drop_lat':toLatitude,
-                            //   'drop_long':toLongitude
-                            // };
-                            // getDistance(data);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (_) => InstantDetailPage(
-                            //     pickupAddress:_fromLocation.text,
-                            //     pickupLat: fromLatitude!,
-                            //     pickupLong: fromLongitude!,
-                            //     dropAddress: _toLocation.text,
-                            //     dropLat: toLatitude!,
-                            //     dropLong: toLongitude!,
-                            //     bookingPickKm: distanceKm,)),
-                            // );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Row(
-                              children: [
-
-                                /// 📍 ICON
-                                Container(
-                                  width: 42,
-                                  height: 42,
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.1),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.history,
-                                    color: Colors.blue,
-                                    size: 20,
-                                  ),
-                                ),
-
-                                const SizedBox(width: 12),
-
-                                /// 📄 TEXT
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item.address,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 4),
-
-                                      Text(
-                                        'Recent location',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                /// ➡️ ARROW
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 14,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
   }
 
   void showInformation(){
@@ -543,7 +246,8 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: SafeArea(child:
+      SingleChildScrollView(
         child:Column(
           children: [
 
@@ -553,8 +257,7 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
-              child: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQccn1dn7KLlmNDxNFcLvMxoNaO9OPsny3u6A&s',
+              child: Image.asset('assets/planet/parcel_man.jpg',
                 height: 220,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -644,11 +347,11 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
                                 margin: const EdgeInsets.symmetric(horizontal: 10),
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Colors.blue, Colors.blue],
-                                  ),
-                                  border: Border.all(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(100)
+                                    gradient: const LinearGradient(
+                                      colors: [Colors.orange, Colors.blue],
+                                    ),
+                                    border: Border.all(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(100)
                                 ),
                                 child: Row(
                                   children: [
@@ -716,8 +419,35 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
                                 ],
                               ),
                               InkWell(
-                                onTap: (){
-                                  showSearchSheet();
+                                onTap: () async {
+                                  final result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ParcelSearchScreen(
+                                        recentList: widget.recentList,
+                                        hintText: 'Drop location',
+                                      ),
+                                    ),
+                                  );
+
+                                  if (result != null && result is Map<String, dynamic>) {
+                                    _toLocation.text = result['description'] ?? result['address'];
+                                    toLatitude = result['lat'].toString();
+                                    toLongitude = result['lng'].toString();
+                                    
+                                    if (dropNameController.text.isEmpty || dropPhoneController.text.isEmpty) {
+                                      showInformation();
+                                    } else {
+                                      Map<String, dynamic> data = {
+                                        'pick_lat': widget.fromLatitude,
+                                        'pick_long': widget.fromLongitude,
+                                        'drop_lat': toLatitude,
+                                        'drop_long': toLongitude
+                                      };
+                                      getDistance(data);
+                                    }
+                                    setState(() {});
+                                  }
                                 },
                                 child: AnimatedBuilder(
                                   animation: _controller,
@@ -818,7 +548,7 @@ class _ParcelLocationPageState extends State<ParcelLocationPage> with SingleTick
           ],
         ),
 
-      ),
+      )),
     );
   }
 

@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mahakal/utill/app_constants.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:ui' as ui;
 import '../../data/datasource/remote/http/httpClient.dart';
+import '../profile/controllers/profile_contrroller.dart';
 import 'instant_booking_page.dart';
 import 'model/instantcarmodel.dart';
+import 'socket_instant/instant_socket_page.dart';
 
 class InstantDetailPage extends StatefulWidget {
   final String pickupAddress;
@@ -23,6 +27,11 @@ class InstantDetailPage extends StatefulWidget {
   final String dropLong;
   final double bookingPickKm;
   final String bookingType;
+  final String? pickName;
+  final String? dropName;
+  final String? pickPhone;
+  final String? dropPhone;
+  final String? dropHouseNo;
   const InstantDetailPage({super.key,
     required this.pickupAddress,
     required this.pickupLat,
@@ -32,6 +41,8 @@ class InstantDetailPage extends StatefulWidget {
     required this.dropLong,
     required this.bookingPickKm,
     required this.bookingType,
+    this.pickName, this.dropName, this.pickPhone, this.dropPhone, this.dropHouseNo,
+
   });
 
   @override
@@ -42,6 +53,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   Position? _currentPosition;
   GoogleMapController? _controller;
   Set<Marker> _markers = {};
+  Random random = Random();
   Set<Polyline> _polylines = {};
  int currentIndex = 0;
 
@@ -58,14 +70,19 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   double distanceKm = 0.0;
   bool isLoading = true;
   int selectedVehicleIndex = 0; // 0: Bike, 1: Auto, 2: Cab Economy, 3: E-Rickshaw
+  String pickAmount  = 'pick';
   Timer? _bikeTimer;
   // Vehicle data
   List<CarAvailable> vehiclesList = <CarAvailable>[];
   List<BikeLocation> vehiclesMarks = <BikeLocation>[];
 
   void getVehicleList() async{
-    String type = widget.bookingType == 'cab' ? 'get-instant-booking-cabs' : 'get-parcel-booking-cabs';
-    var res = await HttpService().postApi('/api/v1/self-vehicle/$type', {
+    String type = widget.bookingType == 'instant' ? 'get-instant-booking-cabs' : 'get-parcel-booking-cabs';
+
+    final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
+    Map<String, dynamic> data = {
       'pickup_address': widget.pickupAddress,
       'pickup_lat': widget.pickupLat,
       'pickup_long': widget.pickupLong,
@@ -73,8 +90,12 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
       'drop_lat': widget.dropLat,
       'drop_long': widget.dropLong,
       'booking_pick_km': widget.bookingPickKm,
-      'lead_id':''
-    });
+      'lead_id':'',
+      if (referralCode != null && referralCode.isNotEmpty)
+        "active_agent_code": referralCode,
+    };
+
+    var res = await HttpService().postApi('/api/v1/self-vehicle/$type', data);
     print('Api response instant data $res');
     if(res['status'] == 1){
      setState(() {
@@ -90,6 +111,13 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   Future<void> bookNow(Map<String, dynamic> data) async {
     if (isLoading) return;
 
+    final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
+    if (referralCode != null && referralCode.isNotEmpty) {
+      data["active_agent_code"] = referralCode;
+    }
+
     setState(() => isLoading = true);
 
     var res = await HttpService()
@@ -99,11 +127,13 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
 
     /// ✅ Success check
     if (res != null && res['status'] == 1) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Booking confirmed!')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('Booking confirmed!')),
+      // );
+      final userId = Provider.of<ProfileController>(context, listen: false).userID;
       String id = res['data']['order_id'].toString();
-      Navigator.push(context, MaterialPageRoute(builder: (_)=>
+      InstantSocketService().joinUser(orderId: id, userId: userId);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>
           SearchingRideScreen(
             markers: _markers,
             polylines: _polylines,
@@ -113,6 +143,23 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           )));
       // 👉 optional: navigate ya next step
       // Get.to(() => SuccessPage());
+      Map<String, dynamic> data = {
+        'order_id': id,
+        'user_id': userId,
+        'cab_type': '${vehiclesList[selectedVehicleIndex].vehicleType}',
+        'booking_type': widget.bookingType,
+        'pickup_address': widget.pickupAddress,
+        'pickup_lat': widget.pickupLat,
+        'pickup_long': widget.pickupLong,
+        'drop_address': widget.dropAddress,
+        'drop_lat': widget.dropLat,
+        'drop_long': widget.dropLong,
+        'booking_pick_km': widget.bookingPickKm,
+        'type': widget.bookingType,
+        'price': '${vehiclesList[selectedVehicleIndex].price}',
+        'tip_price': '',
+      };
+      InstantSocketService().sendInstantOrder(data);
 
     } else {
       /// ❌ Failed case
@@ -295,6 +342,8 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
         Marker(
           markerId: MarkerId('driver_$i'),
           position: LatLng(lat, lng),
+          rotation: random.nextInt(360).toDouble(),
+          anchor: const Offset(0.5, 0.5),
           icon: bikeIcon ?? BitmapDescriptor.defaultMarker,
           // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
         ),
@@ -305,8 +354,15 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
   }
 
   void getMarkersBike(String id) async {
-    var res = await HttpService()
-        .getApi('/api/v1/self-vehicle/get-near-vehicles/$id');
+    final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
+    String url = '/api/v1/self-vehicle/get-near-vehicles/$id';
+    if (referralCode != null && referralCode.isNotEmpty) {
+      url += "?active_agent_code=$referralCode";
+    }
+
+    var res = await HttpService().getApi(url);
 
     print("API DATA 👉 ${res['data']}"); // 🔥 MUST
 
@@ -526,7 +582,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                                 gradient: LinearGradient(
                                   colors: [
                                     Colors.blue.shade400,
-                                    Colors.blue.shade800,
+                                    Colors.orange.shade800,
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -676,8 +732,8 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                                 });
                               },
                               icon: Icons.account_balance_wallet,
-                              iconColor: Colors.blue,
-                              iconBgColor: Colors.blue.shade50,
+                              iconColor: Colors.orange,
+                              iconBgColor: Colors.orange.shade50,
                               title: 'Mahakal Ride Wallet',
                               subtitle: 'Balance: ₹200',
                               extra: Container(
@@ -970,14 +1026,14 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue.shade400, Colors.blue.shade400],
+          colors: [Colors.orange.shade400, Colors.blue.shade400],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.shade300.withOpacity(0.3),
+            color: Colors.orange.shade300.withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -1230,6 +1286,146 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                 ],
               ),
 
+               if(widget.bookingType == 'parcel')...[
+                 SizedBox(height: 10,),
+                 Row(
+                   children: [
+                     Container(
+                       padding: const EdgeInsets.all(8),
+                       decoration: BoxDecoration(
+                         color: Colors.blue.withOpacity(.1),
+                         borderRadius: BorderRadius.circular(12),
+                       ),
+                       child: const Icon(
+                         Icons.payments_rounded,
+                         color: Colors.blue,
+                         size: 18,
+                       ),
+                     ),
+
+                     const SizedBox(width: 12),
+
+                     const Text(
+                       "Pay At",
+                       style: TextStyle(
+                         color: Colors.black87,
+                         fontWeight: FontWeight.bold,
+                         fontSize: 14,
+                       ),
+                     ),
+
+                     const Spacer(),
+
+                     /// PICKUP BUTTON
+                     GestureDetector(
+                       onTap: () {
+                         setState(() {
+                           pickAmount = 'pick';
+                         });
+                       },
+                       child: AnimatedContainer(
+                         duration: const Duration(milliseconds: 250),
+                         padding: const EdgeInsets.symmetric(
+                           horizontal: 14,
+                           vertical: 5,
+                         ),
+                         decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(30),
+                           border: Border.all(
+                             color: pickAmount == 'pick'
+                                 ? Colors.blue
+                                 : Colors.grey.shade300,
+                           ),
+                           gradient: pickAmount == 'pick'
+                               ? const LinearGradient(
+                             colors: [
+                               Colors.blue,
+                               Colors.orange,
+                             ],
+                           )
+                               : null,
+                           color: pickAmount == 'pick'
+                               ? null
+                               : Colors.white,
+                           boxShadow: [
+                             if (pickAmount == 'pick')
+                               BoxShadow(
+                                 color: Colors.blue.withOpacity(.25),
+                                 blurRadius: 10,
+                                 offset: const Offset(0, 4),
+                               ),
+                           ],
+                         ),
+                         child: Text(
+                           "Pickup",
+                           style: TextStyle(
+                             color: pickAmount == 'pick'
+                                 ? Colors.white
+                                 : Colors.blue,
+                             fontWeight: FontWeight.w600,
+                           ),
+                         ),
+                       ),
+                     ),
+
+                     const SizedBox(width: 10),
+
+                     /// DROP BUTTON
+                     GestureDetector(
+                       onTap: () {
+                         setState(() {
+                           pickAmount = 'drop';
+                         });
+                       },
+                       child: AnimatedContainer(
+                         duration: const Duration(milliseconds: 250),
+                         padding: const EdgeInsets.symmetric(
+                           horizontal: 14,
+                           vertical: 5,
+                         ),
+                         decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(30),
+                           border: Border.all(
+                             color: pickAmount == 'drop'
+                                 ? Colors.blue
+                                 : Colors.grey.shade300,
+                           ),
+                           gradient: pickAmount == 'drop'
+                               ? const LinearGradient(
+                             colors: [
+                               Colors.blue,
+                               Colors.orange,
+                             ],
+                           )
+                               : null,
+                           color: pickAmount == 'drop'
+                               ? null
+                               : Colors.white,
+                           boxShadow: [
+                             if (pickAmount == 'drop')
+                               BoxShadow(
+                                 color: Colors.blue.withOpacity(.25),
+                                 blurRadius: 10,
+                                 offset: const Offset(0, 4),
+                               ),
+                           ],
+                         ),
+                         child: Text(
+                           "Drop",
+                           style: TextStyle(
+                             color: pickAmount == 'drop'
+                                 ? Colors.white
+                                 : Colors.blue,
+                             fontWeight: FontWeight.w600,
+                           ),
+                         ),
+                       ),
+                     ),
+                   ],
+                 ),
+                 ],
+
+
               const SizedBox(height: 14),
 
               /// 🔥 Main CTA Button
@@ -1242,11 +1438,16 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                       : () {
                     Map<String, dynamic> data = {
                       'lead_id': leadId,
-                      'vehicle_category_id':
-                      '${vehiclesList[selectedVehicleIndex].vehicleId}',
+                      'vehicle_category_id': '${vehiclesList[selectedVehicleIndex].vehicleId}',
                       'id': '${vehiclesList[selectedVehicleIndex].id}',
                       'price': '${vehiclesList[selectedVehicleIndex].price}',
-                      'pre_paid': 0
+                      'pre_paid': 0,
+                      'parcel_pick_username':widget.pickName,
+                      'parcel_pick_phone':widget.pickPhone,
+                      'parcel_drop_houseno':widget.dropHouseNo,
+                      'parcel_drop_username':widget.dropName,
+                      'parcel_drop_phone':widget.dropPhone,
+                      'payment_collect':pickAmount  //pick/drop amount collect
                     };
 
                     bookNow(data);
@@ -1482,7 +1683,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: isSelected
-                                          ? Colors.blue.shade700
+                                          ? Colors.orange.shade700
                                           : Colors.black,
                                     ),
                                   ),
@@ -1601,7 +1802,7 @@ class _InstantDetailPageState extends State<InstantDetailPage> {
           ],
 
           /// subtle border
-          border: Border.all(color: Colors.grey.shade200),
+          // border: Border.all(color: Colors.grey.shade200),
         ),
 
         child: Row(

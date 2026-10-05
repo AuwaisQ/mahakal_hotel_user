@@ -17,9 +17,11 @@ class ViewAllTours extends StatefulWidget {
     super.key,
     required this.stateName,
     required this.tourSlug,
+    this.title,
   });
   final String stateName;
   final String tourSlug;
+  final String? title;
 
   @override
   State<ViewAllTours> createState() => _ViewAllToursState();
@@ -73,8 +75,10 @@ class _ViewAllToursState extends State<ViewAllTours> {
 
     Map<String, dynamic> data = {
       "special_type": widget.tourSlug,
-      "state_name": widget.stateName,
     };
+    if (widget.stateName.isNotEmpty) {
+      data["state_name"] = widget.stateName;
+    }
 
     try {
       final res = await HttpService().postApi(AppConstants.tourStateUrl, data);
@@ -530,7 +534,7 @@ class _ViewAllToursState extends State<ViewAllTours> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          widget.stateName ?? "N/A",
+          widget.title ?? widget.stateName.toUpperCase() ?? "N/A",
           style: const TextStyle(
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
         ),

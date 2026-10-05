@@ -39,6 +39,7 @@ class SelfList {
   String? orderStatus;
   String? thumbnail;
   String? serviceName;
+  String? createdAt;
 
   SelfList({
     this.id,
@@ -47,6 +48,7 @@ class SelfList {
     this.orderStatus,
     this.thumbnail,
     this.serviceName,
+    this.createdAt,
   });
 
   factory SelfList.fromJson(Map<String, dynamic> json) => SelfList(
@@ -56,6 +58,7 @@ class SelfList {
     orderStatus: json['order_status'],
     thumbnail: json['thumbnail'],
     serviceName: json['service_name'],
+    createdAt: json['created_at'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -65,5 +68,6 @@ class SelfList {
     'order_status': orderStatus,
     'thumbnail': thumbnail,
     'service_name': serviceName,
+    'created_at': createdAt,
   };
 }

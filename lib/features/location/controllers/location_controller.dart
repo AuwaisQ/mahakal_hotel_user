@@ -45,6 +45,15 @@ class LocationController with ChangeNotifier {
 
   String? _postalCode;
   String? get postalCode => _postalCode;
+  String? _city;
+  String? get city => _city;
+  String? _state;
+  String? get state => _state;
+  String? _country;
+  String? get country => _country;
+  String? _countryCode;
+  String? get countryCode => _countryCode;
+  bool _isLoadingLocation = false;
 
   Position get position => _position;
   Position get pickPosition => _pickPosition;
@@ -70,62 +79,101 @@ class LocationController with ChangeNotifier {
     _locationController.text = text;
   }
 
-  void getCurrentLocation(BuildContext context, bool fromAddress,
+  Future<void> getCurrentLocation(BuildContext context, bool fromAddress,
       {GoogleMapController? mapController}) async {
+    if (_isLoadingLocation) return;
+    _isLoadingLocation = true;
     _loading = true;
     notifyListeners();
-    Position myPosition;
+
+    Position? myPosition;
+
     try {
-      Position newLocalData = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      myPosition = newLocalData;
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (serviceEnabled) {
+        LocationPermission permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+        }
+        if (permission == LocationPermission.always ||
+            permission == LocationPermission.whileInUse) {
+          // 1. Try instant cached position first (0ms latency, zero battery/CPU)
+          try {
+            myPosition = await Geolocator.getLastKnownPosition();
+          } catch (e) {
+            if (kDebugMode) {
+              print('Cached position error: $e');
+            }
+          }
+
+          // 2. Fallback to fresh position with low accuracy (triangulation, fast) and short timeout
+          if (myPosition == null) {
+            try {
+              myPosition = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.low,
+                timeLimit: const Duration(seconds: 3),
+              );
+            } catch (e) {
+              if (kDebugMode) {
+                print('Fresh GPS location error or timeout: $e');
+              }
+            }
+          }
+        }
+      }
     } catch (e) {
-      myPosition = Position(
-        latitude: double.parse('0'),
-        longitude: double.parse('0'),
-        timestamp: DateTime.now(),
-        accuracy: 1,
-        altitude: 1,
-        heading: 1,
-        speed: 1,
-        speedAccuracy: 1,
-        altitudeAccuracy: 1,
-        headingAccuracy: 1,
-      );
+      if (kDebugMode) {
+        print('Error getting location: $e');
+      }
     }
-    if (fromAddress) {
-      _position = myPosition;
-    } else {
-      _pickPosition = myPosition;
+
+    if (myPosition != null &&
+        myPosition.latitude != 0 &&
+        myPosition.longitude != 0) {
+      if (fromAddress) {
+        _position = myPosition;
+      } else {
+        _pickPosition = myPosition;
+      }
+
+      if (mapController != null) {
+        try {
+          mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(myPosition.latitude, myPosition.longitude),
+                zoom: 17),
+          ));
+        } catch (_) {}
+      }
+
+      try {
+        final ctx = Get.context ?? context;
+        String address = await getAddressFromGeocode(
+            LatLng(myPosition.latitude, myPosition.longitude), ctx);
+        Placemark myPlaceMark = Placemark(
+          name: address,
+          locality: _city ?? '',
+          postalCode: _postalCode ?? '',
+          country: _country ?? 'India',
+          administrativeArea: _state ?? '',
+        );
+        fromAddress ? _address = myPlaceMark : _pickAddress = myPlaceMark;
+        if (fromAddress && address.isNotEmpty) {
+          _locationController.text = address;
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print('Error updating address model: $e');
+        }
+      }
     }
-    if (mapController != null) {
-      mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(myPosition.latitude, myPosition.longitude),
-            zoom: 17),
-      ));
-    }
-    Placemark myPlaceMark;
-    try {
-      String address = await getAddressFromGeocode(
-          LatLng(myPosition.latitude, myPosition.longitude), Get.context!);
-      myPlaceMark =
-          Placemark(name: address, locality: '', postalCode: '', country: '');
-    } catch (e) {
-      String address = await getAddressFromGeocode(
-          LatLng(myPosition.latitude, myPosition.longitude), Get.context!);
-      myPlaceMark =
-          Placemark(name: address, locality: '', postalCode: '', country: '');
-    }
-    fromAddress ? _address = myPlaceMark : _pickAddress = myPlaceMark;
-    if (fromAddress) {
-      _locationController.text = placeMarkToAddress(_address);
-    }
+
     _loading = false;
+    _isLoadingLocation = false;
     notifyListeners();
   }
 
-  void updateMapPosition(CameraPosition? position, bool fromAddress, String? address, BuildContext context) async {
+  Future<void> updateMapPosition(CameraPosition? position, bool fromAddress, String? address, BuildContext context) async {
     if (_updateAddAddressData) {
       _loading = true;
       // notifyListeners();
@@ -187,13 +235,13 @@ class LocationController with ChangeNotifier {
     }
   }
 
-  void setLocation(String? placeID, String? address,
+  Future<void> setLocation(String? placeID, String? address,
       GoogleMapController? mapController) async {
     _loading = true;
     notifyListeners();
     PlaceDetailsModel detail;
     ApiResponse response =
-        await locationServiceInterface.getPlaceDetails(placeID);
+    await locationServiceInterface.getPlaceDetails(placeID);
     detail = PlaceDetailsModel.fromJson(response.response!.data);
 
     _pickPosition = Position(
@@ -228,8 +276,10 @@ class LocationController with ChangeNotifier {
 
   void setAddAddressData() {
     _position = _pickPosition;
-    _address = _pickAddress!;
-    _locationController.text = placeMarkToAddress(_address);
+    if (_pickAddress != null) {
+      _address = _pickAddress!;
+      _locationController.text = placeMarkToAddress(_address);
+    }
     _updateAddAddressData = false;
     notifyListeners();
   }
@@ -246,14 +296,53 @@ class LocationController with ChangeNotifier {
 
   Future<String> getAddressFromGeocode(
       LatLng latLng, BuildContext context) async {
-    ApiResponse response =
-        await locationServiceInterface.getAddressFromGeocode(latLng);
     String address = '';
-    if (response.response!.statusCode == 200 &&
-        response.response!.data['status'] == 'OK') {
-      address =
-          response.response!.data['results'][0]['formatted_address'].toString();
+    try {
+      ApiResponse response =
+      await locationServiceInterface.getAddressFromGeocode(latLng);
+      if (response.response != null &&
+          response.response!.statusCode == 200 &&
+          response.response!.data['status'] == 'OK' &&
+          response.response!.data['results'] != null &&
+          (response.response!.data['results'] as List).isNotEmpty) {
+        final result = response.response!.data['results'][0];
+        address = result['formatted_address']?.toString() ?? '';
+
+        // Extract structured components from Google Geocoding response
+        if (result['address_components'] != null) {
+          final components = result['address_components'] as List;
+          for (var comp in components) {
+            final types = (comp['types'] as List?)
+                ?.map((t) => t.toString())
+                .toList() ??
+                [];
+            final longName = comp['long_name']?.toString() ?? '';
+            final shortName = comp['short_name']?.toString() ?? '';
+
+            if (types.contains('postal_code')) {
+              _postalCode = longName;
+            } else if (types.contains('locality')) {
+              _city = longName;
+            } else if (_city == null &&
+                (types.contains('administrative_area_level_2') ||
+                    types.contains('sublocality_level_1') ||
+                    types.contains('sublocality'))) {
+              _city = longName;
+            } else if (types.contains('administrative_area_level_1')) {
+              _state = longName;
+            } else if (types.contains('country')) {
+              _country = longName;
+              _countryCode = shortName;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting address from geocode API: $e');
+      }
     }
+
     return address;
   }
 
@@ -261,7 +350,7 @@ class LocationController with ChangeNotifier {
       BuildContext context, String text) async {
     if (text.isNotEmpty) {
       ApiResponse response =
-          await locationServiceInterface.searchLocation(text);
+      await locationServiceInterface.searchLocation(text);
       if (response.response!.statusCode == 200 &&
           response.response!.data['status'] == 'OK') {
         _predictionList = [];

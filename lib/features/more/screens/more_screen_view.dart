@@ -12,7 +12,6 @@ import 'package:mahakal/features/chat/screens/inbox_screen.dart';
 import 'package:mahakal/localization/language_constrants.dart';
 import 'package:mahakal/features/auth/controllers/auth_controller.dart';
 import 'package:mahakal/features/splash/controllers/splash_controller.dart';
-import 'package:mahakal/theme/controllers/theme_controller.dart';
 import 'package:mahakal/utill/custom_themes.dart';
 import 'package:mahakal/utill/dimensions.dart';
 import 'package:mahakal/utill/images.dart';
@@ -83,69 +82,57 @@ class _MoreScreenState extends State<MoreScreen> {
         Provider.of<SplashController>(context, listen: false);
     var authController = Provider.of<AuthController>(context, listen: false);
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       body: CustomScrollView(
         controller: widget.scrollController,
         slivers: [
           SliverAppBar(
               floating: true,
               elevation: 0,
-              expandedHeight: 160,
+              expandedHeight: 180,
               pinned: true,
               centerTitle: false,
               automaticallyImplyLeading: false,
-              backgroundColor: Theme.of(context).highlightColor,
-              collapsedHeight: 160,
-              flexibleSpace: const ProfileInfoSectionWidget()),
+              backgroundColor: Theme.of(context).primaryColor,
+              collapsedHeight: 60,
+              flexibleSpace: const FlexibleSpaceBar(
+                background: ProfileInfoSectionWidget(),
+              )),
           SliverToBoxAdapter(
             child: Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: Dimensions.paddingSizeSmall),
+                        padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
                         child: Center(child: MoreHorizontalSection())),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(
                           Dimensions.paddingSizeDefault,
+                          Dimensions.paddingSizeLarge,
                           Dimensions.paddingSizeDefault,
-                          Dimensions.paddingSizeDefault,
-                          0),
+                          Dimensions.paddingSizeSmall),
                       child: Text(
                         getTranslated('general', context) ?? '',
-                        style: textRegular.copyWith(
-                            fontSize: Dimensions.fontSizeExtraLarge,
+                        style: textBold.copyWith(
+                            fontSize: Dimensions.fontSizeLarge,
                             color: Theme.of(context).primaryColor),
                       ),
                     ),
                     Padding(
                         padding:
-                            const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                            const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                         child: Container(
-                            padding: const EdgeInsets.all(
-                                Dimensions.paddingSizeSmall),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    Dimensions.fontSizeExtraSmall),
+                                borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Theme.of(context)
-                                          .hintColor
-                                          .withOpacity(.05),
-                                      blurRadius: 1,
-                                      spreadRadius: 1,
-                                      offset: const Offset(0, 1))
+                                      color: Colors.black.withOpacity(0.05),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4))
                                 ],
-                                color: Provider.of<ThemeController>(context)
-                                        .darkTheme
-                                    ? Colors.white.withOpacity(.05)
-                                    : Theme.of(context).cardColor),
+                                color: Theme.of(context).cardColor),
                             child: Column(children: [
-                              // MenuButtonWidget(image: Images.trackOrderIcon, title: getTranslated('TRACK_ORDER', context),
-                              //     navigateTo: const GuestTrackOrderScreen()),
-
                               if (Provider.of<AuthController>(context,
                                       listen: false)
                                   .isLoggedIn())
@@ -163,11 +150,6 @@ class _MoreScreenState extends State<MoreScreen> {
                                   image: Images.coupon,
                                   title: getTranslated('coupons', context),
                                   navigateTo: const CouponList()),
-
-                              // if(!isGuestMode)
-                              //   MenuButtonWidget(image: Images.refIcon, title: getTranslated('refer_and_earn', context),
-                              //       isProfile: true,
-                              //       navigateTo: const ReferAndEarnScreen()),
 
                               MenuButtonWidget(
                                   image: Images.category,
@@ -200,37 +182,27 @@ class _MoreScreenState extends State<MoreScreen> {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(
                             Dimensions.paddingSizeDefault,
+                            Dimensions.paddingSizeLarge,
                             Dimensions.paddingSizeDefault,
-                            Dimensions.paddingSizeDefault,
-                            0),
+                            Dimensions.paddingSizeSmall),
                         child: Text(
                             getTranslated('help_and_support', context) ?? '',
-                            style: textRegular.copyWith(
-                                fontSize: Dimensions.fontSizeExtraLarge,
-                                color:
-                                    Theme.of(context).colorScheme.onPrimary))),
+                            style: textBold.copyWith(
+                                fontSize: Dimensions.fontSizeLarge,
+                                color: Theme.of(context).primaryColor)),),
                     Padding(
                         padding:
-                            const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                            const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                         child: Container(
-                            padding: const EdgeInsets.all(
-                                Dimensions.paddingSizeSmall),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    Dimensions.fontSizeExtraSmall),
+                                borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Theme.of(context)
-                                          .hintColor
-                                          .withOpacity(.05),
-                                      blurRadius: 1,
-                                      spreadRadius: 1,
-                                      offset: const Offset(0, 1))
+                                      color: Colors.black.withOpacity(0.05),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4))
                                 ],
-                                color: Provider.of<ThemeController>(context)
-                                        .darkTheme
-                                    ? Colors.white.withOpacity(.05)
-                                    : Theme.of(context).cardColor),
+                                color: Theme.of(context).cardColor),
                             child: Column(children: [
                               singleVendor
                                   ? const SizedBox()
@@ -350,19 +322,12 @@ class _MoreScreenState extends State<MoreScreen> {
                                         .aboutUs,
                                   ))
                             ]))),
-                    ListTile(
-                        leading: SizedBox(
-                            width: 30,
-                            child: Image.asset(
-                              Images.logOut,
-                              color: Theme.of(context).primaryColor,
-                            )),
-                        title: Text(
-                            isGuestMode
-                                ? getTranslated('sign_in', context)!
-                                : getTranslated('sign_out', context)!,
-                            style: titilliumRegular.copyWith(
-                                fontSize: Dimensions.fontSizeLarge)),
+
+                    const SizedBox(height: Dimensions.paddingSizeDefault),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                      child: InkWell(
                         onTap: () {
                           if (isGuestMode) {
                             Navigator.push(
@@ -374,9 +339,38 @@ class _MoreScreenState extends State<MoreScreen> {
                                 backgroundColor: Colors.transparent,
                                 context: context,
                                 builder: (_) =>
-                                    const LogoutCustomBottomSheetWidget());
+                                const LogoutCustomBottomSheetWidget());
                           }
-                        }),
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: isGuestMode ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                isGuestMode ? Icons.login : Icons.logout,
+                                color: isGuestMode ? Colors.green : Colors.red,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                isGuestMode
+                                    ? getTranslated('sign_in', context)!
+                                    : getTranslated('sign_out', context)!,
+                                style: textBold.copyWith(
+                                  fontSize: Dimensions.fontSizeLarge,
+                                  color: isGuestMode ? Colors.green : Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     Padding(
                         padding: const EdgeInsets.only(
                             bottom: Dimensions.paddingSizeDefault),

@@ -1572,7 +1572,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                       color: _selectedOption ==
                                                               'pickup'
                                                           ? Colors
-                                                              .deepOrange[300]!
+                                                              .blue[300]!
                                                           : Colors.grey[300]!,
                                                       width: 1.5,
                                                     ),
@@ -1665,7 +1665,7 @@ class _UseTypeThreeState extends State<UseTypeThree> {
                                                       color: _selectedOption ==
                                                               'pickup_drop'
                                                           ? Colors
-                                                              .deepOrange[300]!
+                                                              .blue[300]!
                                                           : Colors.grey[300]!,
                                                       width: 1.5,
                                                     ),

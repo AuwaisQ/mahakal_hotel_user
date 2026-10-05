@@ -4,7 +4,7 @@ import 'package:mahakal/utill/images.dart';
 class AppConstants {
   static const String appName = 'Mahakal.com';
   static const String slogan = 'One Place for all Devotional Needs';
-  static const String appVersion = '12.40';
+  static const String appVersion = '12.56';
 
   static const String otherBaseUrl = 'https://hotels.mahakal.com';
   // static const String baseUrl = 'https://uat.pavtr.in';
@@ -150,6 +150,20 @@ class AppConstants {
       '/api/v1/customer/order/offline-payment-method-list';
   static const String sellerWiseCategoryList = '/api/v1/categories?seller_id=';
   static const String sellerWiseBrandList = '/api/v1/brands?seller_id=';
+
+
+  // Parking
+  static const vehicleListUri = '/api/v1/parking/vehicle-list';
+  static const addVehicleUri = '/api/v1/parking/user-vehicle-add';
+  static const userVehicleListUri = '/api/v1/parking/user-vehicle-list';
+  static const nearParkingUri = '/api/v1/parking/get-all-near-parking';
+  static const parkingDetailsUri = '/api/v1/parking/parking-details';
+  static const createParkingLeadUri = '/api/v1/parking/parking-lead-create';
+  static const parkingBookingSuccessUri =
+      '/api/v1/parking/parking-booking-success';
+  static const parkingOrderListUri = '/api/v1/parking/parking-order-list';
+  static const parkingOrderDetailsUri = '/api/v1/parking/parking-order-details';
+
 
   //address
   static const String updateAddressUri = '/api/v1/customer/address/update';

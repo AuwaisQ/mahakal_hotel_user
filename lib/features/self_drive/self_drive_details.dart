@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mahakal/features/self_drive/self_payment_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/datasource/remote/http/httpClient.dart';
 import '../../main.dart';
@@ -18,6 +19,9 @@ class CarSelfDetails extends StatefulWidget {
   final double totalHour;
   final String date;
   final String leadId;
+  final int totalDays;
+  final String? fuelType;
+  final List<dynamic> multiaddress;
 
   const CarSelfDetails({
     super.key,
@@ -27,6 +31,9 @@ class CarSelfDetails extends StatefulWidget {
     required this.totalHour,
     required this.date,
     required this.leadId,
+    required this.totalDays,
+    this.fuelType,
+    required this.multiaddress,
   });
 
   @override
@@ -42,7 +49,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
   int _selectedPickupPointIndex = 0;
   int _selectedInsuranceIndex = -1;
   int totalInsuranceAmount = 0;
-  bool isAcSelected = true;
+  bool isAcSelected = false;
 
   int getBasePrice(CarDetail car) {
     int price;
@@ -76,9 +83,57 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
     return price;
   }
 
+  double getTotalAmount(CarDetail car) {
+    int totalHours = widget.totalHour.ceil();
+    int totalDays = widget.totalDays ?? 1;
+
+    double basePrice = getBasePrice(car).toDouble();
+
+    double totalKmCharge = 0;
+
+    if (widget.type == 'two-way') {
+      double minKmPerDay = (car.kmMinimumRound ?? 0).toDouble();
+
+      double actualKm = widget.totalHour; // jab tak real KM nahi hai
+
+      double minKmTotal = minKmPerDay * totalDays;
+
+      double chargeableKm =
+      actualKm < minKmTotal ? minKmTotal : actualKm;
+
+      totalKmCharge = chargeableKm * basePrice;
+    } else {
+      totalKmCharge = basePrice * totalHours;
+    }
+
+    /// ✅ DRIVER CHARGE FIX (IMPORTANT)
+    double driverCharge = 0;
+    if (widget.type == 'local') {
+      driverCharge = (car.driverLocalPrice ?? 0).toDouble() * totalDays;
+    } else if (widget.type == 'two-way' || widget.type == 'one-way') {
+      driverCharge = (car.driverOutsidePrice ?? 0).toDouble() * totalDays;
+    }
+
+    double subTotal = totalKmCharge + driverCharge + totalInsuranceAmount;
+
+    double gstValue = (subTotal * (car.gstAmount ?? 0)) / 100;
+
+    return subTotal + gstValue;
+  }
+
   void fetchCarDetails() async {
     String slug = widget.slug;
-    var res = await HttpService().getApi('/api/v1/self-vehicle/getbyid/$slug');
+    String fuel = widget.type == "self" ? "" : "${widget.fuelType}";
+
+    final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
+    String url = '/api/v1/self-vehicle/getbyid/$slug?lead=${widget.leadId}&fuel_type=$fuel';
+    if (referralCode != null && referralCode.isNotEmpty) {
+      url += "&active_agent_code=$referralCode";
+    }
+
+    var res = await HttpService().getApi(url);
     if (res['status'] == 1) {
       carDetails = CarDetailsModel.fromJson(res);
       print('Api response data $carDetails');
@@ -129,9 +184,6 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
     }
 
     String unitType = widget.type == 'self' ? 'hour' : 'km';
-    // int? basePrice = widget.type == 'self'
-    //     ? (car.hourStatus == 1 ? car.hourBasicPriceWithAc : car.hourBasicPriceNonAc)
-    //     : (car.kmStatus == 1 ? car.kmBasicPriceWithAc : car.kmBasicPriceNonAc);
     int? minimum = widget.type == 'self' ? car.hourMinimum : car.kmMinimum;
     int? extraCharge =
         widget.type == 'self' ? car.hourExtraChargesHour : car.kmExtraChargesKm;
@@ -178,7 +230,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
               ),
 
               // Important Note Card
-              buildImportantNoteCard(car, unitType, minimum!, extraCharge!),
+              // buildImportantNoteCard(car, unitType, minimum!, extraCharge!),
 
               // Inclusion Section
               buildInclusionSection(car),
@@ -203,61 +255,19 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
               buildCancellationPolicySection(car.cancelPolicy!),
 
               // About Traveller
-              buildTravellerInfoSection(car),
+              widget.type == 'self' ? buildTravellerInfoSection(car) : SizedBox.shrink(),
 
               // Bottom Booking Card
-              widget.totalHour < minimum
-                  ? const SizedBox.shrink()
-                  : buildBottomBookingCard(car, unitType),
+             buildBottomBookingCard(car, unitType),
             ]),
           ),
         ],
       ),
 
       // Floating Action Button for Quick Booking
-      floatingActionButton: widget.totalHour < minimum
-          ? Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.blue.withOpacity(0.3),
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.info_outline,
-                    size: 18,
-                    color: Colors.blue,
-                  ),
-                  const SizedBox(width: 6),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black87,
-                      ),
-                      children: [
-                        const TextSpan(text: 'Minimum '),
-                        TextSpan(
-                          text: '$minimum $unitType',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        const TextSpan(text: ' booking required'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : AnimatedSlide(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+      floatingActionButton: AnimatedSlide(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOutCubic,
               offset: _hideFab ? const Offset(0, 1.8) : Offset.zero,
@@ -267,6 +277,14 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                 opacity: _hideFab ? 0 : 1,
                 child: FloatingActionButton.extended(
                   onPressed: () {
+                    double minKmPerDay = (car.kmMinimumRound ?? 0).toDouble();
+
+                    double actualKm = widget.totalHour; // jab tak real KM nahi hai
+
+                    double minKmTotal = minKmPerDay * widget.totalDays;
+
+                    double chargeableKm =
+                    actualKm < minKmTotal ? minKmTotal : actualKm;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -274,12 +292,17 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                           type: widget.type,
                           carName: car.enCabName ?? '',
                           location: widget.location,
-                          hour: widget.totalHour,
+                          hour: widget.type == 'two-way' ? chargeableKm : widget.totalHour,
                           pickupDate: widget.date,
                           price: '${getBasePrice(car)}',
-                          insAmount: totalInsuranceAmount,
+                          finalAmount: getTotalAmount(car).toInt(),
                           vehicleId: '${car.id}',
                           leadId: widget.leadId,
+                          gstAmount: car.gstAmount,
+                          driverLocal: car.driverLocalPrice,
+                          driverRound: car.driverOutsidePrice,
+                          totalDays: widget.totalDays,
+                          multiaddress: widget.multiaddress,
                         ),
                       ),
                     );
@@ -310,7 +333,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            '₹${getBasePrice(car)}/$unitType',
+                            '₹${getTotalAmount(car).round()}',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -327,7 +350,6 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                 ),
               ),
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -420,36 +442,21 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                     ],
                   ),
                 ),
-                if ((widget.type == 'self' && car.hourStatus == 1) ||
-                    (widget.type != 'self' && car.kmStatus == 1))
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.ac_unit, size: 14, color: Colors.blue),
-                        SizedBox(width: 4),
-                        Text(
-                          'AC',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
-                    ),
+                Spacer(),
+                Text(
+                  '${widget.totalDays} Day Trip',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[700],
                   ),
+                )
               ],
             ),
             const SizedBox(height: 12),
 
-            if(widget.type == 'self')...[
-              car.hourBasicPriceNonAc == 0 || car.hourBasicPriceWithAc == 0 ? SizedBox() :
+            // self details and bike condition
+            if (widget.type != 'self') ...[
               Row(
                 children: [
                   GestureDetector(
@@ -459,8 +466,8 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       });
                     },
                     child: Container(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: isAcSelected
                             ? Colors.blue
@@ -484,8 +491,8 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       });
                     },
                     child: Container(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: !isAcSelected
                             ? Colors.blue
@@ -503,68 +510,8 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 12),
             ],
-
-            if(widget.type != 'self')...[
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isAcSelected = true;
-                      });
-                    },
-                    child: Container(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: isAcSelected
-                            ? Colors.blue
-                            : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        "AC",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: isAcSelected ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isAcSelected = false;
-                      });
-                    },
-                    child: Container(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: !isAcSelected
-                            ? Colors.blue
-                            : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        "Non AC",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: !isAcSelected ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-            ],
-
 
             /// CAB NAME
             Row(
@@ -582,7 +529,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.15),
+                    color: Colors.orange.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -590,7 +537,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                     style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: Colors.blue,
+                      color: Colors.orange,
                     ),
                   ),
                 ),
@@ -631,14 +578,13 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                         size: 16, color: Colors.grey[600]),
                     const SizedBox(width: 6),
                     Text(
-                      '${widget.totalHour.toStringAsFixed(2)} $unitType',
+                      '${widget.totalHour.round()} $unitType',
                       style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                     ),
                   ],
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
             Divider(color: Colors.grey.shade300),
 
@@ -664,6 +610,40 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                 ),
               ],
             ),
+
+            SizedBox(height: 10,),
+            if (widget.type == 'two-way')
+              Container(
+                margin: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.blue.withOpacity(0.3),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      size: 16,
+                      color: Colors.blue[700],
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'Min ${car.kmMinimumRound} KM/day • Total Min ${car.kmMinimumRound! * (widget.totalDays ?? 1)} KM for ${widget.totalDays} day trip',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.blue[900],
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
             if (car.securityAmount != null && car.securityAmount! > 0) ...[
               const SizedBox(height: 16),
@@ -922,242 +902,6 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
       ),
     );
   }
-
-  // Widget buildInsurancePolicySection() {
-  //   final policies = carDetails?.carDetail?.policyInfo;
-  //   if (policies == null || policies.isEmpty) {
-  //     return const SizedBox.shrink();
-  //   }
-  //
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         const Text(
-  //           'Choose Insurance Policy',
-  //           style: TextStyle(
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //         const SizedBox(height: 12),
-  //
-  //         /// HORIZONTAL RADIO STYLE CARDS
-  //         SizedBox(
-  //           height: 60,
-  //           child: ListView.separated(
-  //             scrollDirection: Axis.horizontal,
-  //             itemCount: policies.length,
-  //             separatorBuilder: (_, __) => const SizedBox(width: 12),
-  //             itemBuilder: (context, index) {
-  //               final policy = policies[index];
-  //               final isSelected = _selectedInsuranceIndex == index;
-  //
-  //               return GestureDetector(
-  //                 onTap: () {
-  //                   setState(() {
-  //                     if (isSelected) {
-  //                       _selectedInsuranceIndex = -1;
-  //                       totalInsuranceAmount = 0;
-  //                     } else {
-  //                       _selectedInsuranceIndex = index;
-  //                       totalInsuranceAmount = int.parse('${policy.price}');
-  //                     }
-  //                   });
-  //                 },
-  //                 child: AnimatedContainer(
-  //                   duration: const Duration(milliseconds: 200),
-  //                   padding: const EdgeInsets.symmetric(
-  //                       horizontal: 20, vertical: 5),
-  //                   decoration: BoxDecoration(
-  //                     color: isSelected ? Colors.blue : Colors.white,
-  //                     borderRadius: BorderRadius.circular(16),
-  //                     border: Border.all(
-  //                       color: isSelected
-  //                           ? Colors.blue
-  //                           : Colors.grey.shade300,
-  //                       width: 1.5,
-  //                     ),
-  //                     boxShadow: [
-  //                       BoxShadow(
-  //                         color: Colors.black.withOpacity(0.05),
-  //                         blurRadius: 6,
-  //                         offset: const Offset(0, 3),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Row(
-  //                         children: [
-  //                           Container(
-  //                             width: 16,
-  //                             height: 16,
-  //                             decoration: BoxDecoration(
-  //                               shape: BoxShape.circle,
-  //                               border: Border.all(
-  //                                   color: isSelected
-  //                                       ? Colors.white
-  //                                       : Colors.blue,
-  //                                   width: 2),
-  //                             ),
-  //                             child: isSelected
-  //                                 ? Center(
-  //                               child: Container(
-  //                                 width: 8,
-  //                                 height: 8,
-  //                                 decoration: const BoxDecoration(
-  //                                   shape: BoxShape.circle,
-  //                                   color: Colors.white,
-  //                                 ),
-  //                               ),
-  //                             )
-  //                                 : null,
-  //                           ),
-  //                           const SizedBox(width: 6),
-  //                           Text(
-  //                             '₹${policy.price}',
-  //                             style: TextStyle(
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.bold,
-  //                               color: isSelected
-  //                                   ? Colors.white
-  //                                   : Colors.blue,
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                       const SizedBox(height: 6),
-  //                       Text(
-  //                         policy.enName ?? '',
-  //                         maxLines: 2,
-  //                         overflow: TextOverflow.ellipsis,
-  //                         style: TextStyle(
-  //                           fontSize: 12,
-  //                           fontWeight: FontWeight.w600,
-  //                           color: isSelected
-  //                               ? Colors.white
-  //                               : Colors.grey[800],
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //
-  //         /// SELECTED POLICY DETAILS
-  //         // if (_selectedInsuranceIndex != -1) ...[
-  //         //   const SizedBox(height: 10),
-  //         //   _buildSelectedPolicyDetails(policies[_selectedInsuranceIndex]),
-  //         // ],
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildSelectedPolicyDetails(PolicyInfo policy) {
-  //   return Container(
-  //     width: double.infinity,
-  //     padding: const EdgeInsets.all(14),
-  //     decoration: BoxDecoration(
-  //       gradient: LinearGradient(
-  //         colors: [
-  //           Colors.blue.withOpacity(0.06),
-  //           Colors.blue.withOpacity(0.12),
-  //         ],
-  //         begin: Alignment.topLeft,
-  //         end: Alignment.bottomRight,
-  //       ),
-  //       borderRadius: BorderRadius.circular(16),
-  //       border: Border.all(
-  //         color: Colors.blue.withOpacity(0.25),
-  //       ),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Colors.black.withOpacity(0.04),
-  //           blurRadius: 6,
-  //           offset: const Offset(0, 3),
-  //         ),
-  //       ],
-  //     ),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Row(
-  //           children: [
-  //             Container(
-  //               padding: const EdgeInsets.all(6),
-  //               decoration: BoxDecoration(
-  //                 color: Colors.blue.withOpacity(0.15),
-  //                 shape: BoxShape.circle,
-  //               ),
-  //               child: const Icon(
-  //                 Icons.verified,
-  //                 size: 14,
-  //                 color: Colors.blue,
-  //               ),
-  //             ),
-  //             const SizedBox(width: 8),
-  //             Expanded(
-  //               child: Text(
-  //                 policy.enName ?? '',
-  //                 style: const TextStyle(
-  //                   fontSize: 14,
-  //                   fontWeight: FontWeight.w700,
-  //                   color: Colors.blue,
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         const SizedBox(height: 10),
-  //         ...policy.policy?.take(3).map(
-  //               (item) => Padding(
-  //             padding: const EdgeInsets.only(bottom: 6),
-  //             child: Row(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 const Icon(
-  //                   Icons.check_circle,
-  //                   color: Colors.green,
-  //                   size: 14,
-  //                 ),
-  //                 const SizedBox(width: 6),
-  //                 Expanded(
-  //                   child: Text(
-  //                     item.enName ?? '',
-  //                     maxLines: 2,
-  //                     overflow: TextOverflow.ellipsis,
-  //                     style: const TextStyle(
-  //                       fontSize: 12,
-  //                       color: Colors.black87,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         )
-  //             .toList(),
-  //         if (policy.policy != null && policy.policy!.length > 3)
-  //           const Text(
-  //             '+ more benefits',
-  //             style: TextStyle(
-  //               fontSize: 11,
-  //               color: Colors.black54,
-  //               fontWeight: FontWeight.w500,
-  //             ),
-  //           ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Widget buildDrivingPoliciesSection(List<DrivingPolicy> policies) {
     if (policies.isEmpty) {
@@ -1610,7 +1354,7 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '₹${getBasePrice(car)}/$unitType',
+                    '₹${getTotalAmount(car).round()}',
                     style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
@@ -1637,6 +1381,14 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
+                double minKmPerDay = (car.kmMinimumRound ?? 0).toDouble();
+
+                double actualKm = widget.totalHour; // jab tak real KM nahi hai
+
+                double minKmTotal = minKmPerDay * widget.totalDays;
+
+                double chargeableKm =
+                actualKm < minKmTotal ? minKmTotal : actualKm;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -1644,12 +1396,17 @@ class _CarSelfDetailsState extends State<CarSelfDetails> {
                       type: widget.type,
                       carName: car.enCabName ?? '',
                       location: widget.location,
-                      hour: widget.totalHour,
+                      hour: widget.type == 'two-way' ? chargeableKm : widget.totalHour,
                       pickupDate: widget.date,
                       price: '${getBasePrice(car)}',
-                      insAmount: totalInsuranceAmount,
+                      finalAmount: getTotalAmount(car).toInt(),
                       vehicleId: '${car.id}',
                       leadId: widget.leadId,
+                      gstAmount: car.gstAmount,
+                      driverLocal: car.driverLocalPrice,
+                      driverRound: car.driverOutsidePrice,
+                      totalDays: widget.totalDays,
+                      multiaddress: widget.multiaddress,
                     ),
                   ),
                 );

@@ -21,12 +21,14 @@ import '../order/model/self_driver_ordermodel.dart';
 import '../order/screens/track_screens/self_details_screen.dart';
 import '../profile/controllers/profile_contrroller.dart';
 import '../tour_and_travells/Controller/tour_location_controller.dart';
-import 'instant_detail_screen.dart';
+import 'controller/self_location_widget.dart';
 import 'instanthome_page.dart';
+import 'widgets/self_location_search_screen.dart';
+import 'widgets/dual_location_search_screen.dart';
 
 class TripBookingPage extends StatefulWidget {
   final String type;
-  const TripBookingPage({super.key,required this.type});
+  const TripBookingPage({super.key, required this.type});
 
   @override
   State<TripBookingPage> createState() => _TripBookingPageState();
@@ -35,11 +37,13 @@ class TripBookingPage extends StatefulWidget {
 class _TripBookingPageState extends State<TripBookingPage> {
   // Form variables
 
+  String? _currentLeadId;
   bool isBtn = false;
   String _selectedHour = '';
   String _selectedKilometer = '';
   String _tripType = 'one-way'; // 'one-way' or 'two-way or 'local' or 'self'
-  String leadBookingType = 'oneway'; // 'one-way' or 'two-way or 'local' or 'self'
+  String leadBookingType =
+      'oneway'; // 'one-way' or 'two-way or 'local' or 'self'
   FocusNode dropFocusNode = FocusNode();
   FocusNode returnFocusNode = FocusNode();
 
@@ -54,10 +58,17 @@ class _TripBookingPageState extends State<TripBookingPage> {
   final TextEditingController _fromLocation = TextEditingController();
   final TextEditingController _toLocation = TextEditingController();
   final TextEditingController _returnLocation = TextEditingController();
+  final TextEditingController _manualHourController = TextEditingController();
+  double _selfSelectedHours = 0.0;
+
+  // Multiple Drop Locations for Round Trip
+  List<TextEditingController> _multiDropControllers = [];
+  List<String> _multiDropLats = [];
+  List<String> _multiDropLngs = [];
+
   GoogleMapController? _controller;
 
   List<SelfList> selfOrderModelList = <SelfList>[];
-
 
   String fromLatitude = '';
   String fromLongitude = '';
@@ -69,11 +80,26 @@ class _TripBookingPageState extends State<TripBookingPage> {
   String phone = '';
   String aadhaar = '';
   String license = '';
+  List<String> allowedCities = [];
+
+  Future<void> fetchAllowedCities() async {
+    final res = await http.get(Uri.parse(
+        'https://sit.resrv.in/api/v1/self-vehicle/allowed-address/vehicle'));
+
+    final data = json.decode(res.body);
+    print('Api response for allowed cities $data');
+    if (data['status'] == 1) {
+      allowedCities = (data['data'] as List)
+          .map((e) => e['city'].toString().toLowerCase())
+          .toList();
+    }
+  }
 
   String formatDateLead(DateTime? date) {
     if (date == null) return '';
     return DateFormat('dd-MM-yyyy hh:mm aa').format(date);
   }
+
   String formatDate(DateTime? date) {
     if (date == null) return '';
     return DateFormat('dd-MM-yyyy').format(date);
@@ -84,67 +110,128 @@ class _TripBookingPageState extends State<TripBookingPage> {
     return DateFormat('hh:mm').format(date); // 10:30
   }
 
-  void getLeadGenerate(String categoryType , double totalHour) async {
+  double calculateTotalTripDistance() {
+    if (_tripType == 'one-way') {
+      return distanceKm;
+    }
+    int days = getTotalDays();
+    double includedDistance = days * 125.0;
+
+    // Total distance is the sum of pickup to drop1,
+    // drop1 to multi-drops, and last point back to pickup.
+    double totalCalculated = distanceKm + returnDistanceKm;
+
+    return totalCalculated > includedDistance
+        ? totalCalculated
+        : includedDistance;
+  }
+
+  void getLeadGenerate(String categoryType, double totalDistance) async {
     final prefs = await SharedPreferences.getInstance();
-    int? leadId = prefs.getInt('self_lead_id');   // SharedPreferences se id
+    final String? referralCode = prefs.getString('referral_code');
 
-    var res = await HttpService().postApi(
-      '/api/v1/self-vehicle/vehicle-create-lead',
-      {
-        'lead_id': leadId == 0 ? '' : leadId,   // 🔥 yaha dynamic id
-        'booking_type': leadBookingType,
-        'person_phone': Provider.of<ProfileController>(Get.context!, listen: false,).userPHONE,
+    Map<String, dynamic> body = {
+      'lead_id': _currentLeadId ?? '',
+      'booking_type': leadBookingType,
+      'phone_number': Provider.of<ProfileController>(
+        Get.context!,
+        listen: false,
+      ).userPHONE,
 
-        'pickup_address': _fromLocation.text,
-        'pickup_lat': fromLatitude,
-        'pickup_long': fromLongitude,
-        'pickup_date': formatDateLead(pickupDateTime),
+      'pickup_address': (leadBookingType == 'self_drive' || leadBookingType == 'local') ? (selectedLocation ?? _fromLocation.text) : _fromLocation.text,
+      'pickup_lat': fromLatitude,
+      'pickup_long': fromLongitude,
+      'pickup_date': formatDateLead(pickupDateTime),
 
-        'drop_address': _toLocation.text,
-        'drop_lat': toLatitude,
-        'drop_long': toLongitude,
+      'drop_address': _toLocation.text,
+      'drop_lat': toLatitude,
+      'drop_long': toLongitude,
 
-        'return_address': _returnLocation.text,
-        'return_lat': returnLatitude,
-        'return_long': returnLongitude,
-        'return_date': '',
+      'return_address': _returnLocation.text,
+      'return_lat': returnLatitude,
+      'return_long': returnLongitude,
+      'return_date': formatDateLead(returnDateTime),
 
-        'booking_pick_km': distanceKm.toString(),
-        'booking_return_km': returnDistanceKm.toString(),
-        // 'wallet_type': 1,
-        // 'order_amount': 20000,
-        // 'price': 20000,
-        // 'booking_cab_ac': '',
-      },
-    );
-    print('APi response for lead generate $res');
-    if (res['status'] == 1) {
-      setState(() {
+      'booking_pick_km': (leadBookingType == 'self_drive' || leadBookingType == 'local') ? totalDistance.toString() : distanceKm.toString(),
+      'booking_return_km': returnDistanceKm.toString(),
+      'total_trip_distance': totalDistance.toString(),
+      if (referralCode != null && referralCode.isNotEmpty)
+        "active_agent_code": referralCode,
+    };
 
-      });
-      String newLeadId = res['data']['lead_id'].toString();
+    List<Map<String, String>> multiAddress = [];
 
-      // 🔥 agar naya lead_id aaya hai to update bhi kar sakte ho
-      await prefs.setInt('self_lead_id', int.parse(newLeadId));
+    if (_tripType == 'two-way') {
 
-      Navigator.push(context,
-        CupertinoPageRoute(
-          builder: (context) => CarSelectionPage(
-            type: _tripType,
-            location: selectedLocation ?? _fromLocation.text,
-            pickDate: formatDate(pickupDateTime),
-            pickTime: formatTime(pickupDateTime),
-            dropDate: formatDate(returnDateTime),
-            dropTime: formatTime(returnDateTime),
-            totalHour: totalHour,
-            categoryType: categoryType,
-            leadId: newLeadId, carType: categoryTypeList,
-          ),
-        ),
+      // Include first drop
+      if (_toLocation.text.isNotEmpty) {
+        multiAddress.add({
+          "drop_address": _toLocation.text,
+          "drop_lat": toLatitude,
+          "drop_long": toLongitude,
+        });
+      }
+
+      // Include additional drops
+      for (int i = 0; i < _multiDropControllers.length; i++) {
+        if (_multiDropControllers[i].text.isNotEmpty) {
+          multiAddress.add({
+            "drop_address": _multiDropControllers[i].text,
+            "drop_lat": _multiDropLats[i],
+            "drop_long": _multiDropLngs[i],
+          });
+        }
+      }
+      body["multiaddress"] = multiAddress;
+    }
+
+    try {
+      var res = await HttpService().postApi(
+        '/api/v1/self-vehicle/vehicle-create-lead',
+        body,
       );
-      setState(() {
-        isBtn = false;
-      });
+      print('APi response for lead generate $res');
+      if (res['status'] == 1) {
+        String newLeadId = res['data']['lead_id'].toString();
+
+        _currentLeadId = newLeadId;
+
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => CarSelectionPage(
+              type: _tripType,
+              location: selectedLocation ?? _fromLocation.text,
+              pickDate: formatDate(pickupDateTime),
+              pickTime: formatTime(pickupDateTime),
+              dropDate: formatDate(returnDateTime),
+              dropTime: formatTime(returnDateTime),
+              totalHour: totalDistance,
+              categoryType: categoryType,
+              leadId: newLeadId,
+              city: selectedLocation ?? _fromLocation.text,
+              carType: categoryTypeList,
+              totalDays: _tripType == "two-way" ? getTotalDays() : 1,
+              multiaddress: multiAddress,
+            ),
+          ),
+        );
+      } else {
+        Fluttertoast.showToast(
+            msg: res['message'] ?? 'Lead generation failed',
+            backgroundColor: Colors.red);
+      }
+    } catch (e) {
+      print('Error generating lead: $e');
+      Fluttertoast.showToast(
+          msg: 'Something went wrong. Please try again.',
+          backgroundColor: Colors.red);
+    } finally {
+      if (mounted) {
+        setState(() {
+          isBtn = false;
+        });
+      }
     }
   }
 
@@ -174,31 +261,141 @@ class _TripBookingPageState extends State<TripBookingPage> {
   List<CategoryCar> categoryTypeList = [];
   CategoryCar? _selectedRideType;
 
+  void _updateSelfReturnTime() {
+    if (pickupDateTime != null && _selfSelectedHours > 0) {
+      returnDateTime = pickupDateTime!
+          .add(Duration(minutes: (_selfSelectedHours * 60).toInt()));
+    }
+  }
 
   void getType() async {
     try {
-      var res = await HttpService().getApi('/api/v1/self-vehicle/cab-category?status=1');
+      final prefs = await SharedPreferences.getInstance();
+      final String? referralCode = prefs.getString('referral_code');
 
+      String url = '/api/v1/self-vehicle/cab-category?status=1&city=$selectedLocation';
+      if (referralCode != null && referralCode.isNotEmpty) {
+        url += "&active_agent_code=$referralCode";
+      }
+
+      var res = await HttpService().getApi(url);
+
+      print("api location category $res");
       if (res['status'] == 1 && res['data'] != null) {
         setState(() {
           categoryTypeList = List<CategoryCar>.from(
             res['data'].map((x) => CategoryCar.fromJson(x)),
           );
 
-          // Default select first
-          if (categoryTypeList.isNotEmpty) _selectedRideType = categoryTypeList.first;
+          // Default select first or clear selection
+          if (categoryTypeList.isNotEmpty) {
+            _selectedRideType = categoryTypeList.first;
+          } else {
+            _selectedRideType = null;
+          }
+        });
+      } else {
+        setState(() {
+          categoryTypeList = [];
+          _selectedRideType = null;
         });
       }
     } catch (e) {
       print('Error fetching categories: $e');
+      setState(() {
+        categoryTypeList = [];
+        _selectedRideType = null;
+      });
     }
   }
 
-  void getDistance(Map<String, dynamic> data,bool isReturn) async {
+  Future<double> fetchDistanceValue(
+      String pLat, String pLng, String dLat, String dLng) async {
     try {
-      var res = await HttpService().postApi('/api/v1/self-vehicle/get-distance',data);
+      final prefs = await SharedPreferences.getInstance();
+      final String? referralCode = prefs.getString('referral_code');
+
+      Map<String, dynamic> data = {
+        'pick_lat': pLat,
+        'pick_long': pLng,
+        'drop_lat': dLat,
+        'drop_long': dLng,
+        if (referralCode != null && referralCode.isNotEmpty)
+          "active_agent_code": referralCode,
+      };
+
+      var res = await HttpService().postApi('/api/v1/self-vehicle/get-distance', data);
+      if (res['status'] == 1 && res['data'] != null) {
+        var val = res['data']['distance_km'];
+        return (val is String) ? double.parse(val) : (val as num).toDouble();
+      }
+    } catch (e) {
+      print('Error fetching segment distance: $e');
+    }
+    return 0.0;
+  }
+
+  Future<void> updateTotalDistances() async {
+    if (fromLatitude.isEmpty || toLatitude.isEmpty) return;
+
+    double forwardTotal = 0.0;
+
+    // Segment 1: Pickup to Drop 1
+    double d1 = await fetchDistanceValue(
+        fromLatitude, fromLongitude, toLatitude, toLongitude);
+    forwardTotal += d1;
+
+    // Intermediate segments: Drop 1 to Multi 1, Multi 1 to Multi 2...
+    String prevLat = toLatitude;
+    String prevLng = toLongitude;
+
+    for (int i = 0; i < _multiDropLats.length; i++) {
+      if (_multiDropLats[i].isNotEmpty && _multiDropLngs[i].isNotEmpty) {
+        double d = await fetchDistanceValue(
+            prevLat, prevLng, _multiDropLats[i], _multiDropLngs[i]);
+        forwardTotal += d;
+        prevLat = _multiDropLats[i];
+        prevLng = _multiDropLngs[i];
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        distanceKm = forwardTotal;
+      });
+    }
+
+    if (_tripType == 'two-way') {
+      // Return Segment: Last Point back to Pickup
+      double dr = await fetchDistanceValue(
+          prevLat, prevLng, fromLatitude, fromLongitude);
+      if (mounted) {
+        setState(() {
+          returnDistanceKm = dr;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          returnDistanceKm = 0.0;
+        });
+      }
+    }
+  }
+
+  void getDistance(Map<String, dynamic> data, bool isReturn) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? referralCode = prefs.getString('referral_code');
+
+      if (referralCode != null && referralCode.isNotEmpty) {
+        data["active_agent_code"] = referralCode;
+      }
+
+      var res = await HttpService()
+          .postApi('/api/v1/self-vehicle/get-distance', data);
       print('Api response for distance $res');
-      if(isReturn){
+      if (isReturn) {
         if (res['status'] == 1 && res['data'] != null) {
           setState(() {
             var distanceValue = res['data']['distance_km'];
@@ -208,133 +405,63 @@ class _TripBookingPageState extends State<TripBookingPage> {
                 : (distanceValue as num).toDouble();
           });
         }
-      }else{
-      if (res['status'] == 1 && res['data'] != null) {
-        setState(() {
-          var distanceValue = res['data']['distance_km'];
+      } else {
+        if (res['status'] == 1 && res['data'] != null) {
+          setState(() {
+            var distanceValue = res['data']['distance_km'];
 
-          distanceKm = (distanceValue is String)
-              ? double.parse(distanceValue)
-              : (distanceValue as num).toDouble();
-        });
+            distanceKm = (distanceValue is String)
+                ? double.parse(distanceValue)
+                : (distanceValue as num).toDouble();
+          });
+        }
       }
-      }
-
     } catch (e) {
       print('Error fetching categories: $e');
     }
   }
 
   void getLocationSelf() async {
-    var res = await HttpService()
-        .getApi('/api/v1/self-vehicle/get-location?self_tour_type=hour');
+    final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
+    String url = '/api/v1/self-vehicle/get-location?self_tour_type=hour';
+    if (referralCode != null && referralCode.isNotEmpty) {
+      url += "&active_agent_code=$referralCode";
+    }
+
+    var res = await HttpService().getApi(url);
 
     print('api response for location $res');
 
     if (res['status'] == 1 && res['data'] != null) {
       setState(() {
         List location = res['data'];
-        selfLocations.addAll(location.map((e)=> SelfLoaction.fromJson(e)));
+        selfLocations.addAll(location.map((e) => SelfLoaction.fromJson(e)));
       });
     }
   }
 
-  void _openLocationSheet(BuildContext context) {
-    TextEditingController searchCtrl = TextEditingController();
-    List<SelfLoaction> filteredList = List.from(selfLocations);
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+  void _openLocationSheet(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => SelfLocationSearchScreen(
+          locations: selfLocations,
+          hintText: 'Select Pickup Location',
+        ),
       ),
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setSheetState) {
-            return Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-                  /// drag handle
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, bottom: 12),
-                    height: 4,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-
-                  /// SEARCH FIELD
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      controller: searchCtrl,
-                      onChanged: (value) {
-                        setSheetState(() {
-                          filteredList = selfLocations
-                              .where((e) =>
-                              (e.city ?? '').toLowerCase().contains(value.toLowerCase()))
-                              .toList();
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Search location',
-                        prefixIcon:
-                        const Icon(Icons.search, color: Colors.blue),
-                        filled: true,
-                        fillColor: Colors.blue.shade50,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  /// LIST
-                  Flexible(
-                    child: ListView.builder(
-                      itemCount: filteredList.length,
-                      itemBuilder: (context, index) {
-                        final item = filteredList[index];
-                        return ListTile(
-                          leading: const Icon(Icons.location_on,
-                              color: Colors.blue),
-                          title: Text(
-                            '${item.city}',
-                            style: TextStyle(
-                              color: Colors.blue.shade900,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              selectedLocation = item.city;
-                              fromLatitude = item.lat.toString();
-                              fromLongitude = item.lng.toString();
-                            });
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
     );
+
+    if (result != null && result is SelfLoaction) {
+      setState(() {
+        selectedLocation = result.city;
+        _fromLocation.text = result.city ?? '';
+        fromLatitude = result.lat.toString();
+        fromLongitude = result.lng.toString();
+      });
+      getType();
+    }
   }
 
   String _formatDate(DateTime date) {
@@ -363,9 +490,23 @@ class _TripBookingPageState extends State<TripBookingPage> {
     // TODO: implement initState
     super.initState();
     _tripType = widget.type;
+    
+    // Sync leadBookingType with initial trip type
+    if (_tripType == 'self') {
+      leadBookingType = 'self_drive';
+    } else if (_tripType == 'local') {
+      leadBookingType = 'local';
+    } else if (_tripType == 'two-way') {
+      leadBookingType = 'round';
+    } else if (_tripType == 'one-way') {
+      leadBookingType = 'oneway';
+    } else {
+      leadBookingType = _tripType;
+    }
+
     getLocationSelf();
-    getType();
     fetchSelfDrive();
+    fetchAllowedCities();
   }
 
   String getTripTypeName(String tripType) {
@@ -385,6 +526,65 @@ class _TripBookingPageState extends State<TripBookingPage> {
     }
   }
 
+  void _openDualLocationSearch({bool focusDrop = false}) async {
+    final result = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => DualLocationSearchScreen(
+          allowedPickupCities: allowedCities,
+          initialPickup: _fromLocation.text,
+          initialDrop: _toLocation.text,
+          focusDrop: focusDrop,
+        ),
+      ),
+    );
+
+    if (result != null && result is Map<String, dynamic>) {
+      final pickup = result['pickup'];
+      final drop = result['drop'];
+
+      setState(() {
+        if (pickup != null) {
+          _fromLocation.text = pickup['description'];
+          selectedLocation = pickup['description'];
+          fromLatitude = pickup['lat'].toString();
+          fromLongitude = pickup['lng'].toString();
+          distanceKm = 0.0;
+          returnDistanceKm = 0.0;
+        }
+        if (drop != null) {
+          _toLocation.text = drop['description'];
+          toLatitude = drop['lat'].toString();
+          toLongitude = drop['lng'].toString();
+
+          if (_tripType != 'one-way') {
+            _returnLocation.text = _fromLocation.text;
+          }
+        }
+      });
+
+      updateTotalDistances();
+
+      // Update Map
+      if (pickup != null) {
+        _controller?.animateCamera(CameraUpdate.newLatLngZoom(
+            LatLng(pickup['lat'], pickup['lng']), 14));
+      } else if (drop != null) {
+        _controller?.animateCamera(
+            CameraUpdate.newLatLngZoom(LatLng(drop['lat'], drop['lng']), 14));
+      }
+    }
+  }
+
+  String _formatOrderDate(String dateStr) {
+    if (dateStr.isEmpty) return 'N/A';
+    try {
+      DateTime dt = DateTime.parse(dateStr);
+      return DateFormat('dd MMM yy').format(dt);
+    } catch (e) {
+      return dateStr;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -419,8 +619,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                 icon: Icons.trending_flat,
                 label: 'One',
                 type: 'one-way',
-                leadType: 'oneway'
-            ),
+                leadType: 'oneway'),
             // _fabTab(
             //     icon: Icons.swap_horiz,
             //     label: 'Round',
@@ -431,548 +630,336 @@ class _TripBookingPageState extends State<TripBookingPage> {
                 icon: Icons.location_city,
                 label: 'Local',
                 type: 'local',
-                leadType: 'local'
-            ),
+                leadType: 'local'),
             _fabTab(
                 icon: Icons.directions_car,
                 label: 'Self',
                 type: 'self',
-                leadType: 'self_drive'
-            ),
+                leadType: 'self_drive'),
             _fabTab(
                 icon: Icons.flash_on_outlined,
                 label: 'Instant',
                 type: 'instant',
-                leadType: 'instant'
-            ),
+                leadType: 'instant'),
             _fabTab(
                 icon: Icons.article,
                 label: 'Order',
                 type: 'order',
-                leadType: 'order'
-            ),
+                leadType: 'order'),
           ],
         ),
       ),
-
-      appBar: _tripType == 'instant' ? null : AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF18FFFF),
-                Color(0xFF2261FF),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(22),
-            ),
-          ),
-        ),
-        title: Text(getTripTypeName(_tripType),
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-            letterSpacing: 0.5,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-
-
-      body:
-      _tripType == 'instant'
-          ? AppConstants.baseUrl == 'https://mahakal.com' ?  Center(
-            child: Container(
-              height: 240,
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF4A90E2), Color(0xFF6A5AE0)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.25),
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
-                  )
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  /// 🚀 TITLE
-                  Row(
-                    children: const [
-                      Icon(Icons.flash_on, color: Colors.yellow, size: 26),
-                      SizedBox(width: 8),
-                      Text(
-                        "Instant Booking",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+      appBar: _tripType == 'instant'
+          ? null
+          : AppBar(
+              centerTitle: true,
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF2196F3),
+                      Color(0xFF1565C0),
                     ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-
-                  const SizedBox(height: 10),
-
-                  /// 🔥 TAG
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Text(
-                      "Coming Soon 🚀",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(22),
                   ),
-
-                  const SizedBox(height: 16),
-
-                  /// 📄 DESCRIPTION
-                  const Text(
-                    "Get ready for lightning-fast order assignments with our upcoming Instant Booking feature. "
-                        "Accept orders instantly, reduce waiting time, and boost your daily earnings effortlessly.",
-                    style: TextStyle(
-                      fontSize: 13.5,
-                      color: Colors.white,
-                      height: 1.4,
-                    ),
-                  ),
-
-                  const Spacer(),
-
-                ],
-              ),
-            )
-          ) : InstantHomePage() :
-      _tripType == 'order'
-          ? ListView.builder(
-        physics: BouncingScrollPhysics(),
-        shrinkWrap: true,
-        padding: const EdgeInsets.only(left: 10,right: 10,bottom: 100),
-        itemCount: selfOrderModelList.length,
-        itemBuilder: (context, index) {
-          final order = selfOrderModelList[index];
-
-          return buildOrderCard(
-            image: order.thumbnail ?? '',
-            name: order.serviceName ?? '',
-            price: '${order.price}',
-            orderId: order.orderId?.toUpperCase() ?? '',
-            status: order.orderStatus ?? '',
-            statusColor: getStatusColor('${order.orderStatus}'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      CabBookingDetailsScreen(id: order.id.toString()),
                 ),
-              );
-            },
-          );
-
-        },
-      )
-          : Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 140),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: Colors.grey.shade100,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-               _tripType == 'one-way' || _tripType == 'two-way' ? SizedBox() : Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-
-                      /// LEFT LINE
-                      Expanded(
-                        child: Container(
-                          height: 2,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.transparent,
-                                Colors.blue.withOpacity(0.6),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(width: 10),
-
-                      /// ICON BADGE
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: const LinearGradient(
-                            colors: [
-                              Colors.blue,
-                              Colors.blue,
-                            ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.4),
-                              blurRadius: 8,
-                              offset: const Offset(0, 3),
-                            )
-                          ],
-                        ),
-                        child: const Icon(
-                          CupertinoIcons.car_detailed,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-
-                      const SizedBox(width: 10),
-
-                      /// RIGHT LINE
-                      Expanded(
-                        child: Container(
-                          height: 2,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.blue.withOpacity(0.6),
-                                Colors.transparent,
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                ],
               ),
+              title: Text(
+                getTripTypeName(_tripType),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+      body: _tripType == 'instant'
+          ? InstantHomePage()
+          : _tripType == 'order'
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 100),
+                  itemCount: selfOrderModelList.length,
+                  itemBuilder: (context, index) {
+                    final order = selfOrderModelList[index];
 
-
-
-
-              // Trip type selector
-              if (_tripType == 'one-way' || _tripType == 'two-way')...[
-                const SizedBox(height: 10),
-                buildTripTypeSelector(
-                  selectedType: _tripType,
-                  onChanged: (value) {
-                    setState(() {
-                      _tripType = value;
-                    });
+                    return buildOrderCard(
+                      image: order.thumbnail ?? '',
+                      name: order.serviceName ?? '',
+                      date: order.createdAt ?? '',
+                      price: '${order.price}',
+                      orderId: order.orderId?.toUpperCase() ?? '',
+                      status: order.orderStatus ?? '',
+                      statusColor: getStatusColor('${order.orderStatus}'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CabBookingDetailsScreen(
+                                id: order.id.toString()),
+                          ),
+                        );
+                      },
+                    );
                   },
-                ),
-                SizedBox(height: 20,),
-                // Main form
-                // const SizedBox(height: 30),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // From location
-                      Text(
-                        'Pickup Location',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade700,
-                        ),
+                )
+              : Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  margin: const EdgeInsets.fromLTRB(12, 12, 12, 140),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
                       ),
-                      const SizedBox(height: 8),
-                      LocationSearchWidget(
-                        hintText: 'Pickup Location',
-                        mapController: _controller,
-                        controller: _fromLocation,
-                        onLocationSelected: (lat, lng, address) {
-                          setState(() {
-                            fromLatitude = lat.toString();
-                            fromLongitude = lng.toString();
-                            distanceKm = 0.0;
-                            returnDistanceKm = 0.0;
-                            _toLocation.clear();
-                          });
-                          FocusScope.of(context).requestFocus(dropFocusNode); // 👈 cursor move
-                          // onLocationSelect();
-                        },
-                      ),
-                      // _buildLocationField(
-                      //   label: 'From Location',
-                      //   icon: Icons.location_on_outlined,
-                      //   value: _fromLocation,
-                      //   onChanged: (value) {
-                      //     setState(() {
-                      //       _fromLocation = value;
-                      //     });
-                      //   },
-                      //   onSaved: (value) {
-                      //     _fromLocation = value ?? '';
-                      //   },
-                      // ),
-          
-          
-                      // To location
-                      const SizedBox(height: 5),
-                        Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                                                    const Icon(
-                                                      Icons.arrow_upward,
-                                                      size: 16,
-                                                      color: Colors.blue,
-                                                    ),
-                                                    Text(
-                                                      '${distanceKm.toStringAsFixed(2)} km',
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w700,
-                                                        color: Colors.blue,
-                                                      ),
-                                                    ),
-                              const Icon(
-                                Icons.arrow_downward,
-                                size: 16,
-                                color: Colors.blue,
-                              ),
-                            ],
-                          ),
-                        ),
-                      const SizedBox(height: 10),
-          
-                      LocationSearchWidget(
-                        hintText: 'Drop Location',
-                        mapController: _controller,
-                        controller: _toLocation,
-                        focusNode: dropFocusNode,
-                        onLocationSelected: (lat, lng, address) {
-                          setState(() {
-                            toLatitude = lat.toString();
-                            toLongitude = lng.toString();
-                            _returnLocation.text = _fromLocation.text;
-                          });
-                        Map<String, dynamic> data = {
-                          'pick_lat':fromLatitude,
-                          'pick_long':fromLongitude,
-                          'drop_lat':toLatitude,
-                          'drop_long':toLongitude
-                        };
-                          getDistance(data,false);
-                          if (_tripType == 'two-way'){
-                          returnDistanceKm = distanceKm;
-                          FocusScope.of(context).requestFocus(dropFocusNode); // 👈 cursor move
-                          }
-                          // onLocationSelect();
-                        },
-                      ),
-          
-                      // Return location (only for two-way)
-                      const SizedBox(height: 10),
-                      if (_tripType == 'two-way')...[
-                        returnDistanceKm == 0.0 ? const SizedBox.shrink() : Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.arrow_upward,
-                                size: 16,
-                                color: Colors.blue,
-                              ),
-                              Text(
-                                '${returnDistanceKm.toStringAsFixed(2)} km',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              const Icon(
-                                Icons.arrow_downward,
-                                size: 16,
-                                color: Colors.blue,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Return location',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey.shade700,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        LocationSearchWidget(
-                          hintText: 'Enter Return Location',
-                          mapController: _controller,
-                          controller: _returnLocation,
-                          focusNode: returnFocusNode,
-                          onLocationSelected: (lat, lng, address) {
-                            setState(() {
-                              returnLatitude = lat.toString();
-                              returnLongitude = lng.toString();
-                            });
-                            Map<String, dynamic> data = {
-                              'pick_lat':toLatitude,
-                              'pick_long':toLongitude,
-                              'drop_lat':returnLatitude,
-                              'drop_long':returnLongitude
-                            };
-                            getDistance(data,true);
-                            // onLocationSelect();
-                          },
-                        ),
-                      ],
-          
-                      // Date and time pickers in a row
-                      if (_tripType == 'two-way') const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () => _selectDateTime(context: context, isPickup: true),
-                        child: _dateTimeTile(
-                          title: 'Pickup Date & Time',
-                          value: pickupDateTime,
-                          icon: Icons.login,
-                        ),
-                      ),
-          
-                      const SizedBox(height: 20),
-          
-                      // Return date and time (only for two-way)
-                      if (_tripType == 'two-way')
-                      GestureDetector(
-                        onTap: () => _selectDateTime(context: context, isPickup: false),
-                        child: _dateTimeTile(
-                          title: 'Return Date & Time',
-                          value: returnDateTime,
-                          icon: Icons.logout,
-                        ),
-                      ),
-          
-                      if (_tripType == 'two-way') const SizedBox(height: 30),
-          
-                      // Submit button
-                      if(pickupDateTime != null && _toLocation.text.isNotEmpty && _fromLocation.text.isNotEmpty)
-                       _buildSubmitButton(),
-          
-                      if(pickupDateTime == null || _toLocation.text.isEmpty || _fromLocation.text.isEmpty)
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.grey, // warm orange
-                                Colors.grey.shade300, // deep orange
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            borderRadius: BorderRadius.circular(14),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.35),
-                                blurRadius: 14,
-                                offset: const Offset(0, 8),
-                              ),
-                            ],
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Book Trip',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
                     ],
                   ),
-                )
-              ],
-          
-              if(_tripType == 'local')
-                _buildLocalTripForm(context),
-          
-              if(_tripType == 'self')
-                _buildSelfDrivingForm(totalHours),
-          
-              // if(_tripType == 'order')
-              // ListView.builder(
-              //   shrinkWrap: true,
-              //   padding: const EdgeInsets.all(10),
-              //   itemCount: selfOrderModelList.length,
-              //   itemBuilder: (context, index) {
-              //     final order = selfOrderModelList[index];
-              //
-              //     return buildOrderCard(
-              //       image: order.thumbnail ?? '',
-              //       name: order.serviceName ?? '',
-              //       price: '${order.price}',
-              //       orderId: order.orderId?.toUpperCase() ?? '',
-              //       status: order.orderStatus ?? '',
-              //       statusColor: getStatusColor('${order.orderStatus}'),
-              //       onTap: () {
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) =>
-              //                 CabBookingDetailsScreen(id: order.id.toString()),
-              //           ),
-              //         );
-              //       },
-              //     );
-              //
-              //   },
-              // )
-            ],
-          ),
-        ),
-      ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (_tripType == 'one-way' || _tripType == 'two-way') ...[
+                          buildTripTypeSelector(
+                            selectedType: _tripType,
+                            onChanged: (value) {
+                              setState(() {
+                                _tripType = value;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                /// 📍 ROUTE SECTION
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade50,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(color: Colors.grey.shade100),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          _buildRouteIcon(isStart: true),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: LocationSelfWidget(
+                                              hintText: 'Pickup Location',
+                                              mapController: _controller,
+                                              controller: _fromLocation,
+                                              onTap: () => _openDualLocationSearch(focusDrop: false),
+                                              onLocationSelected: (lat, lng, address) {
+                                                setState(() {
+                                                  fromLatitude = lat.toString();
+                                                  fromLongitude = lng.toString();
+                                                  distanceKm = 0.0;
+                                                  returnDistanceKm = 0.0;
+                                                  _toLocation.clear();
+                                                  if (_tripType == 'two-way') {
+                                                    _returnLocation.text = _fromLocation.text;
+                                                    returnLatitude = fromLatitude;
+                                                    returnLongitude = fromLongitude;
+                                                  }
+                                                });
+                                                updateTotalDistances();
+                                              },
+                                              allowedCities: allowedCities,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 24,
+                                            height: 30,
+                                            alignment: Alignment.center,
+                                            child: Container(width: 2, color: Colors.grey.shade300),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Text(
+                                            '${distanceKm.toStringAsFixed(1)} KM',
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.blue.shade400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      Row(
+                                        children: [
+                                          _buildRouteIcon(isStart: false),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: LocationSearchWidget(
+                                              hintText: 'Drop Location',
+                                              mapController: _controller,
+                                              controller: _toLocation,
+                                              focusNode: dropFocusNode,
+                                              onTap: () => _openDualLocationSearch(focusDrop: true),
+                                              onLocationSelected: (lat, lng, address) {
+                                                setState(() {
+                                                  toLatitude = lat.toString();
+                                                  toLongitude = lng.toString();
+                                                  if (_tripType != 'one-way') {
+                                                    _returnLocation.text = _fromLocation.text;
+                                                    returnLatitude = fromLatitude;
+                                                    returnLongitude = fromLongitude;
+                                                  }
+                                                });
+                                                updateTotalDistances();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      if (_tripType == 'two-way') ...[
+                                        ...List.generate(_multiDropControllers.length, (index) {
+                                          return Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(width: 24, height: 10, alignment: Alignment.center, child: Container(width: 2, color: Colors.grey.shade300)),
+                                                  const SizedBox(width: 12),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  _buildRouteIcon(isMid: true),
+                                                  const SizedBox(width: 12),
+                                                  Expanded(
+                                                    child: LocationSearchWidget(
+                                                      hintText: 'Additional Stop',
+                                                      mapController: _controller,
+                                                      controller: _multiDropControllers[index],
+                                                      onLocationSelected: (lat, lng, address) {
+                                                        setState(() {
+                                                          _multiDropLats[index] = lat.toString();
+                                                          _multiDropLngs[index] = lng.toString();
+                                                        });
+                                                        updateTotalDistances();
+                                                      },
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _multiDropControllers.removeAt(index);
+                                                        _multiDropLats.removeAt(index);
+                                                        _multiDropLngs.removeAt(index);
+                                                      });
+                                                      updateTotalDistances();
+                                                    },
+                                                    icon: const Icon(Icons.remove_circle_outline, color: Colors.red, size: 20),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                        const SizedBox(height: 8),
+                                        TextButton.icon(
+                                          onPressed: () {
+                                            setState(() {
+                                              _multiDropControllers.add(TextEditingController());
+                                              _multiDropLats.add('');
+                                              _multiDropLngs.add('');
+                                            });
+                                          },
+                                          icon: const Icon(Icons.add_location_alt_outlined, size: 18),
+                                          label: const Text('Add Stop', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.blue,
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                            minimumSize: Size.zero,
+                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                /// 📅 SCHEDULE SECTION
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _dateTimeTileCompact(
+                                        title: 'Pickup',
+                                        value: pickupDateTime,
+                                        onTap: () => _selectDateTime(context: context, isPickup: true),
+                                      ),
+                                    ),
+                                    if (_tripType == 'two-way') ...[
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: _dateTimeTileCompact(
+                                          title: 'Return',
+                                          value: returnDateTime,
+                                          onTap: () => _selectDateTime(context: context, isPickup: false),
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+
+                                if (_tripType == 'two-way' && returnDistanceKm > 0)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8, left: 4),
+                                    child: Text(
+                                      'Return: ${returnDistanceKm.toStringAsFixed(1)} KM extra included',
+                                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+
+                                const SizedBox(height: 24),
+
+                                /// SUBMIT BUTTON
+                                if (_isFormReady())
+                                  _buildSubmitButton()
+                                else
+                                  _buildDisabledButton(),
+                              ],
+                            ),
+                          )
+                        ],
+
+                        if (_tripType == 'local') _buildLocalTripForm(context),
+                        if (_tripType == 'self') _buildSelfDrivingForm(totalHours),
+                      ],
+                    ),
+                  ),
+                ),
     );
   }
-
 
   Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
@@ -985,10 +972,9 @@ class _TripBookingPageState extends State<TripBookingPage> {
       case 'confirmed':
         return Colors.green;
       default:
-        return Colors.blue; // Default color for unknown statuses
+        return Colors.orange; // Default color for unknown statuses
     }
   }
-
 
   Widget _fabTab({
     required IconData icon,
@@ -1009,8 +995,16 @@ class _TripBookingPageState extends State<TripBookingPage> {
             //  _returnLocation.clear();
             //  pickupDateTime = null;
             //  returnDateTime = null;
-             distanceKm = 0.0;
+            distanceKm = 0.0;
             returnDistanceKm = 0.0;
+            _selfSelectedHours = 0.0;
+            _manualHourController.clear();
+            for (var controller in _multiDropControllers) {
+                controller.dispose();
+              }
+              _multiDropControllers.clear();
+              _multiDropLats.clear();
+              _multiDropLngs.clear();
           });
         },
         child: AnimatedContainer(
@@ -1034,9 +1028,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                 child: Icon(
                   icon,
                   size: 24,
-                  color: isActive
-                      ? Colors.blue
-                      : Colors.grey.shade600,
+                  color: isActive ? Colors.blue : Colors.grey.shade600,
                 ),
               ),
 
@@ -1048,9 +1040,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: isActive
-                      ? Colors.blue
-                      : Colors.grey.shade700,
+                  color: isActive ? Colors.blue : Colors.grey.shade700,
                 ),
                 child: Text(label),
               ),
@@ -1080,6 +1070,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
     required String name,
     required String price,
     required String orderId,
+    required String date,
     required String status,
     required Color statusColor,
     required VoidCallback onTap,
@@ -1111,7 +1102,6 @@ class _TripBookingPageState extends State<TripBookingPage> {
         ),
         child: Row(
           children: [
-
             /// 🚗 IMAGE
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
@@ -1145,7 +1135,6 @@ class _TripBookingPageState extends State<TripBookingPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   /// 🔤 Service Name
                   Text(
                     name,
@@ -1172,13 +1161,24 @@ class _TripBookingPageState extends State<TripBookingPage> {
                     ),
                   ),
 
+                  /// 🆔 Order ID\
+                   const SizedBox(height: 8),
+                  Text(
+                    'Date: ${_formatOrderDate(date)}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.5,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+
                   const SizedBox(height: 12),
 
                   /// 💰 Price + Status
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-
                       /// Price
                       Text(
                         '₹$price',
@@ -1227,12 +1227,65 @@ class _TripBookingPageState extends State<TripBookingPage> {
     );
   }
 
+  Widget _selfHourTab(String label, double hours) {
+    final bool isActive = _selectedHour == label;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedHour = label;
+            _selfSelectedHours = hours;
+            _manualHourController.clear();
+            _updateSelfReturnTime();
+          });
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            gradient: isActive
+                ? const LinearGradient(
+                    colors: [
+                      Color(0xFFFE844F),
+                      Color(0xFFFEC300),
+                    ],
+                  )
+                : null,
+            color: isActive ? null : Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: isActive
+                ? [
+                    BoxShadow(
+                      color: Colors.orange.withOpacity(0.35),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : [],
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: isActive ? Colors.white : Colors.grey.shade700,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSelfDrivingForm(double? totalHours) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Label
-        Text('Pickup Location',
+        Text(
+          'Pickup Location',
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w600,
@@ -1267,8 +1320,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const Icon(Icons.keyboard_arrow_down,
-                    color: Colors.blue),
+                const Icon(Icons.keyboard_arrow_down, color: Colors.blue),
               ],
             ),
           ),
@@ -1284,194 +1336,243 @@ class _TripBookingPageState extends State<TripBookingPage> {
           ),
         ),
 
-        const SizedBox(height: 12),
-        Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.watch_later_outlined,
-                size: 16,
-                color: Colors.blue,
-              ),
-              const SizedBox(width: 8,),
-              Text(
-                '${totalHours?.toStringAsFixed(2)} - Hours',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.blue,
-                ),
-              ),
-              const SizedBox(width: 8,),
-              const Icon(
-                Icons.arrow_downward,
-                size: 16,
-                color: Colors.blue,
-              ),
-            ],
+        const SizedBox(height: 20),
+        Text(
+          'Select Duration',
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey.shade700,
           ),
         ),
         const SizedBox(height: 12),
-
-        GestureDetector(
-          onTap: () => _selectDateTime(context: context, isPickup: false),
-          child: _dateTimeTile(
-            title: 'Return Date & Time',
-            value: returnDateTime,
-            icon: Icons.logout,
-          ),
+        Row(
+          children: [
+            _selfHourTab('4 HRS', 4.0),
+            const SizedBox(width: 6),
+            _selfHourTab('8 HRS', 8.0),
+            const SizedBox(width: 6),
+            _selfHourTab('12 HRS', 12.0),
+          ],
         ),
 
-        const SizedBox(height: 15),
-        SizedBox(
-          height: 46,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: categoryTypeList.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
-            itemBuilder: (context, index) {
-              final item = categoryTypeList[index];
-              final bool selected = _selectedRideType?.id == item.id;
-
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _selectedRideType = item;
-                  });
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    gradient: selected
-                        ? LinearGradient(
-                      colors: [
-                        Colors.blue.shade400,
-                        Colors.blue.shade600,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    )
-                        : null,
-                    color: selected ? null : Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(
-                      color: selected
-                          ? Colors.blue
-                          : Colors.grey.shade300,
-                    ),
-                    boxShadow: selected
-                        ? [
-                      BoxShadow(
-                        color: Colors.blue.withOpacity(0.25),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ]
-                        : [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      /// TEXT
-                      Text(
-                        item.enBrandName,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: selected ? Colors.white : Colors.black87,
-                        ),
-                      ),
-
-                      const SizedBox(width: 10),
-
-                      /// SMOOTH RADIO DOT
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        width: 16,
-                        height: 16,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: selected ? Colors.white : Colors.grey,
-                            width: 2,
-                          ),
-                        ),
-                        child: selected
-                            ? Center(
-                          child: Container(
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white.withOpacity(0.8),
-                                  blurRadius: 6,
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                            : null,
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 20,),
-        if(returnDateTime != null && pickupDateTime != null && selectedLocation != null)
-           _buildSubmitButton(totalHours: totalHours),
-
-        if(returnDateTime == null || pickupDateTime == null || selectedLocation == null)
+        const SizedBox(height: 12),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.grey, // warm orange
-                Colors.grey.shade300, // deep orange
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: BorderRadius.circular(14),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.35),
-                blurRadius: 14,
-                offset: const Offset(0, 8),
-              ),
-            ],
+            color: Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade200),
           ),
-          child: const Center(
-            child: Text(
-              'Book Trip',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-                letterSpacing: 0.5,
-              ),
+          child: TextField(
+            controller: _manualHourController,
+            keyboardType: TextInputType.number,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+            onChanged: (val) {
+              setState(() {
+                _selectedHour = 'manual';
+                _selfSelectedHours = double.tryParse(val) ?? 0.0;
+                _updateSelfReturnTime();
+              });
+            },
+            decoration: InputDecoration(
+              hintText: 'Enter manual hours...',
+              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+              prefixIcon: const Icon(Icons.edit_calendar_outlined, size: 20),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 14),
             ),
           ),
         ),
+
+        const SizedBox(height: 12),
+        if (returnDateTime != null)
+          Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.logout_rounded,
+                      size: 16, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Return: ${DateFormat('dd MMM, hh:mm aa').format(returnDateTime!)}',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+        categoryTypeList.isEmpty
+            ? SizedBox.shrink()
+            :  SizedBox(height: 15),
+        categoryTypeList.isEmpty
+            ? SizedBox.shrink()
+            : SizedBox(
+                height: 46,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categoryTypeList.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    final item = categoryTypeList[index];
+                    final bool selected = _selectedRideType?.id == item.id;
+
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedRideType = item;
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                          gradient: selected
+                              ? LinearGradient(
+                                  colors: [
+                                    Colors.blue.shade400,
+                                    Colors.blue.shade600,
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                )
+                              : null,
+                          color: selected ? null : Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: selected
+                                ? Colors.blue
+                                : Colors.grey.shade300,
+                          ),
+                          boxShadow: selected
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.blue.withOpacity(0.25),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ]
+                              : [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.04),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            /// TEXT
+                            Text(
+                              item.enBrandName,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: selected ? Colors.white : Colors.black87,
+                              ),
+                            ),
+
+                            const SizedBox(width: 10),
+
+                            /// SMOOTH RADIO DOT
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              width: 16,
+                              height: 16,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: selected ? Colors.white : Colors.grey,
+                                  width: 2,
+                                ),
+                              ),
+                              child: selected
+                                  ? Center(
+                                      child: Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.white.withOpacity(0.8),
+                                              blurRadius: 6,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+        const SizedBox(
+          height: 20,
+        ),
+        if (returnDateTime != null &&
+            pickupDateTime != null &&
+            selectedLocation != null &&
+            categoryTypeList.isNotEmpty)
+          _buildSubmitButton(totalHours: _selfSelectedHours),
+        if (returnDateTime == null ||
+            pickupDateTime == null ||
+            selectedLocation == null ||
+            categoryTypeList.isEmpty)
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.grey, // warm orange
+                  Colors.grey.shade300, // deep orange
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.35),
+                  blurRadius: 14,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Text(
+                'Book Trip',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
 
-  Widget _hourTab(String label,double kilo) {
+  Widget _hourTab(String label, double kilo) {
     final bool isActive = _selectedHour == label;
 
     return Expanded(
@@ -1489,21 +1590,21 @@ class _TripBookingPageState extends State<TripBookingPage> {
             gradient: isActive
                 ? const LinearGradient(
               colors: [
-                Color(0xFFFE844F),
-                Color(0xFFFEC300),
+                Color(0xFF2196F3),
+                Color(0xFF1565C0),
               ],
-            )
+                  )
                 : null,
             color: isActive ? null : Colors.grey.shade100,
             borderRadius: BorderRadius.circular(12),
             boxShadow: isActive
                 ? [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.35),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ]
+                    BoxShadow(
+                      color: Colors.orange.withOpacity(0.35),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
                 : [],
           ),
           child: Center(
@@ -1549,7 +1650,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
             ),
           ),
           const SizedBox(height: 8),
-          LocationSearchWidget(
+          LocationSelfWidget(
             hintText: 'Pickup Location',
             mapController: _controller,
             controller: _fromLocation,
@@ -1563,7 +1664,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
               });
 
               // onLocationSelect();
-            },
+            }, allowedCities: allowedCities,
           ),
           // _buildLocationField(
           //   label: 'From Location',
@@ -1578,7 +1679,6 @@ class _TripBookingPageState extends State<TripBookingPage> {
           //     _fromLocation = value ?? '';
           //   },
           // ),
-
 
           // To location
           // const SizedBox(height: 5),
@@ -1609,7 +1709,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
           // ),
           // const SizedBox(height: 10),
           //
-          // LocationSearchWidget(
+          // LocationSelfWidget(
           //   hintText: 'Drop Location',
           //   mapController: _controller,
           //   controller: _toLocation,
@@ -1648,79 +1748,84 @@ class _TripBookingPageState extends State<TripBookingPage> {
           const SizedBox(height: 20),
           Row(
             children: [
-              _hourTab('4 HRS | 40KM',40.00),
+              _hourTab('4 HRS | 40KM', 40.00),
               const SizedBox(width: 6),
-              _hourTab('8 HRS | 80KM',80.00),
+              _hourTab('8 HRS | 80KM', 80.00),
               const SizedBox(width: 6),
-              _hourTab('12 HRS | 120KM',120.00),
+              _hourTab('12 HRS | 120KM', 120.00),
             ],
           ),
 
           const SizedBox(height: 20),
           // Submit Button
-          if(pickupDateTime != null && _fromLocation.text.isNotEmpty && _selectedHour.isNotEmpty)
+          if (pickupDateTime != null &&
+              _fromLocation.text.isNotEmpty &&
+              _selectedHour.isNotEmpty)
             SizedBox(
-            width: double.infinity,
-            child: GestureDetector(
-              onTap: (){
-                setState(() {
-                  isBtn = true;
-                });
-                getLeadGenerate('CAR',distanceKm);
-                // if((int.tryParse(_selectedKilometer) ?? 0) <= distanceKm.round()){
-                //   Navigator.push(
-                //     context,
-                //     CupertinoPageRoute(
-                //       builder: (context) => CarSelectionPage(
-                //         type: _tripType,
-                //         location: _toLocation.text,
-                //         pickDate: formatDate(pickupDateTime),
-                //         pickTime: formatTime(pickupDateTime),
-                //         dropDate: formatDate(returnDateTime),
-                //         dropTime: formatTime(returnDateTime),
-                //         totalHour: distanceKm,
-                //         categoryType: 'CAR',
-                //       ),
-                //     ),
-                //   );
-
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFFFF7A18), // warm orange
-                      Color(0xFFFF5722), // deep orange
+              width: double.infinity,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isBtn = true;
+                  });
+                  getLeadGenerate('CAR', distanceKm);
+                  // if((int.tryParse(_selectedKilometer) ?? 0) <= distanceKm.round()){
+                  //   Navigator.push(
+                  //     context,
+                  //     CupertinoPageRoute(
+                  //       builder: (context) => CarSelectionPage(
+                  //         type: _tripType,
+                  //         location: _toLocation.text,
+                  //         pickDate: formatDate(pickupDateTime),
+                  //         pickTime: formatTime(pickupDateTime),
+                  //         dropDate: formatDate(returnDateTime),
+                  //         dropTime: formatTime(returnDateTime),
+                  //         totalHour: distanceKm,
+                  //         categoryType: 'CAR',
+                  //       ),
+                  //     ),
+                  //   );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF2196F3),
+                        Color(0xFF1565C0),
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.35),
+                        blurRadius: 14,
+                        offset: const Offset(0, 8),
+                      ),
                     ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
                   ),
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.35),
-                      blurRadius: 14,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    'Book Trip',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      letterSpacing: 0.5,
-                    ),
+                  child: Center(
+                    child: isBtn
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            'Book Trip',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
                   ),
                 ),
               ),
             ),
-          ),
 
-          if(pickupDateTime == null || _fromLocation.text.isEmpty || _selectedHour.isEmpty)
+          if (pickupDateTime == null ||
+              _fromLocation.text.isEmpty ||
+              _selectedHour.isEmpty)
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16),
               decoration: BoxDecoration(
@@ -1763,55 +1868,24 @@ class _TripBookingPageState extends State<TripBookingPage> {
     return SizedBox(
       width: double.infinity,
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           setState(() {
             isBtn = true;
           });
-          if(_tripType == 'self'){
-            getLeadGenerate('${_selectedRideType?.enBrandName}',totalHours ?? 0);
-            // Navigator.push(
-            //   context,
-            //   CupertinoPageRoute(
-            //     builder: (context) => CarSelectionPage(
-            //       type: _tripType,
-            //       location: selectedLocation ?? '',
-            //       pickDate: formatDate(pickupDateTime),
-            //       pickTime: formatTime(pickupDateTime),
-            //       dropDate: formatDate(returnDateTime),
-            //       dropTime: formatTime(returnDateTime),
-            //       totalHour: totalHours ?? 0,
-            //       categoryType: '${_selectedRideType?.enBrandName}',
-            //     ),
-            //   ),
-            // );
-          }else{
-            getLeadGenerate('CAR',distanceKm + returnDistanceKm);
-            // Navigator.push(
-            //   context,
-            //   CupertinoPageRoute(
-            //     builder: (context) => CarSelectionPage(
-            //       type: _tripType,
-            //       location: _toLocation.text,
-            //       pickDate: formatDate(pickupDateTime),
-            //       pickTime: formatTime(pickupDateTime),
-            //       dropDate: formatDate(returnDateTime),
-            //       dropTime: formatTime(returnDateTime),
-            //       totalHour: distanceKm,
-            //       categoryType: 'CAR',
-            //     ),
-            //   ),
-            // );
+          if (_tripType == 'self') {
+            getLeadGenerate(
+                '${_selectedRideType?.enBrandName}', totalHours ?? 0);
+          } else {
+            getLeadGenerate('CAR', calculateTotalTripDistance());
           }
-
-          // getLeadGenerate();
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               colors: [
-                Color(0xFFFF7A18), // warm orange
-                Color(0xFFFF5722), // deep orange
+                Color(0xFF2196F3),
+                Color(0xFF1565C0),
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -1826,16 +1900,119 @@ class _TripBookingPageState extends State<TripBookingPage> {
             ],
           ),
           child: Center(
-            child: isBtn ? const CircularProgressIndicator(color: Colors.white) : const Text(
-              'Book Trip',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-                letterSpacing: 0.5,
+            child: isBtn
+                ? const CircularProgressIndicator(color: Colors.white)
+                : const Text(
+                    'Book Trip',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  bool _isFormReady() {
+    if (_tripType == 'one-way') {
+      return pickupDateTime != null && _toLocation.text.isNotEmpty && _fromLocation.text.isNotEmpty;
+    } else if (_tripType == 'two-way') {
+      return pickupDateTime != null && returnDateTime != null && _toLocation.text.isNotEmpty && _fromLocation.text.isNotEmpty;
+    }
+    return false;
+  }
+
+  Widget _buildDisabledButton() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: const Center(
+        child: Text(
+          'Book Trip',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRouteIcon({bool isStart = false, bool isMid = false}) {
+    return Column(
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isStart ? Colors.green.shade100 : (isMid ? Colors.amber.shade100 : Colors.red.shade100),
+            border: Border.all(
+              color: isStart ? Colors.green : (isMid ? Colors.amber : Colors.red),
+              width: 2,
+            ),
+          ),
+          child: Center(
+            child: Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isStart ? Colors.green : (isMid ? Colors.amber : Colors.red),
               ),
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _dateTimeTileCompact({
+    required String title,
+    required DateTime? value,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.calendar_today_outlined, size: 14, color: Colors.blue.shade400),
+                const SizedBox(width: 6),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey.shade600),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              value == null ? 'Select' : DateFormat('dd MMM, hh:mm aa').format(value),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w900,
+                color: value == null ? Colors.grey.shade400 : Colors.black87,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -1890,10 +2067,28 @@ class _TripBookingPageState extends State<TripBookingPage> {
   }) {
     Widget button(String value, String text) {
       final isSelected = selectedType == value;
-
       return Expanded(
         child: GestureDetector(
-          onTap: () => onChanged(value),
+          onTap: () {
+            onChanged(value);
+            returnDistanceKm = 0.0;
+            distanceKm = 0.0;
+            _selfSelectedHours = 0.0;
+            _manualHourController.clear();
+            _toLocation.clear();
+            _returnLocation.clear();
+            _selectedHour = '';
+            leadBookingType = value == 'one-way' ? "oneway" : "round";
+
+            if (value == 'one-way') {
+              for (var controller in _multiDropControllers) {
+                controller.dispose();
+              }
+              _multiDropControllers.clear();
+              _multiDropLats.clear();
+              _multiDropLngs.clear();
+            }
+          },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 250),
             alignment: Alignment.center,
@@ -1929,6 +2124,28 @@ class _TripBookingPageState extends State<TripBookingPage> {
     );
   }
 
+  int getTotalDays() {
+    if (pickupDateTime == null || returnDateTime == null) {
+      return 1;
+    }
+
+    DateTime pickupDate = DateTime(
+      pickupDateTime!.year,
+      pickupDateTime!.month,
+      pickupDateTime!.day,
+    );
+
+    DateTime returnDate = DateTime(
+      returnDateTime!.year,
+      returnDateTime!.month,
+      returnDateTime!.day,
+    );
+
+    int days = returnDate.difference(pickupDate).inDays + 1;
+
+    return days;
+  }
+
   // Time selection method
   Future<void> _selectDateTime({
     required BuildContext context,
@@ -1937,36 +2154,15 @@ class _TripBookingPageState extends State<TripBookingPage> {
 
     DateTime now = DateTime.now();
 
-    DateTime firstDate;
-
-    if (isPickup) {
-      firstDate = now;
-    } else {
-      if (pickupDateTime != null) {
-        firstDate = pickupDateTime!.add(const Duration(days: 1));
-      } else {
-        firstDate = now;
-      }
-    }
+    DateTime firstDate = isPickup
+        ? now
+        : (pickupDateTime ?? now);
 
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: firstDate,
       firstDate: firstDate,
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
-            ),
-            dialogBackgroundColor: Colors.white,
-          ),
-          child: child!,
-        );
-      },
+      lastDate: now.add(const Duration(days: 365)),
     );
 
     if (pickedDate == null) return;
@@ -1974,9 +2170,9 @@ class _TripBookingPageState extends State<TripBookingPage> {
     TimeOfDay? pickedTime;
     DateTime finalDateTime;
 
-    /// 🔥 LOOP until valid time selected
     while (true) {
 
+      /// ✅ SINGLE TIME PICKER (with theme)
       pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
@@ -1994,6 +2190,7 @@ class _TripBookingPageState extends State<TripBookingPage> {
               ),
               colorScheme: const ColorScheme.light(
                 primary: Colors.blue,
+                secondary: Colors.blue, // 🔥 important
                 onPrimary: Colors.white,
                 onSurface: Colors.black,
               ),
@@ -2013,43 +2210,64 @@ class _TripBookingPageState extends State<TripBookingPage> {
         pickedTime.minute,
       );
 
-      /// 🔥 SAME DAY PAST TIME CHECK
-      if (pickedDate.year == now.year &&
-          pickedDate.month == now.month &&
-          pickedDate.day == now.day) {
+      /// 🔥 VALIDATION
+      if (isPickup) {
 
+        /// ❌ Past time
         if (finalDateTime.isBefore(now)) {
-          /// ❌ Invalid → loop again (no message)
+          Fluttertoast.showToast(
+              msg: 'Past time',
+              backgroundColor: Colors.red,
+              textColor: Colors.white);
+          continue;
+        }
+
+        /// ❌ Same time (optional safety)
+        if (pickupDateTime != null &&
+            finalDateTime.isAtSameMomentAs(pickupDateTime!)) {
+          Fluttertoast.showToast(
+              msg: 'Same time',
+              backgroundColor: Colors.red,
+              textColor: Colors.white);
+          continue;
+        }
+
+      } else {
+
+        /// ❌ Return must be after pickup (same day allowed)
+        if (pickupDateTime != null &&
+            !finalDateTime.isAfter(pickupDateTime!)) {
+          Fluttertoast.showToast(
+              msg: 'Please select a return time after the pickup time',
+              backgroundColor: Colors.red,
+              textColor: Colors.white);
           continue;
         }
       }
 
-      /// ✅ Valid → break loop
       break;
     }
 
-    /// 🔥 SET STATE
+    /// ✅ SET STATE
     setState(() {
       if (isPickup) {
         pickupDateTime = finalDateTime;
 
-        if (returnDateTime != null &&
-            returnDateTime!.isBefore(
-                pickupDateTime!.add(const Duration(days: 1)))) {
-          returnDateTime = null;
+        if (_tripType == 'self') {
+          _updateSelfReturnTime();
+        } else {
+          /// reset return if invalid
+          if (returnDateTime != null &&
+              !returnDateTime!.isAfter(pickupDateTime!)) {
+            returnDateTime = null;
+          }
         }
-
       } else {
         returnDateTime = finalDateTime;
       }
     });
   }
-
-
-
 }
-
-
 
 class CategoryCar {
   final int id;
@@ -2097,14 +2315,14 @@ class SelfLoaction {
   });
 
   factory SelfLoaction.fromJson(Map<String, dynamic> json) => SelfLoaction(
-    city: json["city"],
-    lat: json["lat"]?.toDouble(),
-    lng: json["lng"]?.toDouble(),
-  );
+        city: json["city"],
+        lat: json["lat"]?.toDouble(),
+        lng: json["lng"]?.toDouble(),
+      );
 
   Map<String, dynamic> toJson() => {
-    "city": city,
-    "lat": lat,
-    "lng": lng,
-  };
+        "city": city,
+        "lat": lat,
+        "lng": lng,
+      };
 }

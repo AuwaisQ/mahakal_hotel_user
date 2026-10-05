@@ -9,6 +9,7 @@ import '../../data/datasource/remote/http/httpClient.dart';
 import '../tour_and_travells/Controller/tour_location_controller.dart';
 import 'instant_detail_screen.dart';
 import 'instant_parcel_screen.dart';
+import 'socket_instant/instant_socket_page.dart';
 
 class InstantHomePage extends StatefulWidget {
   const InstantHomePage({super.key});
@@ -35,6 +36,13 @@ class _InstantHomePageState extends State<InstantHomePage> {
 
   void getDistance(Map<String, dynamic> data) async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? referralCode = prefs.getString('referral_code');
+
+      if (referralCode != null && referralCode.isNotEmpty) {
+        data["active_agent_code"] = referralCode;
+      }
+
       var res = await HttpService().postApi('/api/v1/self-vehicle/get-distance',data);
       print('Api response for distance $res');
         if (res['status'] == 1 && res['data'] != null) {
@@ -55,7 +63,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
               dropLat: toLatitude!,
               dropLong: toLongitude!,
               bookingPickKm: distanceKm,
-              bookingType: 'cab',)),
+              bookingType: 'instant',)),
           );
       }
 
@@ -126,6 +134,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
     getCurrentLocation();
     print("function has started");
   }
+
   Future<void> saveRecentLocation(RecentLocation newLocation) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -270,6 +279,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
                                       address: address,
                                     ),
                                   );
+                                  Navigator.pop(context);
                                   Map<String, dynamic> data = {
                                     'pick_lat':fromLatitude,
                                     'pick_long':fromLongitude,
@@ -277,6 +287,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
                                     'drop_long':toLongitude
                                   };
                                   getDistance(data);
+                                  loadRecent();
                                 },
                               ),
                             ],
@@ -341,7 +352,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
                             height: 60,
                             width: 60,
                             decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
+                              color: Colors.orange.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -434,12 +445,12 @@ class _InstantHomePageState extends State<InstantHomePage> {
                                   width: 42,
                                   height: 42,
                                   decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.1),
+                                    color: Colors.orange.withOpacity(0.1),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.history,
-                                    color: Colors.blue,
+                                    color: Colors.orange,
                                     size: 20,
                                   ),
                                 ),
@@ -499,6 +510,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
   @override
   void initState() {
     // TODO: implement initState
+    InstantSocketService().initSocket();
     super.initState();
     loadRecent();
   }
@@ -556,7 +568,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
+              color: Colors.orange.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -649,12 +661,12 @@ class _InstantHomePageState extends State<InstantHomePage> {
                         width: 42,
                         height: 42,
                         decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.1),
+                          color: Colors.orange.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.history,
-                          color: Colors.blue,
+                          color: Colors.orange,
                           size: 20,
                         ),
                       ),
@@ -745,7 +757,7 @@ class _InstantHomePageState extends State<InstantHomePage> {
             padding: const EdgeInsets.all(14),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blue, Colors.amber],
+                colors: [Colors.blue, Colors.lightBlueAccent],
               ),
               shape: BoxShape.circle,
             ),

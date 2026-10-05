@@ -210,6 +210,7 @@ import 'features/tour_and_travells/Controller/fetch_wallet_controller.dart';
 import 'features/tour_and_travells/Controller/lanaguage_provider.dart';
 import 'features/tour_and_travells/Controller/success_touramount_controller.dart';
 import 'features/tour_and_travells/Controller/tour_lead_controller.dart';
+import 'package:mahakal/features/parking/controller/parking_controller.dart';
 
 final sl = GetIt.instance;
 
@@ -307,6 +308,7 @@ Future<void> init() async {
   sl.registerFactory(() => CheckOrderStatusController());
   sl.registerFactory(() => HotelOrderDetailsController());
   sl.registerFactory(() => ShareHotelController());
+  sl.registerFactory(() => ParkingController());
 
   // Tickit(Activities) Booking
   sl.registerFactory(() => ActivitiesCategoryController());

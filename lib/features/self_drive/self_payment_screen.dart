@@ -10,6 +10,7 @@ import '../../data/datasource/remote/http/httpClient.dart';
 import '../../main.dart';
 import '../../utill/app_constants.dart';
 import '../../utill/completed_order_dialog.dart';
+import '../../utill/payment_process_screen.dart';
 import '../../utill/razorpay_screen.dart';
 import '../custom_bottom_bar/bottomBar.dart';
 import '../profile/controllers/profile_contrroller.dart';
@@ -21,9 +22,14 @@ class BookingConfirmationPage extends StatefulWidget {
   final double hour;
   final String pickupDate;
   final String price;
-  final int? insAmount;
+  final int? finalAmount;
+  final int? gstAmount;
+  final int? driverLocal;
+  final int? driverRound;
   final String vehicleId;
   final String leadId;
+  final int totalDays;
+  final List<dynamic> multiaddress;
   const BookingConfirmationPage({super.key,
     required this.type,
     required this.carName,
@@ -31,9 +37,14 @@ class BookingConfirmationPage extends StatefulWidget {
     required this.hour,
     required this.pickupDate,
     required this.price,
-    this.insAmount,
+    required this.finalAmount,
     required this.vehicleId,
-    required this.leadId
+    required  this.leadId,
+    required this.gstAmount,
+    required this.driverLocal,
+    required this.driverRound,
+    required this.totalDays,
+    required this.multiaddress,
   });
 
   @override
@@ -49,81 +60,120 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _aadhaarController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   final razorpayService = RazorpayPaymentService();
   bool isLoading = false;
+  Map<String, dynamic>? _aadhaarData;
+
   void getAadhar(String aadharNumber, BuildContext context) async {
     var res = await HttpService().postApi(AppConstants.sendAadharOtp, {
       'aadhaar_number': aadharNumber,
     });
-    print('Api response data place order $res');
+    setState(() => isBTN = false);
     if (res['status'] == 1) {
       String id = res['data']['request_id'].toString();
-      Fluttertoast.showToast(
-          msg: 'Send OTP',
-          backgroundColor: Colors.green,
-          textColor: Colors.white);
+      Fluttertoast.showToast(msg: 'Send OTP', backgroundColor: Colors.green, textColor: Colors.white);
       showOtpVerificationDialog(context, id);
-    }
-    if (res['status'] == 2) {
-      // Navigator.pop(context);
-      String name = res['data']['name'];
-      String aadhar = res['data']['aadhar'].toString();
+    } else if (res['status'] == 2) {
       setState(() {
-        _nameController.text = name;
-        _aadhaarController.text = aadhar;
+        _aadhaarData = res['data'];
+        
+        // If data is present, update. If null or empty, keep existing value.
+        String? newName = res['data']['name'];
+        if (newName != null && newName.isNotEmpty) {
+          _nameController.text = newName;
+        }
+        
+        String phone = res['data']['phone']?.toString() ?? '';
+        if (phone.isNotEmpty) {
+          if (phone.startsWith('+91')) {
+            phone = phone.substring(3);
+          }
+          _mobileController.text = phone;
+        }
+        
+        String? newAadhar = res['data']['aadhar']?.toString();
+        if (newAadhar != null && newAadhar.isNotEmpty) {
+          _aadhaarController.text = newAadhar;
+        }
+        
+        var addr = res['data']['address'];
+        if (addr is Map) {
+          _addressController.text = [
+            addr['house'], addr['street'], addr['landmark'], addr['loc'], 
+            addr['vtc'], addr['po'], addr['subdist'], addr['dist'], 
+            addr['state'], addr['country']
+          ].where((e) => e != null && e.toString().trim().isNotEmpty).join(', ');
+        } else if (addr != null && addr.toString().isNotEmpty) {
+          _addressController.text = addr.toString();
+        }
+        
         _isAadhaarVerified = true;
         isVerify = true;
         isBTN = false;
       });
-      Fluttertoast.showToast(
-          msg: 'Success',
-          backgroundColor: Colors.green,
-          textColor: Colors.white);
-    }
-    if (res['status'] == 0) {
-      Fluttertoast.showToast(
-          msg: 'Invalid Aadhaar Number',
-          backgroundColor: Colors.red,
-          textColor: Colors.white);
+      Fluttertoast.showToast(msg: 'Success', backgroundColor: Colors.green, textColor: Colors.white);
+    } else {
+      Fluttertoast.showToast(msg: 'Invalid Aadhaar Number', backgroundColor: Colors.red, textColor: Colors.white);
       setState(() {
         _isAadhaarVerified = false;
         isVerify = false;
         isBTN = false;
       });
     }
-    print("${res['data']['message']} ${res['status']} Print status");
   }
 
   void verifyOtp(String otp, String id,
       BuildContext context) async {
     var res = await HttpService().postApi(
         AppConstants.sendAadharOtpVerify, {'otp': otp, 'request_id': id});
-    print('Api response data verify otp $res');
+    print(res);
     if (res['status'] == 1) {
-      String name = res['data']['data']['full_name'];
-      String aadhar = res['data']['data']['aadhaar_number'];
-      Navigator.pop(context);
       setState(() {
-        _nameController.text = name;
-        _aadhaarController.text = aadhar;
+        _aadhaarData = res['data']['data'];
+        
+        String? newName = _aadhaarData?['full_name'];
+        if (newName != null && newName.isNotEmpty) {
+          _nameController.text = newName;
+        }
+        
+        String phone = _aadhaarData?['phone']?.toString() ?? '';
+        if (phone.isNotEmpty) {
+          if (phone.startsWith('+91')) {
+            phone = phone.substring(3);
+          }
+          _mobileController.text = phone;
+        }
+        
+        String? newAadhar = _aadhaarData?['aadhaar_number']?.toString();
+        if (newAadhar != null && newAadhar.isNotEmpty) {
+          _aadhaarController.text = newAadhar;
+        }
+        
+        var addr = _aadhaarData?['address'];
+        if (addr is Map) {
+          _addressController.text = [
+            addr['house'], addr['street'], addr['landmark'], addr['loc'], 
+            addr['vtc'], addr['po'], addr['subdist'], addr['dist'], 
+            addr['state'], addr['country']
+          ].where((e) => e != null && e.toString().trim().isNotEmpty).join(', ');
+        } else if (addr != null && addr.toString().isNotEmpty) {
+          _addressController.text = addr.toString();
+        }
+
         _isAadhaarVerified = true;
         isVerify = true;
         isBTN = false;
       });
-      Fluttertoast.showToast(
-          msg: 'Success',
-          backgroundColor: Colors.green,
-          textColor: Colors.white);
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: 'Success', backgroundColor: Colors.green, textColor: Colors.white);
     } else {
       setState(() {
         _isAadhaarVerified = false;
         isVerify = false;
         isBTN = false;
       });
-      Fluttertoast.showToast(
-          msg: 'Invalid request',
-          backgroundColor: Colors.red,
-          textColor: Colors.white);
+      Fluttertoast.showToast(msg: 'Invalid request', backgroundColor: Colors.red, textColor: Colors.white);
     }
   }
 
@@ -280,11 +330,28 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
     );
   }
 
+  Future<void> _clearReferralCodes() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('referral_code');
+      await prefs.remove('active_agent_code');
+      debugPrint('🧹 Referral codes cleared from SharedPreferences (Self Vehicle)');
+    } catch (e) {
+      debugPrint('Error clearing referral codes: $e');
+    }
+  }
+
   void orderPlace(Map<String, dynamic> data) async{
     final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
+    if (referralCode != null && referralCode.isNotEmpty) {
+      data["active_agent_code"] = referralCode;
+    }
+
     var res = await HttpService().postApi('/api/v1/self-vehicle/vehicle-booking-success', data);
     if(res['status'] == 1){
-    await prefs.setInt('self_lead_id',0);
+      String msg = widget.type == "self" ? "self-drive" : "cab" ;
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
           builder: (BuildContext context) => const BottomBar(pageIndex: 0)));
       showDialog(
@@ -294,7 +361,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
           tabIndex: 14,
           title: 'Cab Booked!',
           message:
-          'Your self-drive cab has been successfully booked. Please reach the pickup location on your selected date and time with valid ID proof.',
+          'Your $msg has been successfully booked. Please reach the pickup location on your selected date and time with valid ID proof.',
         ),
         barrierDismissible: true,
       );
@@ -307,6 +374,13 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
   }
 
   void getLeadGenerate(Map<String, dynamic> leadData) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
+    if (referralCode != null && referralCode.isNotEmpty) {
+      leadData["active_agent_code"] = referralCode;
+    }
+
     var res = await HttpService().postApi('/api/v1/self-vehicle/vehicle-create-lead',leadData);
     print('api response for lead generate $res, body data $leadData');
     if (res['status'] == 1) {
@@ -317,20 +391,47 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
     @override
   void initState() {
     // TODO: implement initState
+    String phone = Provider.of<ProfileController>(Get.context!, listen: false).userPHONE;
+    if (phone.startsWith('+91')) {
+      phone = phone.substring(3);
+    }
     setState(() {
       _nameController.text = Provider.of<ProfileController>(Get.context!, listen: false).userNAME;
       _emailController.text = Provider.of<ProfileController>(Get.context!, listen: false).userEMAIL;
-      _mobileController.text = Provider.of<ProfileController>(Get.context!, listen: false).userPHONE;
+      _mobileController.text = phone;
     });
 
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    final total = widget.hour.ceil() * int.parse(widget.price);
-    final grandTotal = total + widget.insAmount!;
+    double baseAmount =
+        widget.hour.ceil() * double.parse(widget.price);
+
+    double driverAmount = 0;
+
+    if (widget.type == 'local') {
+      driverAmount =
+          (double.tryParse(widget.driverLocal.toString()) ?? 0) *
+              (widget.totalDays ?? 1);
+    } else if (widget.type == 'two-way' ||
+        widget.type == 'one-way') {
+      driverAmount =
+          (double.tryParse(widget.driverRound.toString()) ?? 0) *
+              (widget.totalDays ?? 1);
+    }
+
+    /// ✅ TOTAL BEFORE GST
+    double subTotal = baseAmount + driverAmount;
+
+    /// ✅ GST ON TOTAL (base + driver)
+    double gstValue =
+        (subTotal * (widget.gstAmount ?? 0)) / 100;
+
+    /// ✅ FINAL AMOUNT
+    double finalAmount = subTotal + gstValue;
     return isLoading
-        ? const CircularProgressIndicator()
+        ? const MahakalPaymentProcessing()
         :  Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: (widget.type == 'self' && !_isAadhaarVerified)
@@ -345,8 +446,8 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.blue,
-              Colors.blue.shade400,
+              Color(0xFF2196F3),
+              Color(0xFF1565C0),
             ],
           ),
           boxShadow: [
@@ -371,23 +472,14 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   ),
                 ),
                 const SizedBox(height: 2),
-               widget.insAmount == null
-                   ? Text(
-                 '₹$total',
+               Text(
+                 '₹${widget.finalAmount}',
                  style: const TextStyle(
                    fontSize: 20,
                    fontWeight: FontWeight.bold,
                    color: Colors.white,
                  ),
                )
-                   : Text(
-                  '₹$grandTotal',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
               ],
             ),
 
@@ -400,28 +492,35 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                 setState(() {
                   isLoading = true;
                 });
+                String phoneNumber = _mobileController.text;
+                if (!phoneNumber.startsWith('+91')) {
+                  phoneNumber = '+91$phoneNumber';
+                }
+
                 Map<String, dynamic> leadData = {
                   'lead_id': widget.leadId,
                   'id': widget.vehicleId,
-                'price': widget.insAmount == null ? '$total' : '$grandTotal',
-                'wallet_type': '0', // example
-                'aadhaar_number': _aadhaarController.text,
-                'f_name': _nameController.text,
-                'phone_number': _mobileController.text,
-                'email': _emailController.text,
+                  'price': widget.finalAmount,
+                  'wallet_type': '0', // example
+                  'aadhaar_number': _aadhaarController.text,
+                  'f_name': _nameController.text,
+                  'phone_number': phoneNumber,
+                  'address': _addressController.text,
+                'multiaddress': widget.multiaddress,
                   'booking_cab_ac': 'ac',
                 };
                 getLeadGenerate(leadData);
                 // TODO: Book Now action
+                _clearReferralCodes();
                 razorpayService.openCheckout(
-                  amount: total,
+                  amount: widget.finalAmount,
                   razorpayKey: AppConstants.razorpayLive,
                   onSuccess: (response) {
                     Map<String, dynamic> data = {
                       'wallet_type': '0',  //0,1
                       'lead_id':widget.leadId,
                       'transaction_id':response.paymentId.toString(),
-                      'online_pay': widget.insAmount == null ? '$total' : '$grandTotal',
+                      'online_pay': widget.finalAmount,
                     };
                     orderPlace(data);
                   },
@@ -470,8 +569,8 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFFFF7A18),
-                Color(0xFFFF5722),
+                Color(0xFF42A5F5),
+                Color(0xFF1E3A8A),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -505,15 +604,14 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
               const SizedBox(height: 20),
 
               Container(
-                padding: const EdgeInsets.all(18),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.grey.shade200),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
-                      blurRadius: 14,
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),
                   ],
@@ -522,147 +620,210 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    /// ===== LOCATION =====
+                    /// LOCATION
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(7),
                           decoration: BoxDecoration(
                             color: Colors.blue.shade50,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(
-                            Icons.location_on,
-                            color: Colors.blue,
-                            size: 22,
-                          ),
+                          child: const Icon(Icons.location_on,
+                              color: Colors.blue, size: 18),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             widget.location,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
-                            maxLines: 2,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
                     ),
 
-                    const SizedBox(height: 14),
-
-                    Divider(color: Colors.grey.shade200),
-
                     const SizedBox(height: 10),
-
-                    /// ===== CAR NAME =====
-                    _infoRow(
-                      icon: Icons.directions_car_rounded,
-                      label: 'Car',
-                      value: widget.carName,
-                      color: Colors.blue
-                    ),
+                    Divider(color: Colors.grey.shade200, height: 1),
 
                     const SizedBox(height: 8),
 
-                    /// ===== PICKUP DATE =====
+                    /// DETAILS (Compact spacing)
+                    _infoRow(
+                      icon: Icons.directions_car,
+                      label: 'Car',
+                      value: "${widget.carName} • ${widget.type}",
+                      color: Colors.blue,
+                    ),
+
                     _infoRow(
                       icon: Icons.calendar_month,
                       label: 'Pickup',
                       value: widget.pickupDate,
-                        color: Colors.black
+                      color: Colors.black87,
                     ),
-
-                    const SizedBox(height: 8),
-
-                    /// ===== TOTAL HOURS =====
-                    _infoRow(
-                      icon: widget.type  == 'self' ? Icons.schedule : Icons.add_road,
-                      label: widget.type  == 'self' ? 'Duration' : 'Kilometers',
-                      value: '${widget.hour.toStringAsFixed(2)}  ${widget.type  == 'self' ? 'Hours' : 'Km'}',
-                        color: Colors.black
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    /// ===== TOTAL HOURS =====
-                    widget.type  == 'self'
-                        ? _infoRow(
-                      icon: Icons.currency_rupee,
-                      label: 'Amount',
-                      value: '${widget.hour.ceil()} Hours X ₹${widget.price}',
-                        color: Colors.green
-                    )
-                        : _infoRow(
-                      icon: Icons.currency_rupee,
-                      label: 'Amount',
-                      value: '${widget.hour.ceil()} Km X ₹${widget.price}',
-                        color: Colors.green
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    if(widget.insAmount != 0)
-                    _infoRow(
-                      icon: Icons.local_police_rounded,
-                      label: 'Insurance Amount',
-                      value: '+ ₹${widget.insAmount}',
-                        color: Colors.green
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    /// ===== PRICE =====
+                    //
+                    // _infoRow(
+                    //   icon: widget.type == 'self'
+                    //       ? Icons.schedule
+                    //       : Icons.add_road,
+                    //   label: widget.type == 'self'
+                    //       ? 'Duration'
+                    //       : 'Distance',
+                    //   value:
+                    //   '${widget.hour.ceil()} ${widget.type == 'self' ? 'Hr' : 'Km'}',
+                    //   color: Colors.black87,
+                    // ),
+                    //
+                    // const SizedBox(height: 6),
+                    //
+                    // /// BASE
+                    // _infoRow(
+                    //   icon: Icons.currency_rupee,
+                    //   label: 'Base',
+                    //   value:
+                    //   '${widget.hour.ceil()} x ₹${widget.price} = ₹${baseAmount.toInt()}',
+                    //   color: Colors.green,
+                    // ),
+                    //
+                    // /// DRIVER
+                    // if (driverAmount > 0)
+                    //   _infoRow(
+                    //     icon: Icons.person,
+                    //     label: 'Driver',
+                    //     value: '+ ₹${driverAmount.toInt()}',
+                    //     color: Colors.green,
+                    //   ),
+                    //
+                    // /// GST
+                    // _infoRow(
+                    //   icon: Icons.receipt,
+                    //   label: 'GST ${widget.gstAmount}%',
+                    //   value: '+ ₹${gstValue.toInt()}',
+                    //   color: Colors.orange,
+                    // ),
+                    //
+                    // const SizedBox(height: 12),
+                    //
+                    // /// TOTAL (More premium)
+                    // Container(
+                    //   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(12),
+                    //     gradient: LinearGradient(
+                    //       colors: [
+                    //         Colors.blue,
+                    //         Colors.orange.shade400,
+                    //       ],
+                    //     ),
+                    //   ),
+                    //   child: Row(
+                    //     children: [
+                    //       const Text(
+                    //         'Total',
+                    //         style: TextStyle(
+                    //           color: Colors.white70,
+                    //           fontSize: 13,
+                    //         ),
+                    //       ),
+                    //       const Spacer(),
+                    //       Row(
+                    //         children: [
+                    //           const Icon(Icons.currency_rupee,
+                    //               color: Colors.white, size: 16),
+                    //           Text(
+                    //             '${finalAmount * widget.totalDays}',
+                    //             style: const TextStyle(
+                    //               fontSize: 17,
+                    //               fontWeight: FontWeight.bold,
+                    //               color: Colors.white,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.blue.shade50,
+                        color: Colors.grey.shade50,
                         borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: Colors.grey.shade200),
                       ),
-                      child: Row(
+                      child: Column(
                         children: [
-                          const Icon(
-                            Icons.currency_rupee,
-                            color: Colors.blue,
-                            size: 22,
+
+                          /// BASE
+                          _priceRow(
+                            'Base Fare',
+                            '${widget.hour.ceil()}${widget.type == 'self' ? 'Hr' : 'Km'} × ₹${widget.price}',
+                            '₹${baseAmount.toInt()}',
                           ),
-                          const SizedBox(width: 6),
-                          const Text(
-                            'Total Price',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+
+                          /// DRIVER
+                          if (driverAmount > 0)
+                            _priceRow(
+                              'Driver Charge',
+                              '',
+                              '₹${driverAmount.toInt()}',
                             ),
+
+                          /// SUBTOTAL
+                          _priceRow(
+                            'Subtotal',
+                            '',
+                            '₹${(baseAmount + driverAmount).toInt()}',
                           ),
-                          const Spacer(),
-                          widget.insAmount == null
-                              ? Text(
-                            '₹$total',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
-                          )
-                              : Text(
-                            '₹$grandTotal',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
+
+                          /// GST
+                          _priceRow(
+                            'GST (${widget.gstAmount}%)',
+                            '',
+                            '₹${gstValue.toInt()}',
+                          ),
+
+                          Divider(height: 20,color: Colors.grey.shade300,),
+
+                          /// TOTAL PER DAY
+                          _priceRow(
+                            'Total / Day',
+                            '',
+                            '₹${finalAmount.toInt()}',
+                            isBold: true,
+                          ),
+
+                          /// TOTAL DAYS
+                          _priceRow(
+                            'Days',
+                            '',
+                            '× ${widget.totalDays}',
+                          ),
+
+                           Divider(height: 20,color: Colors.grey.shade300,),
+
+                          /// FINAL TOTAL
+                          _priceRow(
+                            'Final Amount',
+                            '',
+                            '₹${finalAmount}',
+                            isBold: true,
+                            isHighlight: true,
                           ),
                         ],
                       ),
-                    ),
+                    )
+
                   ],
                 ),
-              )
+              ),
 
+              SizedBox(height: 100,)
             ],
           ),
         ),
@@ -676,32 +837,100 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
     required String label,
     required String value,
   }) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: color),
-        const SizedBox(width: 8),
-        Text(
-          '$label : ',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey.shade600,
-          ),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: color,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
-            overflow: TextOverflow.ellipsis,
+            child: Icon(icon, size: 16, color: color),
           ),
-        ),
-      ],
+
+          const SizedBox(width: 10),
+
+          /// LABEL + VALUE
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
+  Widget _priceRow(
+      String title,
+      String subtitle,
+      String amount, {
+        bool isBold = false,
+        bool isHighlight = false,
+      }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight:
+                    isBold ? FontWeight.w600 : FontWeight.w500,
+                  ),
+                ),
+                if (subtitle.isNotEmpty)
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Text(
+            amount,
+            style: TextStyle(
+              fontSize: isHighlight ? 16 : 14,
+              fontWeight:
+              isHighlight ? FontWeight.bold : FontWeight.w600,
+              color: isHighlight
+                  ? Colors.blue
+                  : Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _aadhaarVerifyCard({
     required TextEditingController aadhaarController,
@@ -722,7 +951,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             Colors.green.shade50,
           ]
               : [
-            Colors.blue.shade200.withOpacity(0.9),
+            Colors.orange.shade200.withOpacity(0.9),
             Colors.amber.shade50.withOpacity(0.9),
           ],
         ),
@@ -895,7 +1124,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                     Colors.green.shade50,
                   ]
                       : [
-                    Colors.blue.shade200.withOpacity(0.9),
+                    Colors.orange.shade200.withOpacity(0.9),
                     Colors.amber.shade50.withOpacity(0.9),
                   ],
                 ),
@@ -1010,26 +1239,63 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             ),
 
           const SizedBox(height: 10),
-          _infoTileCompact(
+          _inputTileCompact(
             icon: Icons.person_outline,
             label: 'Name',
-            value: _nameController.text,
+            controller: _nameController,
           ),
 
           const SizedBox(height: 10),
 
-          _infoTileCompact(
+          _inputTileCompact(
             icon: Icons.phone,
             label: 'Mobile',
-            value: _mobileController.text,
+            controller: _mobileController,
+            keyboardType: TextInputType.phone,
+            prefix: '+91 ',
           ),
+        ],
+      ),
+    );
+  }
 
-          const SizedBox(height: 10),
-
-          _infoTileCompact(
-            icon: Icons.email_outlined,
-            label: 'Email',
-            value: _emailController.text,
+  Widget _inputTileCompact({
+    required IconData icon,
+    required String label,
+    required TextEditingController controller,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+    String? prefix,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: Colors.blue.shade400),
+          const SizedBox(width: 8),
+          Text('$label : ',
+              style: TextStyle(
+                  fontSize: 12, color: Colors.blue.shade400)),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              keyboardType: keyboardType,
+              maxLines: maxLines,
+              minLines: 1,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                prefixText: prefix,
+                prefixStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87),
+              ),
+            ),
           ),
         ],
       ),

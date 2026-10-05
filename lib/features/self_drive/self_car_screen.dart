@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mahakal/features/self_drive/self_form_screen.dart';
 import 'package:mahakal/features/self_drive/self_payment_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/datasource/remote/http/httpClient.dart';
 import '../../utill/loading_datawidget.dart';
@@ -21,7 +22,11 @@ class CarSelectionPage extends StatefulWidget {
   final String dropTime;
   final double? totalHour;
   final String leadId;
+  final String city;
+  final int totalDays;
   final List<CategoryCar> carType;
+  final List<dynamic> multiaddress;
+
   const CarSelectionPage({
     super.key,
     required this.type,
@@ -33,7 +38,10 @@ class CarSelectionPage extends StatefulWidget {
     required this.dropTime,
     required this.totalHour,
     required this.leadId,
+    required this.city,
+    required this.totalDays,
     required this.carType,
+    required this.multiaddress,
   });
 
   @override
@@ -48,25 +56,35 @@ class _CarSelectionPageState extends State<CarSelectionPage>
   String? selectedImage;
   bool isGrid = false;
   int? selectedCarIndex;
+  bool _isLoading = true;
 
   void getCategorySelf(String type) async {
-    String option = widget.type == 'self' ? 'hour' : 'km';
-    var res = await HttpService().getApi(
-        '/api/v1/self-vehicle/cab-category?status=0&type=$type&self_tour_type=$option');
+    setState(() => _isLoading = true);
+    try {
+      String option = widget.type == 'self' ? 'hour' : 'km';
+      var res = await HttpService().getApi(
+          '/api/v1/self-vehicle/cab-category?status=0&city=${widget.city}&type=$type&self_tour_type=$option');
 
-    print('api car category $res');
+      print('api car category $res');
 
-    if (res['status'] == 1 && res['data'] != null) {
-      setState(() {
-        categoryList.clear();
-        carModelList.clear();
-        List carList = res['data'];
-        categoryList.addAll(carList.map((e) => CarList.fromJson(e)));
-        _tabController = TabController(
-          length: categoryList.length,
-          vsync: this,
-        );
-      });
+      if (res != null && res['status'] == 1 && res['data'] != null) {
+        setState(() {
+          categoryList.clear();
+          carModelList.clear();
+          List carList = res['data'];
+          categoryList.addAll(carList.map((e) => CarList.fromJson(e)));
+          _tabController = TabController(
+            length: categoryList.length,
+            vsync: this,
+          );
+        });
+      }
+    } catch (e) {
+      print('Error fetching categories: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -188,7 +206,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
+                          color: Colors.orange.shade50,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -196,7 +214,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: Colors.blue.shade800,
+                            color: Colors.orange.shade800,
                           ),
                         ),
                       ),
@@ -260,19 +278,19 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                   padding: const EdgeInsets.all(14),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? Colors.blue.withOpacity(0.1)
+                                        ? Colors.orange.withOpacity(0.1)
                                         : Colors.grey.shade50,
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
                                       color: isSelected
-                                          ? Colors.blue
+                                          ? Colors.orange
                                           : Colors.transparent,
                                       width: 1.5,
                                     ),
                                     boxShadow: isSelected
                                         ? [
                                             BoxShadow(
-                                              color: Colors.blue
+                                              color: Colors.orange
                                                   .withOpacity(0.2),
                                               blurRadius: 8,
                                               offset: const Offset(0, 2),
@@ -287,7 +305,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                           color: isSelected
-                                              ? Colors.blue
+                                              ? Colors.orange
                                               : Colors.grey.shade200,
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -316,7 +334,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                                 color: isSelected
-                                                    ? Colors.blue.shade700
+                                                    ? Colors.orange.shade700
                                                     : const Color(0xFF1A1A1A),
                                               ),
                                             ),
@@ -327,7 +345,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                                 "Selected",
                                                 style: TextStyle(
                                                   fontSize: 12,
-                                                  color: Colors.blue.shade400,
+                                                  color: Colors.orange.shade400,
                                                 ),
                                               ),
                                           ],
@@ -342,7 +360,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                           shape: BoxShape.circle,
                                           border: Border.all(
                                             color: isSelected
-                                                ? Colors.blue
+                                                ? Colors.orange
                                                 : Colors.grey.shade400,
                                             width: 2,
                                           ),
@@ -352,7 +370,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                                 margin: const EdgeInsets.all(4),
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: Colors.blue,
+                                                  color: Colors.orange,
                                                 ),
                                               )
                                             : null,
@@ -410,7 +428,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                   }
                                 },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Colors.orange,
                             disabledBackgroundColor: Colors.grey.shade300,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
@@ -443,9 +461,15 @@ class _CarSelectionPageState extends State<CarSelectionPage>
 
   Future<List<CarsDatum>> getCarAvailable(String id) async {
     String option = widget.type == 'self' ? 'hour' : 'km';
+
+    final prefs = await SharedPreferences.getInstance();
+    final String? referralCode = prefs.getString('referral_code');
+
     Map<String, dynamic> data = {
       'category_id': id,
       'lead_id': widget.leadId,
+      if (referralCode != null && referralCode.isNotEmpty)
+        "active_agent_code": referralCode,
     };
     var res = await HttpService().postApi(
       '/api/v1/self-vehicle/get-available-cab-list',
@@ -485,9 +509,34 @@ class _CarSelectionPageState extends State<CarSelectionPage>
   Widget build(BuildContext context) {
     final currencyFormat = NumberFormat.currency(locale: 'en_IN', symbol: '₹');
     String dayType = widget.type == 'self' ? 'hour' : 'km';
-    return categoryList.isEmpty
-        ? MahakalLoadingData(onReload: () {})
-        : Scaffold(
+
+    if (_isLoading) {
+      return MahakalLoadingData(onReload: () => getCategorySelf(widget.categoryType));
+    }
+
+    if (categoryList.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: const Text(
+            'Select your cab',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        body: _noCarAvailableWidget(),
+      );
+    }
+
+    return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.white,
               elevation: 0,
@@ -526,12 +575,12 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                               EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Colors.blue, Colors.blue],
+                              colors: [Colors.orange, Colors.blue],
                             ),
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.blue.withOpacity(0.3),
+                                color: Colors.orange.withOpacity(0.3),
                                 blurRadius: 6,
                                 offset: Offset(0, 3),
                               )
@@ -582,7 +631,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                                   duration: const Duration(milliseconds: 250),
                                   height: 64,
                                   width: 64,
-                                  padding: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.grey.shade200,
@@ -664,7 +713,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                               ConnectionState.waiting) {
                             return const Center(
                               child: CircularProgressIndicator(
-                                  color: Colors.blue),
+                                  color: Colors.orange),
                             );
                           }
 
@@ -685,572 +734,17 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                             physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              // DateTime now = DateTime.now();
-                              // DateTime nextDate = findNextDate(now, "${itemweekDays}");
-                              // String formattedDate = formatDate(nextDate);
-                              return Column(
-                                children: subcategory.map((car) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (_) => CarSelfDetails(
-                                            slug: '${car.slug}',
-                                            type: widget.type,
-                                            location: widget.location,
-                                            totalHour: widget.totalHour ?? 0,
-                                            date:
-                                                '${widget.pickDate} : ${widget.pickTime}',
-                                            leadId: widget.leadId,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: isGrid
-                                        ? Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 14, vertical: 6),
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.06),
-                                                  blurRadius: 10,
-                                                  offset: const Offset(0, 4),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                /// CAR IMAGE
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl:
-                                                        car.thumbnail ?? '',
-                                                    height: 70,
-                                                    width: 90,
-                                                    fit: BoxFit.cover,
-                                                    placeholder:
-                                                        (context, url) =>
-                                                            Container(
-                                                      height: 70,
-                                                      width: 90,
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child:
-                                                          const CircularProgressIndicator(
-                                                              strokeWidth: 2),
-                                                    ),
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        const Icon(
-                                                            Icons
-                                                                .directions_car,
-                                                            size: 40),
-                                                  ),
-                                                ),
-
-                                                const SizedBox(width: 12),
-
-                                                /// DETAILS
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      /// NAME
-                                                      Text(
-                                                        car.enCabName ??
-                                                            "Car Name",
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                        ),
-                                                      ),
-
-                                                      const SizedBox(height: 4),
-
-                                                      /// FEATURES
-                                                      Row(
-                                                        children: [
-                                                          _DetailIcon(
-                                                              Icons.settings,
-                                                              car.carType ??
-                                                                  'Manual',
-                                                              Colors.green),
-                                                          const SizedBox(
-                                                              width: 8),
-                                                          _DetailIcon(
-                                                              Icons.event_seat,
-                                                              '${car.cabSeat ?? 4}',
-                                                              Colors
-                                                                  .deepOrange),
-                                                          const SizedBox(
-                                                              width: 8),
-                                                          _DetailIcon(
-                                                              Icons
-                                                                  .local_gas_station,
-                                                              car.fuelType ??
-                                                                  'Petrol',
-                                                              Colors.blue),
-                                                        ],
-                                                      ),
-
-                                                      const SizedBox(height: 4),
-
-                                                      /// RATING
-                                                      Row(
-                                                        children: [
-                                                          const Icon(Icons.star,
-                                                              size: 16,
-                                                              color:
-                                                                  Colors.amber),
-                                                          const Icon(Icons.star,
-                                                              size: 16,
-                                                              color:
-                                                                  Colors.amber),
-                                                          const Icon(Icons.star,
-                                                              size: 16,
-                                                              color:
-                                                                  Colors.amber),
-                                                          const Icon(Icons.star,
-                                                              size: 16,
-                                                              color:
-                                                                  Colors.amber),
-                                                          const Icon(Icons.star,
-                                                              size: 16,
-                                                              color:
-                                                                  Colors.amber),
-                                                          const SizedBox(
-                                                              width: 3),
-                                                          Text(
-                                                            '${car.rating ?? 4.5}',
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ),
-
-                                                          Spacer(),
-
-                                                          /// PRICE
-                                                          Text(
-                                                            '₹${car.basicPrice ?? 0}',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Colors
-                                                                  .deepOrange,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            '/$dayType',
-                                                            style: TextStyle(
-                                                              fontSize: 12,
-                                                              color: Colors.grey
-                                                                  .shade600,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 14, vertical: 10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.08),
-                                                  blurRadius: 20,
-                                                  offset: const Offset(0, 10),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                /// IMAGE
-                                                Stack(
-                                                  children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .only(
-                                                        topLeft:
-                                                            Radius.circular(20),
-                                                        topRight:
-                                                            Radius.circular(20),
-                                                      ),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl:
-                                                            car.thumbnail ?? '',
-                                                        height: 220,
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                Container(
-                                                          height: 220,
-                                                          alignment:
-                                                              Alignment.center,
-                                                          color: Colors
-                                                              .grey.shade200,
-                                                          child:
-                                                              const CircularProgressIndicator(
-                                                            strokeWidth: 2,
-                                                            color: Colors
-                                                                .deepOrange,
-                                                          ),
-                                                        ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Container(
-                                                          height: 220,
-                                                          color: Colors
-                                                              .grey.shade200,
-                                                          child: Icon(
-                                                            Icons
-                                                                .directions_car_rounded,
-                                                            size: 60,
-                                                            color: Colors
-                                                                .grey.shade400,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                    /// Gradient
-                                                    Positioned.fill(
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          gradient:
-                                                              LinearGradient(
-                                                            begin: Alignment
-                                                                .bottomCenter,
-                                                            end: Alignment
-                                                                .topCenter,
-                                                            colors: [
-                                                              Colors.black
-                                                                  .withOpacity(
-                                                                      0.55),
-                                                              Colors
-                                                                  .transparent,
-                                                              Colors
-                                                                  .transparent,
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                    /// Rating
-                                                    Positioned(
-                                                      bottom: 14,
-                                                      right: 10,
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 10,
-                                                                vertical: 6),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          gradient:
-                                                              LinearGradient(
-                                                            colors: [
-                                                              Colors.black
-                                                                  .withOpacity(
-                                                                      0.75),
-                                                              Colors.black
-                                                                  .withOpacity(
-                                                                      0.55),
-                                                            ],
-                                                            begin: Alignment
-                                                                .topLeft,
-                                                            end: Alignment
-                                                                .bottomRight,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(14),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.25),
-                                                              blurRadius: 6,
-                                                              offset:
-                                                                  const Offset(
-                                                                      0, 3),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            ...List.generate(5,
-                                                                (index) {
-                                                              return Icon(
-                                                                index <
-                                                                        car.rating!
-                                                                            .round()
-                                                                    ? Icons
-                                                                        .star_rounded
-                                                                    : Icons
-                                                                        .star_border_rounded,
-                                                                color: Colors
-                                                                    .amber,
-                                                                size: 16,
-                                                              );
-                                                            }),
-                                                            Text(
-                                                              '/${car.rating}',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                    Positioned(
-                                                      bottom: 10,
-                                                      left: 5,
-                                                      child: Row(
-                                                        children: List.generate(
-                                                          car.images!.length,
-                                                          (index) {
-                                                            return InkWell(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  selectedImage =
-                                                                      car.images![
-                                                                          index];
-                                                                });
-                                                              },
-                                                              child: Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            5),
-                                                                width: 45,
-                                                                height: 45,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10),
-                                                                  border: Border.all(
-                                                                      color: Colors
-                                                                          .white60,
-                                                                      width:
-                                                                          1.5),
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              0.25),
-                                                                      blurRadius:
-                                                                          6,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                child:
-                                                                    ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8),
-                                                                  child: Image
-                                                                      .network(
-                                                                    car.images![
-                                                                        index],
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                    errorBuilder: (_,
-                                                                            __,
-                                                                            ___) =>
-                                                                        const Icon(
-                                                                            Icons
-                                                                                .directions_car,
-                                                                            color:
-                                                                                Colors.white),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-
-                                                /// CONTENT
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          16, 14, 16, 18),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      /// NAME + PRICE
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text(
-                                                              car.enCabName ??
-                                                                  'Car Name',
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            '₹${car.basicPrice ?? 0}/$dayType',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color: Colors
-                                                                  .deepOrange,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      const SizedBox(height: 6),
-
-                                                      /// subtle divider
-                                                      Divider(
-                                                          color: Colors
-                                                              .grey.shade200),
-
-                                                      /// FEATURES (no boxes, clean row)
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          _DetailIcon(
-                                                              Icons.settings,
-                                                              car.carType ??
-                                                                  'Manual',
-                                                              Colors.green),
-                                                          _DetailIcon(
-                                                              Icons.event_seat,
-                                                              '${car.cabSeat ?? 4} Seats',
-                                                              Colors
-                                                                  .deepOrangeAccent),
-                                                          _DetailIcon(
-                                                              Icons
-                                                                  .local_gas_station,
-                                                              car.fuelType ??
-                                                                  'Petrol',
-                                                              Colors
-                                                                  .deepOrangeAccent),
-                                                        ],
-                                                      ),
-
-                                                      const SizedBox(
-                                                          height: 12),
-
-                                                      /// AC STATUS (soft strip)
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 14,
-                                                                vertical: 10),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: car.airConditioning ==
-                                                                  1
-                                                              ? Colors.blue
-                                                                  .withOpacity(
-                                                                      0.08)
-                                                              : Colors.blue
-                                                                  .withOpacity(
-                                                                      0.08),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(14),
-                                                        ),
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .ac_unit_rounded,
-                                                              size: 18,
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
-                                                            const SizedBox(
-                                                                width: 8),
-                                                            Text(
-                                                              'Ac & Non-AC  Both Available',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color:
-                                                                    Colors.blue,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                  );
-                                }).toList(),
+                              return CarListItem(
+                                car: subcategory[index],
+                                tripType: widget.type,
+                                location: widget.location,
+                                totalHour: widget.totalHour ?? 0,
+                                pickDate: widget.pickDate,
+                                pickTime: widget.pickTime,
+                                leadId: widget.leadId,
+                                totalDays: widget.totalDays,
+                                isGrid: isGrid,
+                                multiaddress: widget.multiaddress,
                               );
                             },
                           );
@@ -1290,12 +784,12 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                 width: 90,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blue.withOpacity(0.12),
+                  color: Colors.orange.withOpacity(0.12),
                 ),
                 child: const Icon(
                   Icons.directions_car_outlined,
                   size: 48,
-                  color: Colors.blue,
+                  color: Colors.orange,
                 ),
               ),
 
@@ -1338,7 +832,7 @@ class _CarSelectionPageState extends State<CarSelectionPage>
                   ),
                 ),
                 onPressed: () {
-                  // optional: refresh / go back
+                  Navigator.pop(context);
                 },
                 child: const Text(
                   'OK, Got it',
@@ -1355,23 +849,548 @@ class _CarSelectionPageState extends State<CarSelectionPage>
       ),
     );
   }
+}
 
-  Widget _DetailIcon(IconData icon, String text, Color color) {
-    return Row(
-      children: [
-        Icon(icon, size: 18, color: color),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey.shade700,
-            fontWeight: FontWeight.w500,
+class CarListItem extends StatefulWidget {
+  final CarsDatum car;
+  final String tripType;
+  final String location;
+  final double totalHour;
+  final String pickDate;
+  final String pickTime;
+  final String leadId;
+  final int totalDays;
+  final bool isGrid;
+  final List<dynamic> multiaddress;
+
+  const CarListItem({
+    super.key,
+    required this.car,
+    required this.tripType,
+    required this.location,
+    required this.totalHour,
+    required this.pickDate,
+    required this.pickTime,
+    required this.leadId,
+    required this.totalDays,
+    required this.isGrid,
+    required this.multiaddress,
+  });
+
+  @override
+  State<CarListItem> createState() => _CarListItemState();
+}
+
+class _CarListItemState extends State<CarListItem> {
+  String? selectedFuel;
+  int currentPrice = 0;
+  String? selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeVariant();
+  }
+
+  void _initializeVariant() {
+    // Determine default fuel and price
+    if ((widget.car.petrolPrice ?? 0) > 0) {
+      selectedFuel = 'Petrol';
+      currentPrice = widget.car.petrolPrice!;
+    } else if ((widget.car.dieselPrice ?? 0) > 0) {
+      selectedFuel = 'Diesel';
+      currentPrice = widget.car.dieselPrice!;
+    } else if ((widget.car.cngPrice ?? 0) > 0) {
+      selectedFuel = 'CNG';
+      currentPrice = widget.car.cngPrice!;
+    } else {
+      selectedFuel = widget.car.fuelType;
+      currentPrice = widget.car.basicPrice ?? 0;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String dayType = widget.tripType == 'self' ? 'hour' : 'km';
+    final car = widget.car;
+
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (_) => CarSelfDetails(
+              slug: '${car.slug}',
+              type: widget.tripType,
+              location: widget.location,
+              totalHour: widget.totalHour,
+              date: '${widget.pickDate} : ${widget.pickTime}',
+              leadId: widget.leadId,
+              totalDays: widget.totalDays,
+              fuelType: selectedFuel?.toLowerCase(),
+              multiaddress: widget.multiaddress,
+            ),
           ),
-        ),
-      ],
+        );
+      },
+      child: widget.isGrid ? _buildListView() : _buildGridView(dayType),
     );
   }
+
+  Widget _buildListView() {
+    final car = widget.car;
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// CAR IMAGE
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: CachedNetworkImage(
+              imageUrl: car.thumbnail ?? '',
+              height: 80,
+              width: 100,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                height: 80,
+                width: 100,
+                alignment: Alignment.center,
+                child: const CircularProgressIndicator(strokeWidth: 2),
+              ),
+              errorWidget: (context, url, error) =>
+                  const Icon(Icons.directions_car, size: 40),
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          /// DETAILS
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// NAME
+                Text(
+                  car.enCabName ?? "Car Name",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+
+                const SizedBox(height: 4),
+
+                /// FEATURES
+                Row(
+                  children: [
+                    _DetailIcon(Icons.settings, car.carType ?? 'Manual',
+                        Colors.green),
+                    const SizedBox(width: 8),
+                    _DetailIcon(Icons.event_seat, '${car.cabSeat ?? 4}',
+                        Colors.blue),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                /// FUEL VARIANTS (Radio Style Chips)
+                _buildFuelVariants(),
+
+                const SizedBox(height: 8),
+
+                /// RATING & PRICE
+                Row(
+                  children: [
+                    const Icon(Icons.star, size: 16, color: Colors.amber),
+                    const SizedBox(width: 3),
+                    Text(
+                      '${car.rating ?? 4.5}',
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '₹$currentPrice',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Text(
+                      '/${widget.tripType == 'self' ? 'hr' : 'km'}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGridView(String dayType) {
+    final car = widget.car;
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// IMAGE
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: selectedImage ?? car.thumbnail ?? '',
+                  height: 220,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    height: 220,
+                    alignment: Alignment.center,
+                    color: Colors.grey.shade200,
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    height: 220,
+                    color: Colors.grey.shade200,
+                    child: Icon(
+                      Icons.directions_car_rounded,
+                      size: 60,
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                ),
+              ),
+
+              /// Gradient
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.55),
+                        Colors.transparent,
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              /// Rating
+              Positioned(
+                bottom: 14,
+                right: 10,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(0.75),
+                        Colors.black.withOpacity(0.55),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ...List.generate(5, (index) {
+                        return Icon(
+                          index < (car.rating ?? 4).round()
+                              ? Icons.star_rounded
+                              : Icons.star_border_rounded,
+                          color: Colors.amber,
+                          size: 16,
+                        );
+                      }),
+                      Text(
+                        '/${car.rating ?? 4.5}',
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
+              if (car.images != null && car.images!.isNotEmpty)
+                Positioned(
+                  bottom: 10,
+                  left: 5,
+                  child: Row(
+                    children: List.generate(
+                      car.images!.length > 4 ? 4 : car.images!.length,
+                      (index) {
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedImage = car.images![index];
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 5),
+                            width: 45,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: selectedImage == car.images![index]
+                                      ? Colors.orange
+                                      : Colors.white60,
+                                  width: 1.5),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                car.images![index],
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const Icon(
+                                    Icons.directions_car,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+            ],
+          ),
+
+          /// CONTENT
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// NAME + PRICE
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        car.enCabName ?? 'Car Name',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '₹$currentPrice/$dayType',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                /// FUEL VARIANTS
+                _buildFuelVariants(),
+
+                const SizedBox(height: 8),
+
+                /// subtle divider
+                Divider(color: Colors.grey.shade200),
+
+                /// FEATURES
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _DetailIcon(
+                        Icons.settings, car.carType ?? 'Manual', Colors.green),
+                    _DetailIcon(Icons.event_seat, '${car.cabSeat ?? 4} Seats',
+                        Colors.blueAccent),
+                    _DetailIcon(Icons.local_gas_station,
+                        selectedFuel ?? car.fuelType ?? 'Petrol', Colors.blue),
+                  ],
+                ),
+
+                const SizedBox(height: 12),
+
+                /// AC STATUS
+                 if (widget.tripType != 'self')
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.ac_unit_rounded,
+                          size: 18,
+                          color: Colors.blue,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          car.airConditioning == 1
+                              ? 'Ac & Non-AC Both Available'
+                              : 'Non-AC Vehicle',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                /// BOOK NOW BUTTON (Optional addition to make it look better)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => CarSelfDetails(
+                            slug: '${car.slug}',
+                            type: widget.tripType,
+                            location: widget.location,
+                            totalHour: widget.totalHour,
+                            date: '${widget.pickDate} : ${widget.pickTime}',
+                            leadId: widget.leadId,
+                            totalDays: widget.totalDays,
+                            fuelType: selectedFuel?.toLowerCase(),
+                            multiaddress: widget.multiaddress,
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text(
+                      'View Details & Book',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFuelVariants() {
+    List<Map<String, dynamic>> variants = [];
+    if ((widget.car.petrolPrice ?? 0) > 0) {
+      variants.add({'type': 'Petrol', 'price': widget.car.petrolPrice});
+    }
+    if ((widget.car.dieselPrice ?? 0) > 0) {
+      variants.add({'type': 'Diesel', 'price': widget.car.dieselPrice});
+    }
+    if ((widget.car.cngPrice ?? 0) > 0) {
+      variants.add({'type': 'CNG', 'price': widget.car.cngPrice});
+    }
+
+    if (variants.isEmpty) return const SizedBox.shrink();
+
+    return Wrap(
+      spacing: 8,
+      children: variants.map((v) {
+        bool isSelected = selectedFuel == v['type'];
+        return ChoiceChip(
+          label: Text(
+            v['type'],
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected ? Colors.white : Colors.black87,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          selected: isSelected,
+          selectedColor: Colors.blue,
+          backgroundColor: Colors.grey.shade100,
+          onSelected: (selected) {
+            if (selected) {
+              setState(() {
+                selectedFuel = v['type'];
+                currentPrice = v['price'];
+              });
+            }
+          },
+        );
+      }).toList(),
+    );
+  }
+}
+
+Widget _DetailIcon(IconData icon, String text, Color color) {
+  return Row(
+    children: [
+      Icon(icon, size: 18, color: color),
+      const SizedBox(width: 4),
+      Text(
+        text,
+        style: TextStyle(
+          fontSize: 13,
+          color: Colors.grey.shade700,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ],
+  );
 }
 
 class Category {

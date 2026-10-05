@@ -1458,7 +1458,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
               },
               color: Colors.white, // Progress indicator color
               backgroundColor: Colors
-                  .deepOrange, // Background color of the refresh indicator
+                  .blue, // Background color of the refresh indicator
               displacement: 40.0,
               child: SingleChildScrollView(
                 child: Column(
@@ -1717,7 +1717,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                 child: Icon(
                                                   Icons.groups,
                                                   color: Colors
-                                                      .deepOrange.shade100,
+                                                      .blue.shade100,
                                                 )),
                                             const SizedBox(
                                               width: 10,
@@ -2142,7 +2142,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                             "₹${trackModelData?.order?.payAmount}",
                                                         style: const TextStyle(
                                                             color: Colors
-                                                                .deepOrange,
+                                                                .blue,
                                                             fontSize: 18,
                                                             fontWeight:
                                                                 FontWeight
@@ -2152,7 +2152,7 @@ class _CounsellingTrackOrderState extends State<CounsellingTrackOrder> {
                                                             "₹${trackModelData?.order?.packagePrice}",
                                                         style: const TextStyle(
                                                             color: Colors
-                                                                .deepOrange,
+                                                                .blue,
                                                             fontSize: 18,
                                                             fontWeight:
                                                                 FontWeight

@@ -48,12 +48,14 @@ class CarDetail {
   int? kmBasicPriceWithAc;
   int? kmBasicPriceNonAc;
   int? kmMinimum;
+  int? kmMinimumRound;
   int? kmExtraChargesKm;
   int? kmExtraChargesHour;
-  int? driverLocalPrice;
+  int?   driverLocalPrice;
   int? driverOutsidePrice;
   int? driverNightExtraPrice;
   int? driverNightIncludePrice;
+  int? gstAmount;
   String? inclusion;
   String? exclusion;
   String? thumbnail;
@@ -97,12 +99,14 @@ class CarDetail {
     this.kmBasicPriceWithAc,
     this.kmBasicPriceNonAc,
     this.kmMinimum,
+    this.kmMinimumRound,
     this.kmExtraChargesKm,
     this.kmExtraChargesHour,
     this.driverLocalPrice,
     this.driverOutsidePrice,
     this.driverNightExtraPrice,
     this.driverNightIncludePrice,
+    this.gstAmount,
     this.inclusion,
     this.exclusion,
     this.thumbnail,
@@ -145,14 +149,16 @@ class CarDetail {
     hourExtraChargesHour: json['hour_extra_charges_hour'],
     kmStatus: json['km_status'],
     kmBasicPriceWithAc: json['km_basic_price_with_ac'],
-    kmBasicPriceNonAc: json['km_basic_price_non_ac'],
+    kmBasicPriceNonAc: json['km_basic_price_with_non_ac'],
     kmMinimum: json['km_minimum'],
+    kmMinimumRound: json['km_minimum_round'],
     kmExtraChargesKm: json['km_extra_charges_km'],
     kmExtraChargesHour: json['km_extra_charges_hour'],
     driverLocalPrice: json['driver_local_price'],
     driverOutsidePrice: json['driver_outside_price'],
     driverNightExtraPrice: json['driver_night_extra_price'],
     driverNightIncludePrice: json['driver_night_include_price'],
+    gstAmount: json['gst'],
     inclusion: json['inclusion'],
     exclusion: json['exclusion'],
     thumbnail: json['thumbnail'],
@@ -195,14 +201,16 @@ class CarDetail {
     'hour_extra_charges_hour': hourExtraChargesHour,
     'km_status': kmStatus,
     'km_basic_price_with_ac': kmBasicPriceWithAc,
-    'km_basic_price_non_ac': kmBasicPriceNonAc,
+    'km_basic_price_with_non_ac': kmBasicPriceNonAc,
     'km_minimum': kmMinimum,
+    'km_minimum_round': kmMinimumRound,
     'km_extra_charges_km': kmExtraChargesKm,
     'km_extra_charges_hour': kmExtraChargesHour,
     'driver_local_price': driverLocalPrice,
     'driver_outside_price': driverOutsidePrice,
     'driver_night_extra_price': driverNightExtraPrice,
     'driver_night_include_price': driverNightIncludePrice,
+    'gst': gstAmount,
     'inclusion': inclusion,
     'exclusion': exclusion,
     'thumbnail': thumbnail,

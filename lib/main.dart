@@ -32,22 +32,20 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
 
-  // Initialize FlutterDownloader
-  await FlutterDownloader.initialize(
-    debug: true,
-  );
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
+  // Run initializations in parallel to minimize startup time
+  await Future.wait([
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    di.init(),
+    FlutterDownloader.initialize(debug: false),
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]),
   ]);
 
-  MediaKit.ensureInitialized();
-  await di.init();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
@@ -59,8 +57,9 @@ Future<void> main() async {
   NotificationBody? launchBody;
 
   try {
-    final RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+    final RemoteMessage? initialMessage = await FirebaseMessaging.instance
+        .getInitialMessage()
+        .timeout(const Duration(milliseconds: 400), onTimeout: () => null);
 
     if (initialMessage != null) {
       launchBody = NotificationHelper.convertNotification(initialMessage.data);
@@ -80,14 +79,13 @@ Future<void> main() async {
     ),
   );
 
-  // Defer FlutterCallkitIncoming initialization to after app is fully ready
+  // Defer non-critical setup to post-frame
   WidgetsBinding.instance.addPostFrameCallback((_) {
     _initializeCallkitPermissions();
   });
 
   Future.microtask(() async {
     await initializeNotifications();
-    await _initializeCallkitPermissions();
   });
 }
 

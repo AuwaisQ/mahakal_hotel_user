@@ -4,7 +4,6 @@ import 'package:mahakal/features/auth/controllers/auth_controller.dart';
 import 'package:mahakal/features/profile/controllers/profile_contrroller.dart';
 import 'package:mahakal/features/profile/screens/profile_screen.dart';
 import 'package:mahakal/features/splash/controllers/splash_controller.dart';
-import 'package:mahakal/theme/controllers/theme_controller.dart';
 import 'package:mahakal/utill/color_resources.dart';
 import 'package:mahakal/utill/custom_themes.dart';
 import 'package:mahakal/utill/dimensions.dart';
@@ -25,29 +24,44 @@ class ProfileInfoSectionWidget extends StatelessWidget {
     return Consumer<ProfileController>(builder: (context, profile, _) {
       return Container(
           decoration: BoxDecoration(
-              color: Provider.of<ThemeController>(context).darkTheme
-                  ? Theme.of(context).primaryColor.withOpacity(.30)
-                  : Theme.of(context).primaryColor),
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).primaryColor,
+                  const Color(0xFF1D4ED8), // Deeper blue for gradient
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              )),
           child: Stack(children: [
-            Container(
-                transform: Matrix4.translationValues(-10, 0, 0),
-                child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: SizedBox(
-                        width: 110,
-                        child: Image.asset(Images.shadow,
-                            opacity: const AlwaysStoppedAnimation(0.75))))),
+            // Decorative background elements
             Positioned(
-                right: -110,
-                bottom: -100,
-                child: Container(
-                    width: 200,
-                    height: 200,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(
-                            color: Theme.of(context).cardColor.withOpacity(.05),
-                            width: 25)))),
+              top: -50,
+              right: -50,
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.08),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 20,
+              left: -30,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.05),
+                ),
+              ),
+            ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(
                     Dimensions.paddingSizeDefault,

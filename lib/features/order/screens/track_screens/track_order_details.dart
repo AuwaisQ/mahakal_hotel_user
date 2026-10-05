@@ -1822,7 +1822,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
               },
               color: Colors.white, // Progress indicator color
               backgroundColor: Colors
-                  .deepOrange, // Background color of the refresh indicator
+                  .blue, // Background color of the refresh indicator
               displacement: 40.0,
               child: SingleChildScrollView(
                 child: Column(
@@ -2241,7 +2241,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors
-                                                              .deepOrange))
+                                                              .blue))
                                                 ],
                                               ),
                                               const Divider(
@@ -2313,7 +2313,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                   Icon(
                                                     Icons.phone,
                                                     color: Colors
-                                                        .deepOrange.shade100,
+                                                        .blue.shade100,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -2365,7 +2365,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                                   vertical: 5),
                                                           decoration: BoxDecoration(
                                                               color: Colors
-                                                                  .deepOrange,
+                                                                  .blue,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -2625,7 +2625,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors
-                                                              .deepOrange))
+                                                              .blue))
                                                 ],
                                               ),
                                               const Divider(
@@ -2697,7 +2697,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                   Icon(
                                                     Icons.phone,
                                                     color: Colors
-                                                        .deepOrange.shade100,
+                                                        .blue.shade100,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -2722,7 +2722,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                   Icon(
                                                     Icons.location_on,
                                                     color: Colors
-                                                        .deepOrange.shade100,
+                                                        .blue.shade100,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -2748,7 +2748,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                   Icon(
                                                     Icons.flag,
                                                     color: Colors
-                                                        .deepOrange.shade100,
+                                                        .blue.shade100,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -2764,7 +2764,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                   Icon(
                                                     Icons.location_city,
                                                     color: Colors
-                                                        .deepOrange.shade100,
+                                                        .blue.shade100,
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
@@ -2812,7 +2812,7 @@ class _MahakalTrackOrderState extends State<MahakalTrackOrder> {
                                                                   vertical: 5),
                                                           decoration: BoxDecoration(
                                                               color: Colors
-                                                                  .deepOrange,
+                                                                  .blue,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(

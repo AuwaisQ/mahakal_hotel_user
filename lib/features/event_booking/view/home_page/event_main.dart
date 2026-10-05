@@ -567,7 +567,7 @@ class _EventMainState extends State<EventMain> {
                                                                 .circular(12),
                                                         border: Border.all(
                                                           color: Colors
-                                                              .deepOrange
+                                                              .blue
                                                               .shade100,
                                                           width: 1.5,
                                                         ),
@@ -590,7 +590,7 @@ class _EventMainState extends State<EventMain> {
                                                                   screenwidth *
                                                                       0.04,
                                                               color: Colors
-                                                                  .deepOrange
+                                                                  .blue
                                                                   .shade800,
                                                             ),
                                                           ),
@@ -601,7 +601,7 @@ class _EventMainState extends State<EventMain> {
                                                             size: screenwidth *
                                                                 0.05,
                                                             color: Colors
-                                                                .deepOrange
+                                                                .blue
                                                                 .shade400,
                                                           ),
                                                           SizedBox(
@@ -622,7 +622,7 @@ class _EventMainState extends State<EventMain> {
                                                                   screenwidth *
                                                                       0.04,
                                                               color: Colors
-                                                                  .deepOrange
+                                                                  .blue
                                                                   .shade600,
                                                             ),
                                                           ),
@@ -646,7 +646,7 @@ class _EventMainState extends State<EventMain> {
                                                                 .circular(12),
                                                         border: Border.all(
                                                           color: Colors
-                                                              .deepOrange
+                                                              .blue
                                                               .shade100,
                                                           width: 1.5,
                                                         ),
@@ -677,7 +677,7 @@ class _EventMainState extends State<EventMain> {
                                                             size: screenwidth *
                                                                 0.05,
                                                             color: Colors
-                                                                .deepOrange
+                                                                .blue
                                                                 .shade400,
                                                           ),
                                                         ],

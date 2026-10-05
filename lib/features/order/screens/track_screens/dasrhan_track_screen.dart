@@ -222,7 +222,7 @@ class _MandirDarshanDetailsOrderState extends State<MandirDarshanDetailsOrder> {
               },
               color: Colors.white, // Progress indicator color
               backgroundColor: Colors
-                  .deepOrange, // Background color of the refresh indicator
+                  .blue, // Background color of the refresh indicator
               displacement: 40.0,
               child: SingleChildScrollView(
                 child: Column(

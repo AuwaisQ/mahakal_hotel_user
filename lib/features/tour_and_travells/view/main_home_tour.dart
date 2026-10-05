@@ -2,21 +2,44 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mahakal/features/more/screens/more_screen_view.dart';
+import 'package:mahakal/features/self_drive/self_form_screen.dart';
 import 'package:mahakal/features/tour_and_travells/model/new_tours_model.dart';
 import 'package:mahakal/features/tour_and_travells/model/tour_category_model.dart';
 import 'package:mahakal/features/tour_and_travells/ui_heliper/search_screen.dart';
 import 'package:mahakal/features/tour_and_travells/view/TourDetails.dart';
 import 'package:mahakal/features/tour_and_travells/view/tour_packages/statewise_tour.dart';
 import 'package:mahakal/features/tour_and_travells/view/view_all_tours.dart';
+import 'package:page_animation_transition/animations/bottom_to_top_transition.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../common/basewidget/not_logged_in_bottom_sheet_widget.dart';
 import '../../../data/datasource/remote/http/httpClient.dart';
 import '../../../localization/controllers/localization_controller.dart';
 import '../../../utill/app_constants.dart';
 import '../../../utill/flutter_toast_helper.dart';
 import '../../../utill/loading_datawidget.dart';
+import '../../auth/controllers/auth_controller.dart';
 import '../model/all_state_model.dart';
 import '../model/tourimages_model.dart';
+
+// ---------------------------------------------------------------------------
+// DESIGN TOKENS — modern travel-app palette
+// ---------------------------------------------------------------------------
+class _Palette {
+  static const Color primary = Color(0xFF2563EB);   // vivid blue
+  static const Color primaryDark = Color(0xFF1D4ED8);
+  static const Color accent = Color(0xFFFF7A45);    // warm coral accent
+  static const Color bgTop = Color(0xFFF4F7FF);
+  static const Color bgBottom = Color(0xFFFFFFFF);
+  static const Color textDark = Color(0xFF11182B);
+  static const Color textMuted = Color(0xFF6B7280);
+  static const Color cardShadow = Color(0x1A1F3B73);
+  static const Color shimmerBase = Color(0xFFE9EDF5);
+  static const Color shimmerHighlight = Color(0xFFF6F8FC);
+}
 
 class TourHomePage extends StatefulWidget {
   final ScrollController scrollController;
@@ -28,94 +51,182 @@ class TourHomePage extends StatefulWidget {
 
 class _TourHomePageState extends State<TourHomePage>
     with SingleTickerProviderStateMixin {
-  TabController? _tabController;
+  late PageController _bannerPageController;
+  Timer? _bannerTimer;
 
   // State variables
   bool isAnimatedOpacityVisible = false;
-  bool isCollapsed = false;
   bool isLoading = false;
-  //final List<double> sectionHeights = [600.0, 600.0, 600.0, 600.0];
-  late double expandedBarHeight;
-  late double collapsedBarHeight;
-  String translateEn = "en";
-  int selectedTabIndex = 0;
+  int _currentBannerPage = 0;
+
+  // Section-level loading flags power the shimmer skeletons.
+  bool _bannerLoading = true;
+  bool _toursLoading = true;
+
+  List<TourTabs> tourTabs = [];
+  List<TourAllState> stateNames = [];
+  List<String> _recentSearches = [];
+  List<NewToursData> _newToursList = [];
+  TourImagesModel? tourImagesList;
+
+  final List<String> _defaultSearches = [
+    "Ujjain",
+    "Indore",
+    "Omkareshwar",
+    "Mahakaleshwar"
+  ];
 
   @override
   void initState() {
     super.initState();
-    getTourTabs();
-    // Initialize ScrollControllere
+    _bannerPageController = PageController(initialPage: 0, viewportFraction: 0.92);
+    _loadEverything();
     widget.scrollController.addListener(_onScroll);
-    getAllState();
   }
 
-  List<TourTabs> tourTabs = [];
-  List<TourAllState> stateNames = [];
+  Future<void> _loadEverything() async {
+    await Future.wait([
+      getTourTabs(),
+      getAllState(),
+      _loadRecentSearches(),
+      fetchNewTours(),
+      fetchToursImages(),
+    ]);
+  }
 
-  Future<void> getTourTabs() async {
+  void _onScroll() {
+    if (!mounted) return;
     setState(() {
-      isLoading = true;
+      isAnimatedOpacityVisible = widget.scrollController.offset > 300;
     });
+  }
 
+  Future<void> _loadRecentSearches() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedSearches = prefs.getStringList('recentSearches') ?? [];
+    if (!mounted) return;
+    setState(() {
+      _recentSearches = {..._defaultSearches, ...savedSearches}.toList();
+    });
+  }
+
+  Future<void> fetchNewTours() async {
+    setState(() => _toursLoading = true);
     try {
-      const url = AppConstants.tourCategoryUrl;
+      const url = AppConstants.newTourDataUrl;
       final res = await HttpService().getApi(url);
-      print(res);
-
       if (res != null) {
-        final category = TourCategoryModel.fromJson(res);
+        final newToursList = NewToursModel.fromJson(res);
+        if (!mounted) return;
         setState(() {
-          tourTabs = category.data;
-          print(tourTabs.length);
-          _tabController =
-              TabController(length: tourTabs.length + 1, vsync: this);
+          _newToursList = newToursList.data ?? [];
         });
       }
     } catch (e) {
-      print("Error in fetching tour tabs: $e");
+      debugPrint("Error fetching new tours: $e");
     } finally {
-      setState(() {
-        isLoading = false;
+      if (mounted) setState(() => _toursLoading = false);
+    }
+  }
+
+  Future<void> fetchToursImages() async {
+    setState(() => _bannerLoading = true);
+    try {
+      const url = AppConstants.tourImagesUrl;
+      final res = await HttpService().getApi(url);
+      if (res != null) {
+        final tourImages = TourImagesModel.fromJson(res);
+        if (!mounted) return;
+        setState(() {
+          tourImagesList = tourImages;
+          _startBannerTimer();
+        });
+      }
+    } catch (e) {
+      debugPrint("Error fetching tour images: $e");
+    } finally {
+      if (mounted) setState(() => _bannerLoading = false);
+    }
+  }
+
+  void _startBannerTimer() {
+    _bannerTimer?.cancel();
+    if (tourImagesList != null && tourImagesList!.data.isNotEmpty) {
+      _bannerTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
+        if (_currentBannerPage < (tourImagesList?.data.length ?? 1) - 1) {
+          _currentBannerPage++;
+        } else {
+          _currentBannerPage = 0;
+        }
+
+        if (_bannerPageController.hasClients) {
+          _bannerPageController.animateToPage(
+            _currentBannerPage,
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeInOut,
+          );
+        }
       });
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Initialize expandedBarHeight and collapsedBarHeight after MediaQuery is available
-    expandedBarHeight = MediaQuery.of(context).size.height * 0.60; //63
-    collapsedBarHeight = MediaQuery.of(context).size.height * 0.12;
+  Future<void> getTourTabs() async {
+    setState(() => isLoading = true);
+    try {
+      const url = AppConstants.tourCategoryUrl;
+      final res = await HttpService().getApi(url);
+      if (res != null) {
+        final category = TourCategoryModel.fromJson(res);
+        if (!mounted) return;
+        setState(() {
+          tourTabs = category.data;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error in fetching tour tabs: $e");
+    } finally {
+      if (mounted) setState(() => isLoading = false);
+    }
   }
 
   @override
   void dispose() {
-    _tabController?.dispose();
+    _bannerPageController.dispose();
+    _bannerTimer?.cancel();
     super.dispose();
-  }
-
-  void _onScroll() {
-    setState(() {
-      isAnimatedOpacityVisible =
-          widget.scrollController.offset > (expandedBarHeight - collapsedBarHeight);
-    });
   }
 
   /// Get All State
   Future<void> getAllState() async {
     try {
       final res = await HttpService().getApi(AppConstants.tourAllStateUrl);
-      print("My All State Res: $res");
-
       if (res != null) {
         final stateRes = TourAllStateModel.fromJson(res);
+        if (!mounted) return;
         setState(() {
           stateNames = stateRes.data;
         });
       }
     } catch (e) {
-      print("Tour All State Error: $e");
+      debugPrint("Tour All State Error: $e");
     }
+  }
+
+  // ---------------------------------------------------------------------
+  // GREETING — time-of-day aware
+  // ---------------------------------------------------------------------
+  String _greetingText() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+  }
+
+  String _greetingEmoji() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return "☀️";
+    if (hour < 17) return "🌤️";
+    return "🌙";
   }
 
   void _showStateBottomSheet(BuildContext context) {
@@ -123,55 +234,71 @@ class _TourHomePageState extends State<TourHomePage>
       context: context,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       isScrollControlled: true,
       builder: (_) => DraggableScrollableSheet(
         expand: false,
         maxChildSize: 0.9,
-        initialChildSize: 0.7,
+        initialChildSize: 0.72,
         builder: (context, scrollController) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
           child: Column(
             children: [
-              // Drag handle
               Container(
                 height: 5,
-                width: 50,
-                margin: const EdgeInsets.only(bottom: 12),
+                width: 44,
+                margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-
-              // Header
-              const Text(
-                "All States of India",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: _Palette.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(Icons.public_rounded, color: _Palette.primary),
+                  ),
+                  const SizedBox(width: 12),
+                  const Text(
+                    "All States of India",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: _Palette.textDark,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-
+              const SizedBox(height: 20),
               Expanded(
-                child: GridView.builder(
+                child: stateNames.isEmpty
+                    ? const _EmptyState(
+                  icon: Icons.map_outlined,
+                  title: "No states found",
+                  subtitle: "Please check your connection and try again.",
+                )
+                    : GridView.builder(
                   controller: scrollController,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.8,
+                    crossAxisSpacing: 14,
+                    mainAxisSpacing: 18,
+                    childAspectRatio: 0.78,
                   ),
                   itemCount: stateNames.length,
                   itemBuilder: (context, index) {
                     final state = stateNames[index];
-
                     return InkWell(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                       onTap: () {
+                        Navigator.pop(context);
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
@@ -185,47 +312,47 @@ class _TourHomePageState extends State<TourHomePage>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
-                          /// Image circle
                           Container(
-                            width: 55,
-                            height: 55,
+                            width: 58,
+                            height: 58,
+                            padding: const EdgeInsets.all(3),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
+                              gradient: const LinearGradient(
+                                colors: [_Palette.primary, Color(0xFF60A5FA)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.blue.withOpacity(0.25),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
+                                  color: _Palette.primary.withOpacity(0.28),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 6),
                                 )
                               ],
                             ),
                             child: ClipOval(
-                              child: CachedNetworkImage(
-                                imageUrl: state.logo,
-                                fit: BoxFit.cover,
-                                placeholder: (c, u) => placeholderImage(),
-                                errorWidget: (c, u, e) => const NoImageWidget(),
+                              child: Container(
+                                color: Colors.white,
+                                child: CachedNetworkImage(
+                                  imageUrl: state.logo,
+                                  fit: BoxFit.cover,
+                                  placeholder: (c, u) => placeholderImage(),
+                                  errorWidget: (c, u, e) => const NoImageWidget(),
+                                ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
-
-                          /// Name tag
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade100.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              state.name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          const SizedBox(height: 8),
+                          Text(
+                            state.name,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: _Palette.textDark,
                             ),
                           )
                         ],
@@ -234,7 +361,6 @@ class _TourHomePageState extends State<TourHomePage>
                   },
                 ),
               )
-
             ],
           ),
         ),
@@ -244,634 +370,378 @@ class _TourHomePageState extends State<TourHomePage>
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-    var screenHeight = MediaQuery.of(context).size.height;
     return isLoading
-        ? MahakalLoadingData(onReload: () => getTourTabs)
-        : tourTabs.isEmpty
-            ? Scaffold(
-                backgroundColor: Colors.white,
-                appBar: AppBar(
-                  automaticallyImplyLeading: true,
-                ),
-                body: Column(
-                  children: [
-                    SizedBox(
-                      height: screenWidth * 0.6,
-                    ),
-                    Center(
-                      child: SizedBox(
-                        width: 300,
-                        height: 330,
-                        child: Card(
-                          shadowColor: Colors.black,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: Icon(
-                                  Icons.hourglass_empty,
-                                  size: 50,
-                                ),
-                              ),
-                              Text(
-                                "No Data Found !",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: screenWidth * 0.04,
-                                    color: Colors.black.withOpacity(0.5)),
-                              ),
-                              Text(
-                                "Please try again later...",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: screenWidth * 0.04,
-                                    color: Colors.black.withOpacity(0.5)),
-                              ),
-                              SizedBox(
-                                height: screenWidth * 0.05,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  getTourTabs();
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.red.withOpacity(0.7),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenWidth * 0.2,
-                                        vertical: screenWidth * 0.03),
-                                    child: Text(
-                                      "Try Again",
-                                      style: TextStyle(
-                                          fontSize: screenWidth * 0.04,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ))
-            : Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    _showStateBottomSheet(context);
-                    //Navigator.pop(context);
-                  },
-                  backgroundColor: Colors.white,
-                  elevation: 8,
-                  highlightElevation: 12,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.blue.shade600,
-                          Colors.blue.shade400,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(18),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.blue.withOpacity(0.4),
-                          blurRadius: 10,
-                          spreadRadius: 2,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.location_off_outlined,
-                      size: 28,
-                      color: Colors.white,
+        ? MahakalLoadingData(onReload: () => getTourTabs())
+        : Scaffold(
+      backgroundColor: _Palette.bgTop,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => _showStateBottomSheet(context),
+      //   backgroundColor: _Palette.primary,
+      //   elevation: 4,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(18),
+      //   ),
+      //   child: const Icon(Icons.map_rounded, color: Colors.white),
+      // ),
+      body: RefreshIndicator(
+        color: _Palette.primary,
+        onRefresh: _loadEverything,
+        child: NestedScrollView(
+          controller: widget.scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [_Palette.bgTop, _Palette.bgBottom],
                     ),
                   ),
-                ),
-                appBar: AppBar(
-                  backgroundColor: isAnimatedOpacityVisible
-                      ? Colors.white
-                      : Colors.transparent,
-                  title: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 200),
-                    opacity: isAnimatedOpacityVisible ? 1.0 : 0.0,
-                    child: const MainCollapsedContent(selectedIndex: 0),
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 6,
+                    bottom: 10,
                   ),
-                  automaticallyImplyLeading: false,
-                ),
-                extendBodyBehindAppBar: true,
-                body: DefaultTabController(
-                  length: tourTabs.length + 1,
-                  child: Stack(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      isLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                              color: Colors.blue,
-                            ))
-                          : NestedScrollView(
-                              controller: widget.scrollController,
-                              headerSliverBuilder:
-                                  (context, innerBoxIsScrolled) {
-                                return [
-                                  SliverAppBar(
-                                    expandedHeight: expandedBarHeight,
-                                    floating: true,
-                                    pinned: true,
-                                    stretch: true,
-                                    automaticallyImplyLeading: false,
-                                    elevation: 0,
-                                    backgroundColor: isAnimatedOpacityVisible
-                                        ? Colors.transparent
-                                        : Colors.transparent,
-                                    flexibleSpace: const FlexibleSpaceBar(
-                                      background: MainExpandContent(),
-                                    ),
-                                    bottom: PreferredSize(
-                                      preferredSize: const Size.fromHeight(
-                                          48), // height of TabBar
-                                      child: Container(
-                                        color: isAnimatedOpacityVisible
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        child: TabBar(
-                                          isScrollable: true,
-                                          controller: _tabController,
-                                          tabAlignment: TabAlignment.start,
-                                          indicatorColor: Colors.transparent,
-                                          indicatorSize:
-                                              TabBarIndicatorSize.tab,
-                                          indicatorPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 5, vertical: 4),
-                                          labelPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 6),
-                                          onTap: (index) {
-                                            setState(() {
-                                              selectedTabIndex = index;
-                                            });
-                                          },
-                                          tabs: [
-                                            // 1️⃣ Static All Tab
-                                            Tab(
-                                              child: AnimatedContainer(
-                                                duration: const Duration(
-                                                    milliseconds: 300),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 14,
-                                                        vertical: 9),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
-                                                  color: selectedTabIndex == 0
-                                                      ? Colors.blue
-                                                      : Colors.blueGrey[100],
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.05),
-                                                      blurRadius: 4,
-                                                      offset:
-                                                          const Offset(0, 2),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Text(
-                                                  "All",
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: selectedTabIndex == 0
-                                                        ? Colors.white
-                                                        : Colors.black87,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-
-                                            // 2️⃣ Dynamic Tabs from API
-                                            ...tourTabs.reversed
-                                                .toList()
-                                                .asMap()
-                                                .entries
-                                                .map((entry) {
-                                              final index = entry.key;
-                                              final tabNames = entry.value;
-                                              final isSelected =
-                                                  selectedTabIndex ==
-                                                      index + 1; // shift +1
-
-                                              return Tab(
-                                                child: AnimatedContainer(
-                                                  duration: const Duration(
-                                                      milliseconds: 300),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 14,
-                                                      vertical: 9),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            25),
-                                                    color: isSelected
-                                                        ? Colors.blue
-                                                        : Colors.blueGrey[100],
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.black
-                                                            .withOpacity(0.05),
-                                                        blurRadius: 4,
-                                                        offset:
-                                                            const Offset(0, 2),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: Consumer<
-                                                      LocalizationController>(
-                                                    builder: (context,
-                                                        localizationController,
-                                                        child) {
-                                                      String currentLang =
-                                                          localizationController
-                                                              .locale
-                                                              .languageCode;
-                                                      return Text(
-                                                        currentLang == 'hi'
-                                                            ? tabNames.hiName ??
-                                                                "N/A"
-                                                            : tabNames.enName ??
-                                                                "N/A",
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: isSelected
-                                                              ? Colors.white
-                                                              : Colors.black87,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              );
-                                            }).toList(),
-                                          ],
-                                          overlayColor: WidgetStateProperty.all(
-                                              Colors.transparent),
-                                          splashFactory: NoSplash.splashFactory,
-                                          dividerColor: Colors.transparent,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ];
-                              },
-                              body: TabBarView(
-                                controller: _tabController,
-                                physics:
-                                    const NeverScrollableScrollPhysics(), // Prevents swipe
-                                children: [
-                                  // 1️⃣ First Page for "All"
-                                  StateWiseTour(
-                                    stateSlug: "", // empty or handle as "All"
-                                  ),
-
-                                  // 2️⃣ Dynamic Pages from API
-                                  ...tourTabs.reversed.map((cat) {
-                                    return StateWiseTour(
-                                      stateSlug: cat.slug,
-                                    );
-                                  }).toList(),
-                                ],
-                              ),
-                            )
+                      _buildHeader(),
+                      _buildSearchBar(),
+                      if (_recentSearches.isNotEmpty) _buildRecentSearches(),
+                      _buildCategoriesGrid(),
+                      _buildTrendingSection(),
                     ],
                   ),
                 ),
-              );
+              ),
+            ];
+          },
+          body: StateWiseTour(stateSlug: ""),
+        ),
+      ),
+    );
   }
-}
 
-class MainCollapsedContent extends StatelessWidget {
-  final int selectedIndex;
-
-  const MainCollapsedContent({
-    super.key,
-    required this.selectedIndex,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-    var screenHeight = MediaQuery.of(context).size.height;
-
+  // ---------------------------------------------------------------------
+  // HEADER — time-aware greeting + notification bell
+  // ---------------------------------------------------------------------
+  Widget _buildHeader() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => const TourSearchScreen(
-                  recentName: '',
-                ),
-              ));
-        },
-        child: Container(
-          height: screenHeight * 0.05,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey),
-            color: Colors.white,
-          ),
-          child: Center(
-            child: Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-              child: Row(
+      padding: const EdgeInsets.fromLTRB(20, 14, 20, 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  const Icon(Icons.search),
-                  Consumer<LocalizationController>(
-                    builder: (context, localizationController, child) {
-                      String currentLang =
-                          localizationController.locale.languageCode;
-                      return Text(
-                        currentLang == 'hi'
-                            ? 'स्थान खोजे'
-                            : 'Search destinations',
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.04,
-                          color: Colors.black,
-                        ),
-                      );
-                    },
+                  Text(_greetingEmoji(), style: const TextStyle(fontSize: 15)),
+                  const SizedBox(width: 6),
+                  Text(
+                    "${_greetingText()}, Traveler!",
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      color: _Palette.textMuted,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.1,
+                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 4),
+              ShaderMask(
+                shaderCallback: (bounds) => const LinearGradient(
+                  colors: [_Palette.textDark, _Palette.primaryDark],
+                ).createShader(bounds),
+                child: const Text(
+                  "Where to next?",
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => MoreScreen(scrollController: ScrollController()),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(11),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: _Palette.cardShadow,
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.menu_rounded, color: _Palette.primary, size: 22),
+                ),
+              ),
+              const SizedBox(width: 10),
+              InkWell(
+                onTap: () => _showStateBottomSheet(context),
+                child: Container(
+                  padding: const EdgeInsets.all(11),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: _Palette.cardShadow,
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      const Icon(Icons.location_city_rounded, color: _Palette.primary, size: 22),
+                      Positioned(
+                        top: -2,
+                        right: -2,
+                        child: Container(
+                          width: 9,
+                          height: 9,
+                          decoration: const BoxDecoration(
+                            color: _Palette.accent,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------
+  // SEARCH BAR — soft elevated pill
+  // ---------------------------------------------------------------------
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => const TourSearchScreen(recentName: ''),
             ),
+          ).then((_) => _loadRecentSearches());
+        },
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: _Palette.cardShadow,
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  color: _Palette.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.search_rounded, color: _Palette.primary, size: 19),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Consumer<LocalizationController>(
+                  builder: (context, loc, child) {
+                    return Text(
+                      loc.locale.languageCode == 'hi'
+                          ? 'अपनी अगली यात्रा खोजें...'
+                          : 'Search your next trip...',
+                      style: TextStyle(
+                        color: _Palette.textMuted,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  color: _Palette.accent.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.tune_rounded, color: _Palette.accent, size: 18),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-}
 
-class MainExpandContent extends StatefulWidget {
-  const MainExpandContent({super.key});
-
-  @override
-  State<MainExpandContent> createState() => _MainExpandContentState();
-}
-
-class _MainExpandContentState extends State<MainExpandContent> {
-  late PageController _pageController;
-  int _currentPage = 0;
-  Timer? _timer;
-
-  final List<String> _defaultSearches = [
-    "Ujjain",
-    "Indore",
-    "Omkareshwar",
-    "Mahakaleshwar"
-  ];
-
-  List<String> _recentSearches = [];
-  List<NewToursData> _newToursList = [];
-  TourImagesModel? tourImagesList;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _pageController = PageController(initialPage: 0);
-
-    fetchToursImages().then((_) {
-      if (tourImagesList?.data.isNotEmpty ?? false) {
-        _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-          if (_currentPage < (tourImagesList?.data.length ?? 1) - 1) {
-            _currentPage++;
-          } else {
-            _currentPage = 0;
-          }
-
-          if (_pageController.hasClients) {
-            _pageController.animateToPage(
-              _currentPage,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
-          }
-        });
-      }
-    });
-
-    _loadRecentSearches();
-    fetchNewTours();
-  }
-
-  /// Fetch New Tours
-  Future<void> fetchNewTours() async {
-    try {
-      const url = AppConstants.newTourDataUrl;
-      final res = await HttpService().getApi(url);
-
-      if (res != null) {
-        final newToursList = NewToursModel.fromJson(res);
-        setState(() {
-          _newToursList = newToursList.data ?? [];
-        });
-      } else {
-        setState(() {
-          _newToursList = [];
-        });
-      }
-    } catch (e) {
-      print("Error fetching new tours: $e");
-    }
-  }
-
-  /// Fetch Tour Images
-  Future<void> fetchToursImages() async {
-    try {
-      const url = AppConstants.tourImagesUrl;
-      final res = await HttpService().getApi(url);
-
-      if (res != null) {
-        final tourImages = TourImagesModel.fromJson(res);
-        setState(() {
-          tourImagesList = tourImages;
-        });
-      }
-    } catch (e) {
-      print("Error fetching tour images: $e");
-    }
-  }
-
-  /// Load recent searches
-  Future<void> _loadRecentSearches() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedSearches = prefs.getStringList('recentSearches') ?? [];
-
-    setState(() {
-      _recentSearches = {..._defaultSearches, ...savedSearches}.toList();
-    });
-  }
-
-  /// Remove a search item
-  Future<void> _removeSearch(int index) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      _recentSearches.removeAt(index);
-    });
-
-    final onlyUserSearches = _recentSearches
-        .where((item) => !_defaultSearches.contains(item))
-        .toList();
-
-    await prefs.setStringList('recentSearches', onlyUserSearches);
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-    var screenHeight = MediaQuery.of(context).size.height;
-
-    return Stack(
-      children: [
-        // Background Slider
-        if ((tourImagesList?.data.isNotEmpty ?? false))
-          PageView.builder(
-            controller: _pageController,
-            itemCount: tourImagesList?.data.length ?? 0,
-            itemBuilder: (context, index) {
-              final imageUrl = tourImagesList?.data[index] ?? '';
-              return Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-                errorBuilder: (_, __, ___) => Container(
-                  color: Colors.grey.shade300,
-                  child: const Center(child: Icon(Icons.image, size: 50)),
+  // ---------------------------------------------------------------------
+  // RECENT SEARCHES — pill chips
+  // ---------------------------------------------------------------------
+  Widget _buildRecentSearches() {
+    return Container(
+      height: 38,
+      // margin: const EdgeInsets.only(bottom: 6),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: _recentSearches.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => TourSearchScreen(recentName: _recentSearches[index]),
+                  ),
+                ).then((_) => _loadRecentSearches());
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: _Palette.primary.withOpacity(0.14)),
                 ),
-              );
-            },
-          )
-        else
-          Container(
-            color: Colors.grey.shade200,
-            child: const Center(
-                child: CircularProgressIndicator(
-              color: Colors.transparent,
-            )),
-          ),
-
-        // Top gradient overlay
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.3),
-                  Colors.transparent,
-                ],
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.history_rounded, size: 13, color: _Palette.primary),
+                    const SizedBox(width: 5),
+                    Text(
+                      _recentSearches[index],
+                      style: const TextStyle(
+                        fontSize: 12.5,
+                        color: _Palette.textDark,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------
+  // CATEGORIES — soft rounded tiles with icon badges
+  // ---------------------------------------------------------------------
+  Widget _buildCategoriesGrid() {
+    if (tourTabs.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 26, 20, 14),
+          child: Text(
+            "Explore Categories",
+            style: TextStyle( 
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: _Palette.textDark,
+              letterSpacing: -0.2,
             ),
           ),
         ),
-
-        // Bottom white gradient overlay
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 150,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.white.withOpacity(1),
-                  Colors.white.withOpacity(0),
-                ],
-              ),
-            ),
-          ),
-        ),
-
-        // Foreground content
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: screenWidth * 0.24),
-
-            // App Bar with Back & Search
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-              child:  InkWell(
+        SizedBox(
+          height: 104,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            itemCount: tourTabs.length,
+            itemBuilder: (context, index) {
+              final cat = tourTabs[index];
+              return InkWell(
+                borderRadius: BorderRadius.circular(18),
                 onTap: () {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) =>
-                      const TourSearchScreen(recentName: ''),
+                      builder: (context) => ViewAllTours(
+                        stateName: "", // Filter by category only across all states
+                        tourSlug: cat.slug,
+                        title: cat.enName,
+                      ),
                     ),
                   );
-                  _loadRecentSearches();
                 },
                 child: Container(
-                  height: screenHeight * 0.05,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.03),
-                  child: Row(
+                  width: 82,
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Column(
                     children: [
-                      const Icon(Icons.search, color: Colors.black54),
-                      const SizedBox(width: 8),
+                      Container(
+                          width: 62,
+                        height: 62,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              _Palette.primary.withOpacity(0.10),
+                              _Palette.accent.withOpacity(0.10),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          _getCategoryIcon(cat.enName),
+                          color: _Palette.primary,
+                          size: 26,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
                       Consumer<LocalizationController>(
-                        builder:
-                            (context, localizationController, child) {
-                          String currentLang = localizationController
-                              .locale.languageCode;
+                        builder: (context, loc, child) {
                           return Text(
-                            currentLang == 'hi'
-                                ? 'स्थान खोजे'
-                                : 'Search destinations',
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.04,
-                              color: Colors.black,
+                            loc.locale.languageCode == 'hi' ? cat.hiName ?? "" : cat.enName ?? "",
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: _Palette.textDark,
                             ),
                           );
                         },
@@ -879,757 +749,375 @@ class _MainExpandContentState extends State<MainExpandContent> {
                     ],
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: screenWidth * 0.04),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 
-            // Recent Searches Horizontal Chips
-            if(_recentSearches.isNotEmpty)
-            Container(
-                height: 36,
-                padding: const EdgeInsets.only(left: 16),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _recentSearches.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.white24),
+  IconData _getCategoryIcon(String? name) {
+    if (name == null) return Icons.explore_rounded;
+    name = name.toLowerCase();
+    if (name.contains('temple') || name.contains('spiritual')) return Icons.temple_hindu_rounded;
+    if (name.contains('nature')) return Icons.nature_people_rounded;
+    if (name.contains('adventure')) return Icons.directions_bike_rounded;
+    if (name.contains('beach')) return Icons.beach_access_rounded;
+    return Icons.explore_rounded;
+  }
+
+  // ---------------------------------------------------------------------
+  // TRENDING PACKAGES — polished cards with price-style badge
+  // ---------------------------------------------------------------------
+  Widget _buildTrendingSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 14),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Trending Packages",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: _Palette.textDark,
+                  letterSpacing: -0.2,
+                ),
+              ),
+              if (!_toursLoading && _newToursList.isNotEmpty)
+                InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) => const ViewAllTours(stateName: "", tourSlug: "")));
+                  },
+                  child: Row(
+                    children: const [
+                      Text(
+                        "See All",
+                        style: TextStyle(
+                          color: _Palette.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13.5,
+                        ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                      Icon(Icons.arrow_forward_ios_rounded, size: 12, color: _Palette.primary),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 240,
+          child: _toursLoading
+              ? ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            itemCount: 3,
+            itemBuilder: (context, index) => const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              child: _ShimmerCard(width: 205),
+            ),
+          )
+              : _newToursList.isEmpty
+              ? const _EmptyState(
+            icon: Icons.card_travel_outlined,
+            title: "No packages yet",
+            subtitle: "New tour packages will show up here soon.",
+            compact: true,
+          )
+              : ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            itemCount: _newToursList.length,
+            itemBuilder: (context, index) {
+              final tour = _newToursList[index];
+              return InkWell(
+                borderRadius: BorderRadius.circular(18),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => TourDetails(productId: tour.id.toString()),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 205,
+                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: Colors.grey.shade200),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: _Palette.cardShadow,
+                    //     blurRadius: 16,
+                    //     offset: const Offset(0, 8),
+                    //   ),
+                    // ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => TourSearchScreen(
-                                    recentName: _recentSearches[index],
+                          ClipRRect(
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+                            child: CachedNetworkImage(
+                              imageUrl: tour.image ?? '',
+                              height: 128,
+                              width: 205,
+                              fit: BoxFit.cover,
+                              placeholder: (c, u) => Container(color: Colors.grey.shade200),
+                              errorWidget: (c, u, e) => const NoImageWidget(),
+                            ),
+                          ),
+                          Positioned(
+                            top: 10,
+                            left: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: _Palette.accent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.local_fire_department_rounded, size: 12, color: Colors.white),
+                                  SizedBox(width: 3),
+                                  Text(
+                                    "Trending",
+                                    style: TextStyle(
+                                      fontSize: 10.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              );
-                              _loadRecentSearches();
-                            },
-                            child: Text(
-                              _recentSearches[index],
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: screenWidth * 0.035,
+                                ],
                               ),
                             ),
                           ),
-                          const SizedBox(width: 6),
-                          GestureDetector(
-                            onTap: () => _removeSearch(index),
-                            child: const Icon(
-                              Icons.close,
-                              color: Colors.white70,
-                              size: 16,
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.92),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.favorite_border_rounded, size: 15, color: _Palette.primary),
                             ),
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
-              ),
-
-            SizedBox(height: screenWidth * 0.04),
-
-            // Subtitle Text
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Consumer<LocalizationController>(
-                builder: (context, localizationController, child) {
-                  String currentLang =
-                      localizationController.locale.languageCode;
-                  return Text(
-                    currentLang == 'hi'
-                        ? "तीर्थ यात्रा, मंदिर दर्शन और अधिक, नवीनतम जानकारी यहां देखें...!"
-                        : "Check out the latest on pilgrimages, temple visits and more...!",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            SizedBox(height: screenWidth * 0.04),
-
-            // Horizontal New Tours List
-            if (_newToursList.isNotEmpty)
-              Container(
-                height: 210,
-                padding: EdgeInsets.only(left: screenWidth * 0.03),
-                child: ListView.builder(
-                  itemCount: _newToursList.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    final tour = _newToursList[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => TourDetails(
-                              productId: tour.id.toString(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Consumer<LocalizationController>(
+                              builder: (context, loc, child) {
+                                return Text(
+                                  loc.locale.languageCode == 'hi' ? tour.hiTourName ?? '' : tour.enTourName ?? '',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.5,
+                                    color: _Palette.textDark,
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 150,
-                        margin: EdgeInsets.only(right: screenWidth * 0.025),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Icon(Icons.location_on_rounded, size: 14, color: _Palette.primary),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    "Premium Experience",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 12, color: _Palette.textMuted, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Stack(
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl: tour.image ?? '',
-                                height: 230,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    placeholderImage(),
-                                errorWidget: (context, url, error) =>
-                                    const NoImageWidget(),
-                              ),
-                              Positioned.fill(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                      colors: [
-                                        Colors.black.withOpacity(0.65),
-                                        Colors.transparent,
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Consumer<LocalizationController>(
-                                builder:
-                                    (context, localizationController, child) {
-                                  String currentLang = localizationController
-                                      .locale.languageCode;
-                                  return Positioned(
-                                    bottom: 12,
-                                    left: 10,
-                                    right: 10,
-                                    child: Text(
-                                      currentLang == 'hi'
-                                          ? tour.hiTourName ?? ''
-                                          : tour.enTourName ?? '',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: screenWidth * 0.04,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 ),
-              ),
-          ],
+              );
+            },
+          ),
         ),
       ],
     );
   }
 }
 
-// class MainExpandContent extends StatefulWidget {
-//   const MainExpandContent({super.key});
-//
-//   @override
-//   State<MainExpandContent> createState() => _MainExpandContentState();
-// }
-//
-// class _MainExpandContentState extends State<MainExpandContent> {
-//   // late PageController _pageController;
-//   // int _currentPage = 0;
-//   // Timer? _timer;
-//   //
-//   // @override
-//   // void initState() {
-//   //   fetchToursImages();
-//   //   _loadRecentSearches();
-//   //   fetchNewTours();
-//   //
-//   //   _pageController = PageController(initialPage: 0);
-//   //   _timer = Timer.periodic(
-//   //     const Duration(milliseconds: 2000),
-//   //     (timer) {
-//   //       if (_currentPage < tourImagesList!.data.length - 1) {
-//   //         _currentPage++;
-//   //       } else {
-//   //         _currentPage = 0;
-//   //       }
-//   //
-//   //       if (_pageController.hasClients) {
-//   //         _pageController.jumpToPage(
-//   //           _currentPage,
-//   //         );
-//   //       }
-//   //     },
-//   //   );
-//   //
-//   //   super.initState();
-//   // }
-//   //
-//   // final List<String> _defaultSearches = [
-//   //   "Ujjain",
-//   //   "Indore",
-//   //   "Omkareshwar",
-//   //   "Mahakaleshwar"
-//   // ];
-//   //
-//   // // Recent Searches (Dynamic)
-//   // List<String> _recentSearches = [];
-//   //
-//   // // List<String> _recentSearches = ["Ujjain","Indore","Omkareshwar","Mahakaleshwar"];
-//   // List<NewToursData> _newToursList = [];
-//   // TourImagesModel? tourImagesList;
-//   //
-//   // /// Fetch New Tour
-//   // Future<void> fetchNewTours() async {
-//   //   try {
-//   //     const url = AppConstants.newTourDataUrl;
-//   //     final res = await HttpService().getApi(url);
-//   //
-//   //     if (res != null) {
-//   //       final newToursList = NewToursModel.fromJson(res);
-//   //
-//   //       setState(() {
-//   //         _newToursList = newToursList.data ?? [];
-//   //       });
-//   //
-//   //       print("${_newToursList.length}");
-//   //     } else {
-//   //       print("Response is null");
-//   //       setState(() {
-//   //         _newToursList = [];
-//   //       });
-//   //     }
-//   //   } catch (e) {
-//   //     print("fetching new tours $e");
-//   //   }
-//   // }
-//   //
-//   // Future<void> fetchToursImages() async{
-//   //   try{
-//   //     const url = AppConstants.tourImagesUrl;
-//   //     final res = await HttpService().getApi(url);
-//   //
-//   //     if(res != null) {
-//   //      final tourImages = TourImagesModel.fromJson(res);
-//   //       setState(() {
-//   //         tourImagesList = tourImages;
-//   //       });
-//   //
-//   //      // _pageController = PageController(initialPage: 0);
-//   //      // _timer = Timer.periodic(
-//   //      //   const Duration(milliseconds: 2000),
-//   //      //       (timer) {
-//   //      //     if (_currentPage < tourImagesList!.data.length - 1) {
-//   //      //       _currentPage++;
-//   //      //     } else {
-//   //      //       _currentPage = 0;
-//   //      //     }
-//   //      //
-//   //      //     if (_pageController.hasClients) {
-//   //      //       _pageController.jumpToPage(
-//   //      //         _currentPage,
-//   //      //       );
-//   //      //     }
-//   //      //   },
-//   //      // );
-//   //
-//   //     }
-//   //   } catch(e){
-//   //     print("Error in Tour Images $e");
-//   //   }
-//   // }
-//   //
-//   // Future<void> _loadRecentSearches() async {
-//   //   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   //   List<String>? savedSearches = prefs.getStringList('recentSearches');
-//   //
-//   //   setState(() {
-//   //     // Merge default + saved searches without duplicates
-//   //     _recentSearches = <dynamic>{..._defaultSearches, ...(savedSearches ?? [])}
-//   //         .toList()
-//   //         .cast<String>();
-//   //   });
-//   // }
-//   //
-//   // // Remove search item]
-//   // Future<void> _removeSearch(int index) async {
-//   //   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   //
-//   //   setState(() {
-//   //     _recentSearches.removeAt(index);
-//   //   });
-//   //
-//   //   // Remove only user-added searches before saving
-//   //   List<String> onlyUserSearches =
-//   //   _recentSearches.where((item) => !_defaultSearches.contains(item)).toList();
-//   //
-//   //   await prefs.setStringList('recentSearches', onlyUserSearches);
-//   // }
-//   //
-//   // @override
-//   // void dispose() {
-//   //   _timer?.cancel();
-//   //   _pageController.dispose();
-//   //   super.dispose();
-//   // }
-//
-//   late PageController _pageController;
-//   int _currentPage = 0;
-//   Timer? _timer;
-//
-//   final List<String> _defaultSearches = [
-//     "Ujjain",
-//     "Indore",
-//     "Omkareshwar",
-//     "Mahakaleshwar"
-//   ];
-//
-//   List<String> _recentSearches = [];
-//   List<NewToursData> _newToursList = [];
-//   TourImagesModel? tourImagesList;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//
-//     _pageController = PageController(initialPage: 0);
-//
-//     fetchToursImages().then((_) {
-//       // Start timer only after images are loaded
-//       if (tourImagesList != null && tourImagesList!.data.isNotEmpty) {
-//         _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-//           if (_currentPage < tourImagesList!.data.length - 1) {
-//             _currentPage++;
-//           } else {
-//             _currentPage = 0;
-//           }
-//
-//           if (_pageController.hasClients) {
-//             _pageController.animateToPage(
-//               _currentPage,
-//               duration: const Duration(milliseconds: 500),
-//               curve: Curves.easeInOut,
-//             );
-//           }
-//         });
-//       }
-//     });
-//
-//     _loadRecentSearches();
-//     fetchNewTours();
-//   }
-//
-//   /// Fetch New Tours
-//   Future<void> fetchNewTours() async {
-//     try {
-//       const url = AppConstants.newTourDataUrl;
-//       final res = await HttpService().getApi(url);
-//
-//       if (res != null) {
-//         final newToursList = NewToursModel.fromJson(res);
-//         setState(() {
-//           _newToursList = newToursList.data ?? [];
-//         });
-//       } else {
-//         setState(() {
-//           _newToursList = [];
-//         });
-//       }
-//     } catch (e) {
-//       print("Error fetching new tours: $e");
-//     }
-//   }
-//
-//   /// Fetch Tour Images
-//   Future<void> fetchToursImages() async {
-//     try {
-//       const url = AppConstants.tourImagesUrl;
-//       final res = await HttpService().getApi(url);
-//
-//       if (res != null) {
-//         final tourImages = TourImagesModel.fromJson(res);
-//         setState(() {
-//           tourImagesList = tourImages;
-//         });
-//       }
-//     } catch (e) {
-//       print("Error fetching tour images: $e");
-//     }
-//   }
-//
-//   /// Load recent searches
-//   Future<void> _loadRecentSearches() async {
-//     final prefs = await SharedPreferences.getInstance();
-//     final savedSearches = prefs.getStringList('recentSearches') ?? [];
-//
-//     setState(() {
-//       // Merge default + saved searches without duplicates
-//       _recentSearches = {..._defaultSearches, ...savedSearches}.toList();
-//     });
-//   }
-//
-//   /// Remove a search item
-//   Future<void> _removeSearch(int index) async {
-//     final prefs = await SharedPreferences.getInstance();
-//
-//     setState(() {
-//       _recentSearches.removeAt(index);
-//     });
-//
-//     final onlyUserSearches =
-//     _recentSearches.where((item) => !_defaultSearches.contains(item)).toList();
-//
-//     await prefs.setStringList('recentSearches', onlyUserSearches);
-//   }
-//
-//   @override
-//   void dispose() {
-//     _timer?.cancel();
-//     _pageController.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var screenWidth = MediaQuery.of(context).size.width;
-//     var screenHeight = MediaQuery.of(context).size.height;
-//
-//     return Container(
-//       child: Stack(children: [
-//         // Background Slider
-//         PageView.builder(
-//           controller: _pageController,
-//           itemCount: tourImagesList?.data.length,
-//           itemBuilder: (context, index) {
-//             return Image.network(
-//               tourImagesList!.data[index],
-//               fit: BoxFit.cover,
-//               width: double.infinity,
-//               height: double.infinity,
-//             );
-//           },
-//         ),
-//
-//         Positioned.fill(
-//           child: Container(
-//             decoration: BoxDecoration(
-//               gradient: LinearGradient(
-//                 begin: Alignment.topCenter,
-//                 end: Alignment.bottomCenter,
-//                 colors: [
-//                   Colors.black.withOpacity(0.3), // Top side color
-//                   Colors.white.withOpacity(0.3), // Bottom side white gradient
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//
-//         Align(
-//           alignment: Alignment.bottomCenter,
-//           child: Container(
-//             height: 150, // Adjust height as needed
-//             decoration: BoxDecoration(
-//               gradient: LinearGradient(
-//                 begin: Alignment.bottomCenter,
-//                 end: Alignment.topCenter,
-//                 colors: [
-//                   Colors.white.withOpacity(1), // Strong white at bottom
-//                   Colors.white.withOpacity(1), // Strong white at bottom
-//                   Colors.white.withOpacity(0.0), // Transparent at top
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//         Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(height: screenWidth * 0.24),
-//
-//             /// App Bar with Back and Search
-//             Padding(
-//               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-//               child: Row(
-//                 children: [
-//                   InkWell(
-//                     onTap: () => Navigator.pop(context),
-//                     child: const Icon(Icons.arrow_back_ios_new_rounded,
-//                         color: Colors.white, size: 24),
-//                   ),
-//                   SizedBox(width: screenWidth * 0.02),
-//                   Expanded(
-//                     child: InkWell(
-//                       onTap: () {
-//                         Navigator.push(
-//                           context,
-//                           CupertinoPageRoute(
-//                             builder: (context) =>
-//                                 const TourSearchScreen(recentName: ''),
-//                           ),
-//                         );
-//                         _loadRecentSearches();
-//                       },
-//                       child: Container(
-//                         height: screenHeight * 0.05,
-//                         decoration: BoxDecoration(
-//                           color: Colors.white,
-//                           borderRadius: BorderRadius.circular(20),
-//                           border: Border.all(color: Colors.grey.shade300),
-//                         ),
-//                         padding: EdgeInsets.symmetric(
-//                             horizontal: screenWidth * 0.03),
-//                         child: Row(
-//                           children: [
-//                             const Icon(Icons.search, color: Colors.black54),
-//                             const SizedBox(width: 8),
-//                             Consumer<LocalizationController>(
-//                               builder:
-//                                   (context, localizationController, child) {
-//                                 String currentLang =
-//                                     localizationController.locale.languageCode;
-//                                 return Text(
-//                                   currentLang == 'hi'
-//                                       ? 'स्थान खोजे'
-//                                       : 'Search destinations',
-//                                   style: TextStyle(
-//                                     fontSize: screenWidth * 0.04,
-//                                     color: CustomColors.clrggreytxt,
-//                                   ),
-//                                 );
-//                               },
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             SizedBox(height: screenWidth * 0.04),
-//
-//             /// Recent Searches Horizontal Chips
-//             Container(
-//               height: 36,
-//               padding: const EdgeInsets.only(left: 16),
-//               child: ListView.builder(
-//                 scrollDirection: Axis.horizontal,
-//                 itemCount: _recentSearches.length,
-//                 itemBuilder: (context, index) {
-//                   return Container(
-//                     margin: const EdgeInsets.only(right: 10),
-//                     padding:
-//                         const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
-//                     decoration: BoxDecoration(
-//                       color: Colors.white24,
-//                       borderRadius: BorderRadius.circular(20),
-//                       border: Border.all(color: Colors.white24),
-//                     ),
-//                     child: Row(
-//                       mainAxisSize: MainAxisSize.min,
-//                       children: [
-//                         // Search Name
-//                         GestureDetector(
-//                           onTap: () {
-//                             Navigator.push(
-//                               context,
-//                               CupertinoPageRoute(
-//                                 builder: (context) => TourSearchScreen(
-//                                   recentName: _recentSearches[index],
-//                                 ),
-//                               ),
-//                             );
-//                             _loadRecentSearches();
-//                           },
-//                           child: Text(
-//                             _recentSearches[index],
-//                             style: TextStyle(
-//                               color: Colors.white,
-//                               fontSize: screenWidth * 0.035,
-//                             ),
-//                           ),
-//                         ),
-//                         const SizedBox(width: 6),
-//
-//                         // Cross Button to Remove Search
-//                         GestureDetector(
-//                           onTap: () => _removeSearch(index),
-//                           child: const Icon(
-//                             Icons.close,
-//                             color: Colors.white70,
-//                             size: 16,
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-//             SizedBox(height: screenWidth * 0.04),
-//
-//             /// Subtitle Text
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 25),
-//               child: Consumer<LocalizationController>(
-//                 builder: (context, localizationController, child) {
-//                   String currentLang =
-//                       localizationController.locale.languageCode;
-//                   return Text(
-//                     currentLang == 'hi'
-//                         ? "तीर्थ यात्रा, मंदिर दर्शन और अधिक, नवीनतम जानकारी यहां देखें...!"
-//                         : "Check out the latest on pilgrimages, temple visits and more...!",
-//                     style: const TextStyle(
-//                       fontSize: 18,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.white,
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-//             SizedBox(height: screenWidth * 0.04),
-//
-//             /// Horizontal New Tours List
-//             Container(
-//               height: 210,
-//               padding: EdgeInsets.only(left: screenWidth * 0.03),
-//               child: ListView.builder(
-//                 itemCount: _newToursList.length,
-//                 scrollDirection: Axis.horizontal,
-//                 itemBuilder: (context, index) {
-//                   return InkWell(
-//                     onTap: () {
-//                       Navigator.push(
-//                         context,
-//                         CupertinoPageRoute(
-//                           builder: (context) => TourDetails(
-//                             productId: _newToursList[index].id.toString(),
-//                           ),
-//                         ),
-//                       );
-//                     },
-//                     child: Container(
-//                       width: 150,
-//                       margin: EdgeInsets.only(right: screenWidth * 0.025),
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(16),
-//                         boxShadow: [
-//                           BoxShadow(
-//                             color: Colors.black.withOpacity(0.2),
-//                             blurRadius: 8,
-//                             offset: const Offset(0, 4),
-//                           ),
-//                         ],
-//                       ),
-//                       child: ClipRRect(
-//                         borderRadius: BorderRadius.circular(16),
-//                         child: Stack(
-//                           children: [
-//                             /// Image with fallback
-//                             CachedNetworkImage(
-//                               imageUrl: _newToursList[index].image ?? '',
-//                               height: 230,
-//                               fit: BoxFit.cover,
-//                               placeholder: (context, url) => placeholderImage(),
-//                               errorWidget: (context, url, error) =>
-//                                   const NoImageWidget(),
-//                             ),
-//
-//                             /// Gradient overlay
-//                             Positioned.fill(
-//                               child: Container(
-//                                 decoration: BoxDecoration(
-//                                   gradient: LinearGradient(
-//                                     begin: Alignment.bottomCenter,
-//                                     end: Alignment.topCenter,
-//                                     colors: [
-//                                       Colors.black.withOpacity(0.65),
-//                                       Colors.transparent,
-//                                     ],
-//                                   ),
-//                                 ),
-//                               ),
-//                             ),
-//
-//                             /// Tour title
-//                             Consumer<LocalizationController>(
-//                               builder:
-//                                   (context, localizationController, child) {
-//                                 String currentLang =
-//                                     localizationController.locale.languageCode;
-//                                 return Positioned(
-//                                   bottom: 12,
-//                                   left: 10,
-//                                   right: 10,
-//                                   child: Text(
-//                                     currentLang == 'hi'
-//                                         ? _newToursList[index].hiTourName ?? ''
-//                                         : _newToursList[index].enTourName ?? '',
-//                                     style: TextStyle(
-//                                       color: Colors.white,
-//                                       fontWeight: FontWeight.w600,
-//                                       fontSize: screenWidth * 0.04,
-//                                     ),
-//                                     textAlign: TextAlign.center,
-//                                     maxLines: 2,
-//                                     overflow: TextOverflow.ellipsis,
-//                                   ),
-//                                 );
-//                               },
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-//           ],
-//         ),
-//       ]),
-//     );
-//   }
-// }
+// ---------------------------------------------------------------------------
+// Small reusable data holder for quick action items.
+// ---------------------------------------------------------------------------
+class _QuickAction {
+  final IconData icon;
+  final String label;
+  final Color color;
+  const _QuickAction({required this.icon, required this.label, required this.color});
+}
+
+// ---------------------------------------------------------------------------
+// SHIMMER — lightweight skeleton loader (no external package required)
+// ---------------------------------------------------------------------------
+class _ShimmerBox extends StatefulWidget {
+  final double height;
+  final double? width;
+  final double borderRadius;
+  const _ShimmerBox({required this.height, this.width, this.borderRadius = 16});
+
+  @override
+  State<_ShimmerBox> createState() => _ShimmerBoxState();
+}
+
+class _ShimmerBoxState extends State<_ShimmerBox> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1400),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Container(
+          height: widget.height,
+          width: widget.width ?? double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            gradient: LinearGradient(
+              begin: Alignment(-1 + _controller.value * 3, 0),
+              end: Alignment(0 + _controller.value * 3, 0),
+              colors: const [
+                _Palette.shimmerBase,
+                _Palette.shimmerHighlight,
+                _Palette.shimmerBase,
+              ],
+              stops: const [0.35, 0.5, 0.65],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// A shimmer version of the trending-package card, used while data loads.
+class _ShimmerCard extends StatelessWidget {
+  final double width;
+  const _ShimmerCard({required this.width});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: _Palette.cardShadow,
+            blurRadius: 10,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _ShimmerBox(height: 128, borderRadius: 0),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _ShimmerBox(height: 14, width: width * 0.6, borderRadius: 6),
+                const SizedBox(height: 10),
+                _ShimmerBox(height: 11, width: width * 0.4, borderRadius: 6),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// EMPTY STATE — friendly placeholder for empty/failed sections
+// ---------------------------------------------------------------------------
+class _EmptyState extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool compact;
+  const _EmptyState({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.compact = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: compact ? 12 : 24, horizontal: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: _Palette.primary.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: compact ? 26 : 34, color: _Palette.primary),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 14,
+                color: _Palette.textDark,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 12, color: _Palette.textMuted),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

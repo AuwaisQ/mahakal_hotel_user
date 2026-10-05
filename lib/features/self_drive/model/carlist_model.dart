@@ -37,6 +37,9 @@ class CarsDatum {
   String? slug;
   String? carType;
   int? basicPrice;
+  int? cngPrice;
+  int? petrolPrice;
+  int? dieselPrice;
   String? dayType;
   String? fuelType;
   String? enCabName;
@@ -52,6 +55,9 @@ class CarsDatum {
     this.slug,
     this.carType,
     this.basicPrice,
+    this.cngPrice,
+    this.petrolPrice,
+    this.dieselPrice,
     this.dayType,
     this.fuelType,
     this.enCabName,
@@ -68,6 +74,9 @@ class CarsDatum {
     slug: json['slug'],
     carType: json['car_type'],
     basicPrice: json['basic_price'],
+    cngPrice: json['cng_price'],
+    petrolPrice: json['petrol_price'],
+    dieselPrice: json['diesel_price'],
     dayType: json['self_tour_type'],
     fuelType: json['fuel_type'],
     enCabName: json['en_cab_name'],
@@ -84,6 +93,9 @@ class CarsDatum {
     'slug': slug,
     'car_type': carType,
     'basic_price': basicPrice,
+    'cng_price': cngPrice,
+    'petrol_price': petrolPrice,
+    'diesel_price': dieselPrice,
     'self_tour_type': dayType,
     'fuel_type': fuelType,
     'en_cab_name': enCabName,

@@ -618,7 +618,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                             decoration:
                                                                 BoxDecoration(
                                                               color: Colors
-                                                                  .deepOrange
+                                                                  .blue
                                                                   .withOpacity(
                                                                       0.08),
                                                               borderRadius:
@@ -627,7 +627,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           12),
                                                               border: Border.all(
                                                                   color: Colors
-                                                                      .deepOrange
+                                                                      .blue
                                                                       .shade100),
                                                             ),
                                                             child: Row(
@@ -649,7 +649,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                         .event_seat_sharp,
                                                                     size: 18,
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .shade400),
                                                                 const SizedBox(
                                                                     width: 6),
@@ -665,7 +665,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                         FontWeight
                                                                             .bold,
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .shade600,
                                                                   ),
                                                                 ),
@@ -692,7 +692,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                             decoration:
                                                                 BoxDecoration(
                                                               color: Colors
-                                                                  .deepOrange
+                                                                  .blue
                                                                   .withOpacity(
                                                                       0.08),
                                                               borderRadius:
@@ -701,7 +701,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           12),
                                                               border: Border.all(
                                                                   color: Colors
-                                                                      .deepOrange
+                                                                      .blue
                                                                       .shade100),
                                                             ),
                                                             child: Row(
@@ -727,7 +727,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                         .arrow_circle_right,
                                                                     size: 18,
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .shade400),
                                                               ],
                                                             ),
@@ -1246,7 +1246,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .withOpacity(
                                                                             0.08),
                                                                     borderRadius:
@@ -1254,7 +1254,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                             12),
                                                                     border: Border.all(
                                                                         color: Colors
-                                                                            .deepOrange
+                                                                            .blue
                                                                             .shade100),
                                                                   ),
                                                                   child: Row(
@@ -1281,7 +1281,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           size:
                                                                               18,
                                                                           color: Colors
-                                                                              .deepOrange
+                                                                              .blue
                                                                               .shade400),
                                                                     ],
                                                                   ),
@@ -1622,7 +1622,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .withOpacity(
                                                                             0.08),
                                                                     borderRadius:
@@ -1630,7 +1630,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                             12),
                                                                     border: Border.all(
                                                                         color: Colors
-                                                                            .deepOrange
+                                                                            .blue
                                                                             .shade100),
                                                                   ),
                                                                   child: Row(
@@ -1651,7 +1651,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           size:
                                                                               18,
                                                                           color: Colors
-                                                                              .deepOrange
+                                                                              .blue
                                                                               .shade400),
                                                                       const SizedBox(
                                                                           width:
@@ -1666,7 +1666,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           fontWeight:
                                                                               FontWeight.bold,
                                                                           color: Colors
-                                                                              .deepOrange
+                                                                              .blue
                                                                               .shade600,
                                                                         ),
                                                                       ),
@@ -1693,7 +1693,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .withOpacity(
                                                                             0.08),
                                                                     borderRadius:
@@ -1701,7 +1701,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                             12),
                                                                     border: Border.all(
                                                                         color: Colors
-                                                                            .deepOrange
+                                                                            .blue
                                                                             .shade100),
                                                                   ),
                                                                   child: Row(
@@ -1726,7 +1726,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           size:
                                                                               18,
                                                                           color: Colors
-                                                                              .deepOrange
+                                                                              .blue
                                                                               .shade400),
                                                                     ],
                                                                   ),
@@ -2064,7 +2064,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .withOpacity(
                                                                             0.08),
                                                                     borderRadius:
@@ -2072,7 +2072,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                             12),
                                                                     border: Border.all(
                                                                         color: Colors
-                                                                            .deepOrange
+                                                                            .blue
                                                                             .shade100),
                                                                   ),
                                                                   child: Row(
@@ -2093,7 +2093,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           size:
                                                                               18,
                                                                           color: Colors
-                                                                              .deepOrange
+                                                                              .blue
                                                                               .shade400),
                                                                       const SizedBox(
                                                                           width:
@@ -2108,7 +2108,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           fontWeight:
                                                                               FontWeight.bold,
                                                                           color: Colors
-                                                                              .deepOrange
+                                                                              .blue
                                                                               .shade600,
                                                                         ),
                                                                       ),
@@ -2135,7 +2135,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     color: Colors
-                                                                        .deepOrange
+                                                                        .blue
                                                                         .withOpacity(
                                                                             0.08),
                                                                     borderRadius:
@@ -2143,7 +2143,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                             12),
                                                                     border: Border.all(
                                                                         color: Colors
-                                                                            .deepOrange
+                                                                            .blue
                                                                             .shade100),
                                                                   ),
                                                                   child: Row(
@@ -2168,7 +2168,7 @@ class _AllEventScreenState extends State<AllEventScreen> {
                                                                           size:
                                                                               18,
                                                                           color: Colors
-                                                                              .deepOrange
+                                                                              .blue
                                                                               .shade400),
                                                                     ],
                                                                   ),

@@ -30,6 +30,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../../Tickit_Booking/controller/activity_order_list_controller.dart';
+import '../../Tickit_Booking/model/activity_order_list_model.dart';
 import '../../hotels/controller/hotel_orders_controller.dart';
 import '../../hotels/controller/hotel_user_controller.dart';
 import '../../hotels/model/hotel_order_list.dart';
@@ -49,7 +50,18 @@ import 'track_screens/track_chadhava_details.dart';
 import 'track_screens/track_counselling_details.dart';
 import 'track_screens/track_order_details.dart';
 
-class OrderScreen extends StatefulWidget {
+// ---------------------------------------------------------------------------
+// DESIGN TOKENS
+// ---------------------------------------------------------------------------
+class _Palette {
+  static const Color primary = Color(0xFF2563EB);
+  static const Color bgTop = Color(0xFFF4F7FF);
+  static const Color textDark = Color(0xFF11182B);
+  static const Color textMuted = Color(0xFF6B7280);
+  static const Color cardShadow = Color(0x0D000000);
+}
+
+  class OrderScreen extends StatefulWidget {
   int barIndex = 0;
   int orderIndex = 0;
   OrderScreen({super.key, required this.barIndex, required this.orderIndex});
@@ -563,845 +575,352 @@ class _OrderScreenState extends State<OrderScreen>
   Widget build(BuildContext context) {
     final hotelController = context.watch<HotelOrderController>();
     final hotelOrderList = hotelController.hotelOrderList;
-    final _isLoading = hotelController.isLoading;
+    final hotelLoading = hotelController.isLoading;
 
     final activityController = context.watch<ActivitiesOrderController>();
     final activitiesOrderList = activityController.activitiesOrderList;
     final activityLoading = activityController.isLoading;
 
-    return DefaultTabController(
-      length: 1,
-      initialIndex: widget.barIndex,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text(
-            'Order',
-            style: TextStyle(color: Colors.grey),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.grey,
-              size: 18,
-            ),
-          ),
-          bottom: const TabBar(
-            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-            dividerColor: Colors.white,
-            labelColor: Colors.blue,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-            unselectedLabelColor: Colors.black,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorColor: Colors.blue,
-            // indicator: BoxDecoration(
-            //     color: Colors.blue,
-            //     borderRadius: BorderRadius.circular(
-            //         6.0) // Set the background color of the indicator
-            // ),
-            tabs: [
-              // Tab(text: 'Products'),
-              Tab(text: 'Service'),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: _Palette.bgTop,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'My Bookings',
+          style: TextStyle(color: _Palette.textDark, fontWeight: FontWeight.w800, fontSize: 20),
         ),
-        body: isGuestMode
-            ? const NotLoggedInWidget()
-            : Consumer<OrderController>(
-                builder: (context, orderController, child) {
-                return Column(
-                  children: [
-                    Expanded(
-                      child: TabBarView(
-                        children: [
-                          //First tabview
-                          // Column(
-                          //   children: [
-                          //     Padding(
-                          //         padding: const EdgeInsets.all(
-                          //             Dimensions.paddingSizeLarge),
-                          //         child: Row(children: [
-                          //           OrderTypeButton(
-                          //               text: getTranslated('RUNNING', context),
-                          //               index: 0),
-                          //           const SizedBox(
-                          //               width: Dimensions.paddingSizeSmall),
-                          //           OrderTypeButton(
-                          //               text:
-                          //                   getTranslated('DELIVERED', context),
-                          //               index: 1),
-                          //           const SizedBox(
-                          //               width: Dimensions.paddingSizeSmall),
-                          //           OrderTypeButton(
-                          //               text:
-                          //                   getTranslated('CANCELED', context),
-                          //               index: 2)
-                          //         ])),
-                          //     Expanded(
-                          //         child: orderController.orderModel != null
-                          //             ? (orderController.orderModel!.orders !=
-                          //                         null &&
-                          //                     orderController.orderModel!
-                          //                         .orders!.isNotEmpty)
-                          //                 ? SingleChildScrollView(
-                          //                     controller: scrollController,
-                          //                     child: PaginatedListView(
-                          //                       scrollController:
-                          //                           scrollController,
-                          //                       onPaginate:
-                          //                           (int? offset) async {
-                          //                         await orderController
-                          //                             .getOrderList(
-                          //                                 offset!,
-                          //                                 orderController
-                          //                                     .selectedType);
-                          //                       },
-                          //                       totalSize: orderController
-                          //                           .orderModel?.totalSize,
-                          //                       offset: orderController
-                          //                                   .orderModel
-                          //                                   ?.offset !=
-                          //                               null
-                          //                           ? int.parse(orderController
-                          //                               .orderModel!.offset!)
-                          //                           : 1,
-                          //                       itemView: ListView.builder(
-                          //                         shrinkWrap: true,
-                          //                         physics:
-                          //                             const NeverScrollableScrollPhysics(),
-                          //                         itemCount: orderController
-                          //                             .orderModel
-                          //                             ?.orders!
-                          //                             .length,
-                          //                         padding:
-                          //                             const EdgeInsets.all(0),
-                          //                         itemBuilder: (context,
-                          //                                 index) =>
-                          //                             OrderWidget(
-                          //                                 orderModel:
-                          //                                     orderController
-                          //                                             .orderModel
-                          //                                             ?.orders![
-                          //                                         index]),
-                          //                       ),
-                          //                     ),
-                          //                   )
-                          //                 : const NoInternetOrDataScreenWidget(
-                          //                     isNoInternet: false,
-                          //                     icon: Images.noOrder,
-                          //                     message: 'no_order_found',
-                          //                   )
-                          //             : const OrderShimmerWidget())
-                          //   ],
-                          // ),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: _Palette.textDark, size: 20),
+        ),
+      ),
+      body: isGuestMode
+          ? const NotLoggedInWidget()
+          : Column(
+              children: [
+                _buildSubTabs(),
+                Expanded(
+                  child: RefreshIndicator(
+                    color: _Palette.primary,
+                    onRefresh: () async {
+                      fetchAllOrders();
+                      fetchAllData(userId);
+                    },
+                    child: _buildOrderList(hotelOrderList, hotelLoading, activitiesOrderList, activityLoading),
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
 
-                          //Second tabview
-                          RefreshIndicator(
-                            color: Colors.blue,
-                            onRefresh: () async {
-                              fetchAllOrders();
-                              fetchAllData(userId);
-                              // fetchPdfData(userId);
-                              // fetchDonation(userId);
-                              // fetchEventData(userId);
-                              // fetchTourData(userId);
-                            },
-                            child: Column(
-                              children: [
-                                // Padding(
-                                //     padding: const EdgeInsets.all(
-                                //         Dimensions.paddingSizeLarge),
-                                //     child: Row(children: [
-                                //       OrderTypeButton(
-                                //           text: getTranslated('CHADAVA', context),
-                                //           index: 0),
-                                //       const SizedBox(
-                                //           width: Dimensions.paddingSizeSmall),
-                                //       OrderTypeButton(
-                                //           text: getTranslated('POOJA', context),
-                                //           index: 1),
-                                //       const SizedBox(
-                                //           width: Dimensions.paddingSizeSmall),
-                                //       OrderTypeButton(
-                                //           text: getTranslated(
-                                //               'CONSULTATION', context),
-                                //           index: 2)
-                                //     ])),
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 25),
-                                    child: SingleChildScrollView(
-                                      controller: _scrollController,
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(children: [
-                                        //Recent pooja
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(111);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 111
-                                                  ? Colors.blue
-                                                  : Colors.blue
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'recent_order', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 111
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
+  Widget _buildSubTabs() {
+    final tabs = [
+      {'index': 111, 'title': getTranslated('recent_order', context)},
+      {'index': 13, 'title': getTranslated("activity_booking", context)},
+      {'index': 6, 'title': getTranslated('tourBooking', context)},
+      {'index': 12, 'title': getTranslated('hotel_booking', context)},
+      {'index': 14, 'title': getTranslated("self_driver", context)},
+    ];
 
-                                        // events
-                                        // const SizedBox(
-                                        //     width: Dimensions.paddingSizeSmall),
-                                        // InkWell(
-                                        //   onTap: () {
-                                        //     shimmerEffect(5);
-                                        //   },
-                                        //   child: Container(
-                                        //     padding: const EdgeInsets.symmetric(
-                                        //         horizontal: 20, vertical: 7.5),
-                                        //     decoration: BoxDecoration(
-                                        //       color: selectOrder == 5
-                                        //           ? Colors.blue
-                                        //           : Colors.blue
-                                        //               .withOpacity(0.07),
-                                        //       borderRadius:
-                                        //           BorderRadius.circular(100),
-                                        //     ),
-                                        //     child: Center(
-                                        //         child: Text(
-                                        //       getTranslated('events', context)!,
-                                        //       style: TextStyle(
-                                        //           color: selectOrder == 5
-                                        //               ? Colors.white
-                                        //               : Colors.black,
-                                        //           fontSize: 14),
-                                        //     )),
-                                        //   ),
-                                        // ),
-
-                                        // activity booking
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(13);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 13
-                                                  ? Colors.blue
-                                                  : Colors.blue
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  "activity_booking", context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 13
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-
-                                        // tour booking
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(6);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 6
-                                                  ? Colors.blue
-                                                  : Colors.blue
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'tourBooking', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 6
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
-                                        // hotel tab
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(12);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 12
-                                                  ? Colors.blue
-                                                  : Colors.blue
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  'hotel_booking', context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 12
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-
-                                        // self driver
-                                        InkWell(
-                                          onTap: () {
-                                            shimmerEffect(14);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 7.5),
-                                            decoration: BoxDecoration(
-                                              color: selectOrder == 14
-                                                  ? Colors.blue
-                                                  : Colors.blue
-                                                      .withOpacity(0.07),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              getTranslated(
-                                                  "self_driver", context)!,
-                                              style: TextStyle(
-                                                  color: selectOrder == 14
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 14),
-                                            )),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                            width: Dimensions.paddingSizeSmall),
-                                      ]),
-                                    )),
-
-                                Expanded(
-                                    child: selectOrder == 111
-                                        ? allOrderModelList.isEmpty
-                                            ? showShimmerScreen
-                                                ? const OrderShimmerWidget()
-                                                : const NoInternetOrDataScreenWidget(
-                                                    isNoInternet: false,
-                                                    icon: Images.noOrder,
-                                                    message: 'no_order_found',
-                                                  )
-                                            : ListView.builder(
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                physics:
-                                                    const BouncingScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount:
-                                                    allOrderModelList.length,
-                                                itemBuilder: (context, index) {
-                                                  return InkWell(
-                                                    onTap: () {
-                                                      print(
-                                                          'My Order Types :${allOrderModelList[index].type}');
-
-                                                      allOrderModelList[index]
-                                                                  .type ==
-                                                              'pooja'
-                                                          ? Navigator.push(
-                                                              context,
-                                                              PageAnimationTransition(
-                                                                  page:
-                                                                      MahakalTrackOrder(
-                                                                    poojaId: allOrderModelList[
-                                                                            index]
-                                                                        .orderId,
-                                                                    typePooja:
-                                                                        'pooja',
-                                                                  ),
-                                                                  pageAnimationType:
-                                                                      RightToLeftTransition()))
-                                                          : allOrderModelList[
-                                                                          index]
-                                                                      .type ==
-                                                                  'chadhava'
-                                                              ? Navigator.push(
-                                                                  context,
-                                                                  PageAnimationTransition(
-                                                                      page:
-                                                                          ChadhavaMahakalTrackOrder(
-                                                                        poojaId:
-                                                                            allOrderModelList[index].orderId,
-                                                                      ),
-                                                                      pageAnimationType:
-                                                                          RightToLeftTransition()))
-                                                              : allOrderModelList[
-                                                                              index]
-                                                                          .type ==
-                                                                      'counselling'
-                                                                  ? Navigator.push(
-                                                                      context,
-                                                                      PageAnimationTransition(
-                                                                          page: CounsellingTrackOrder(
-                                                                            poojaId:
-                                                                                allOrderModelList[index].orderId,
-                                                                          ),
-                                                                          pageAnimationType: RightToLeftTransition()))
-                                                                  : allOrderModelList[index].type == 'tour'
-                                                                      ? Navigator.push(
-                                                                          context,
-                                                                          PageAnimationTransition(
-                                                                              page: TrackTourDetails(
-                                                                                orderId: allOrderModelList[index].id.toString(),
-                                                                              ),
-                                                                              pageAnimationType: RightToLeftTransition()))
-                                                                      : allOrderModelList[index].type == 'event'
-                                                                          ? Navigator.push(
-                                                                              context,
-                                                                              PageAnimationTransition(
-                                                                                  page: TrackEventDetails(
-                                                                                    orderId: allOrderModelList[index].id,
-                                                                                  ),
-                                                                                  pageAnimationType: RightToLeftTransition()))
-                                                                          : allOrderModelList[index].type == 'donate_ads' || allOrderModelList[index].type == 'donate_trust'
-                                                                              ? Navigator.push(
-                                                                                  context,
-                                                                                  PageAnimationTransition(
-                                                                                      page: TrackDonationDetails(
-                                                                                        donationId: '${allOrderModelList[index].id}',
-                                                                                      ),
-                                                                                      pageAnimationType: RightToLeftTransition()))
-                                                                              : allOrderModelList[index].type == 'kundli'
-                                                                                  ? Navigator.push(
-                                                                                      context,
-                                                                                      PageAnimationTransition(
-                                                                                          page: PdfOrderDetails(
-                                                                                            orderId: '${allOrderModelList[index].id}',
-                                                                                            type: 'kundali',
-                                                                                          ),
-                                                                                          pageAnimationType: RightToLeftTransition()))
-                                                                                  : allOrderModelList[index].type == 'kundli milan'
-                                                                                      ? Navigator.push(
-                                                                                          context,
-                                                                                          PageAnimationTransition(
-                                                                                              page: PdfOrderDetails(
-                                                                                                orderId: '${allOrderModelList[index].id}',
-                                                                                                type: 'kundali_milan',
-                                                                                              ),
-                                                                                              pageAnimationType: RightToLeftTransition()))
-                                                                                      : allOrderModelList[index].type == 'vip'
-                                                                                          ? Navigator.push(
-                                                                                              context,
-                                                                                              PageAnimationTransition(
-                                                                                                  page: MahakalTrackOrder(
-                                                                                                    poojaId: '${allOrderModelList[index].orderId}',
-                                                                                                    typePooja: 'vip',
-                                                                                                  ),
-                                                                                                  pageAnimationType: RightToLeftTransition()))
-                                                                                          : allOrderModelList[index].type == 'anushthan'
-                                                                                              ? Navigator.push(
-                                                                                                  context,
-                                                                                                  PageAnimationTransition(
-                                                                                                      page: MahakalTrackOrder(
-                                                                                                        poojaId: '${allOrderModelList[index].orderId}',
-                                                                                                        typePooja: 'anushthan',
-                                                                                                      ),
-                                                                                                      pageAnimationType: RightToLeftTransition()))
-                                                                                              : null;
-                                                      // Navigator.push(context, CupertinoPageRoute(builder: (context) => PoojaTrackScreen()));
-                                                      print(
-                                                          'chal rha he ${allOrderModelList[index].orderId}');
-                                                    },
-                                                    child: buildOrderDesign(
-                                                      image:
-                                                          '${allOrderModelList[index].services.thumbnail}',
-                                                      name:
-                                                          '${allOrderModelList[index].services.name}',
-                                                      color: getStatusColor(
-                                                          '${allOrderModelList[index].status}'),
-                                                      date:
-                                                          '${allOrderModelList[index].createdAt}',
-                                                      price:
-                                                          '${allOrderModelList[index].payAmount}',
-                                                      orderId:
-                                                          '${allOrderModelList[index].orderId}',
-                                                      status:
-                                                          '${allOrderModelList[index].orderStatus}',
-                                                      type:
-                                                          '${allOrderModelList[index].type}',
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                        // : selectOrder == 5
-                                        //     ? eventModelList.isEmpty
-                                        //         ? showShimmerScreen
-                                        //             ? const OrderShimmerWidget()
-                                        //             : const NoInternetOrDataScreenWidget(
-                                        //                 isNoInternet: false,
-                                        //                 icon: Images.noOrder,
-                                        //                 message:
-                                        //                     'no_order_found',
-                                        //               )
-                                        //         : ListView.builder(
-                                        //             padding:
-                                        //                 const EdgeInsets.all(
-                                        //                     10),
-                                        //             physics:
-                                        //                 const BouncingScrollPhysics(),
-                                        //             shrinkWrap: true,
-                                        //             itemCount:
-                                        //                 eventModelList.length,
-                                        //             itemBuilder:
-                                        //                 (context, index) {
-                                        //               return InkWell(
-                                        //                 onTap: () {
-                                        //                   Navigator.push(
-                                        //                       context,
-                                        //                       CupertinoPageRoute(
-                                        //                         builder:
-                                        //                             (context) =>
-                                        //                                 TrackEventDetails(
-                                        //                           orderId: eventModelList[
-                                        //                                       index]
-                                        //                                   .id ??
-                                        //                               0,
-                                        //                         ),
-                                        //                       ));
-                                        //                 },
-                                        //                 child: buildOrderDesign(
-                                        //                   image: eventModelList[
-                                        //                           index]
-                                        //                       .eventImage,
-                                        //                   name: eventModelList[
-                                        //                           index]
-                                        //                       .enEventName,
-                                        //                   color:
-                                        //                       Colors.blue,
-                                        //                   date: eventModelList[
-                                        //                           index]
-                                        //                       .eventBookingDate,
-                                        //                   price:
-                                        //                       '${eventModelList[index].amount}',
-                                        //                   orderId:
-                                        //                       eventModelList[
-                                        //                               index]
-                                        //                           .orderNo,
-                                        //                   status: 'Event',
-                                        //                 ),
-                                        //               );
-                                        //             },
-                                        //           )
-                                            : selectOrder == 6
-                                                ? tourModelList.isEmpty
-                                                    ? showShimmerScreen
-                                                        ? const OrderShimmerWidget()
-                                                        : const NoInternetOrDataScreenWidget(
-                                                            isNoInternet: false,
-                                                            icon:
-                                                                Images.noOrder,
-                                                            message:
-                                                                'no_order_found',
-                                                          )
-                                                    : ListView.builder(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10),
-                                                        physics:
-                                                            const BouncingScrollPhysics(),
-                                                        shrinkWrap: true,
-                                                        itemCount: tourModelList
-                                                            .length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          return InkWell(
-                                                            onTap: () {
-                                                              print(
-                                                                  tourModelList[
-                                                                          index]
-                                                                      .id);
-                                                              Navigator.push(
-                                                                  context,
-                                                                  CupertinoPageRoute(
-                                                                    builder: (context) =>
-                                                                        TrackTourDetails(
-                                                                            orderId:
-                                                                                '${tourModelList[index].id}'),
-                                                                  ));
-                                                              //Navigator.push(context, CupertinoPageRoute(builder: (context) => TrackTourDetails(orderId: tourModelList[index].orderId,pickUpDate: tourModelList[index].pickupDate,userId: userId,),));
-                                                            },
-                                                            child:
-                                                                buildOrderDesign(
-                                                              image:
-                                                                  tourModelList[
-                                                                          index]
-                                                                      .tourImage,
-                                                              name: tourModelList[
-                                                                      index]
-                                                                  .enTourName,
-                                                              color: tourModelList[
-                                                                              index]
-                                                                          .refundStatus ==
-                                                                      1
-                                                                  ? Colors.red
-                                                                  : tourModelList[index]
-                                                                              .partPayment ==
-                                                                          'part'
-                                                                      ? Colors
-                                                                          .blue
-                                                                      : tourModelList[index].partPayment ==
-                                                                              'full'
-                                                                          ? Colors
-                                                                              .green
-                                                                          : tourModelList[index].partPayment == 'custom'
-                                                                              ? Colors.blue
-                                                                              : Colors.grey,
-                                                              date:
-                                                                  '${tourModelList[index].bookingTime}',
-                                                              price:
-                                                                  '${tourModelList[index].payAmount}',
-                                                              orderId:
-                                                                  '${tourModelList[index].orderId}',
-                                                              status: tourModelList[
-                                                                              index]
-                                                                          .refundStatus ==
-                                                                      1
-                                                                  ? 'Refunded'
-                                                                  : tourModelList[index]
-                                                                              .partPayment ==
-                                                                          'part'
-                                                                      ? 'Partially Paid'
-                                                                      : tourModelList[index].partPayment ==
-                                                                              'full'
-                                                                          ? 'Fully Paid'
-                                                                          : tourModelList[index].partPayment == 'custom'
-                                                                              ? 'Custom'
-                                                                              : (tourModelList[index].amountStatus == 1 ? 'Success' : 'Failed'),
-                                                            ),
-                                                          );
-                                                        },
-                                                      )
-                                                : selectOrder == 12
-                                                    ? _isLoading
-                                                        ? const OrderShimmerWidget()
-                                                        : hotelOrderList.isEmpty
-                                                            ? const NoInternetOrDataScreenWidget(
-                                                                isNoInternet:
-                                                                    false,
-                                                                icon: Images
-                                                                    .noOrder,
-                                                                message:
-                                                                    'no_order_found',
-                                                              )
-                                                            : ListView.builder(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        10),
-                                                                itemCount:
-                                                                    hotelOrderList
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  final order =
-                                                                      hotelOrderList[
-                                                                          index];
-
-                                                                  return InkWell(
-                                                                    onTap: () {
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (context) => HotelOrderDetailsScreen(
-                                                                                    orderId: '${order.code}',
-                                                                                  )));
-                                                                      //debugPrint("Hotel Order ID: ${order.id}");
-                                                                    },
-                                                                    child:
-                                                                        buildOrderDesign(
-                                                                      image: '',
-                                                                      name: order
-                                                                              .firstName ??
-                                                                          '',
-                                                                      color: order.status ==
-                                                                              'paid'
-                                                                          ? Colors
-                                                                              .green
-                                                                          : Colors
-                                                                              .red,
-                                                                      date:
-                                                                          '${order.createdAt}',
-                                                                      price:
-                                                                          order.paid ??
-                                                                              '',
-                                                                      orderId:
-                                                                          order.objectModel.toUpperCase() ??
-                                                                              '',
-                                                                      status:
-                                                                          order.status ??
-                                                                              '',
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              )
-                                        : selectOrder == 13
-                                        ? activityLoading
-                                        ? const OrderShimmerWidget()
-                                        : activitiesOrderList.isEmpty
-                                        ? const NoInternetOrDataScreenWidget(
-                                      isNoInternet: false,
-                                      icon: Images.noOrder,
-                                      message: 'no_order_found',
-                                    )
-                                        : ListView.builder(
-                                      padding: const EdgeInsets.all(10),
-                                      itemCount: activitiesOrderList.length,
-                                      itemBuilder: (context, index) {
-                                        final order = activitiesOrderList[index];
-
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => TrackActivityDetails(
-                                                  orderId: order.id,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: buildOrderDesign(
-                                            image: order.eventImage ?? '',
-                                            name: order.enEventName ?? '',
-                                            color: Colors.green,
-                                            date: '${order.eventBookingDate ?? ''}',
-                                            price: order.amount?.toString() ?? '',
-                                            orderId: order.id?.toString() ?? '',
-                                            status: 'Activity',
-                                          ),
-                                        );
-                                      },
-                                    )
-                                                    : selectOrder == 14
-                                                        ? _isLoading
-                                                            ? const OrderShimmerWidget()
-                                                            : selfOrderModelList
-                                                                    .isEmpty
-                                                                ? const NoInternetOrDataScreenWidget(
-                                                                    isNoInternet:
-                                                                        false,
-                                                                    icon: Images
-                                                                        .noOrder,
-                                                                    message:
-                                                                        'no_order_found',
-                                                                  )
-                                                                : ListView
-                                                                    .builder(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            10),
-                                                                    itemCount:
-                                                                        selfOrderModelList
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
-                                                                      final order =
-                                                                          selfOrderModelList[
-                                                                              index];
-
-                                                                      return InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              MaterialPageRoute(
-                                                                                  builder: (context) => CabBookingDetailsScreen(
-                                                                                        id: order.id.toString(),
-                                                                                      )));
-                                                                          //debugPrint("Hotel Order ID: ${order.id}");
-                                                                        },
-                                                                        child:
-                                                                            buildOrderDesign(
-                                                                          image:
-                                                                              '${order.thumbnail}',
-                                                                          name: order.serviceName ??
-                                                                              '',
-                                                                          color:
-                                                                              getStatusColor('${order.orderStatus}'),
-                                                                          date:
-                                                                              '',
-                                                                          price:
-                                                                              '${order.price}',
-                                                                          orderId:
-                                                                              order.orderId!.toUpperCase() ?? '',
-                                                                          status:
-                                                                              order.orderStatus ?? '',
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                        : const SizedBox()),
-                              ],
-                            ),
-                          ),
-                        ],
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        child: Row(
+          children: [
+            ...tabs.map((tab) {
+              final isSelected = selectOrder == tab['index'];
+              return Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: InkWell(
+                  onTap: () => shimmerEffect(tab['index'] as int),
+                  borderRadius: BorderRadius.circular(25),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: isSelected ? _Palette.primary : Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: _Palette.primary.withOpacity(0.3),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              )
+                            ]
+                          : null,
+                    ),
+                    child: Text(
+                      tab['title'] as String,
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : _Palette.textMuted,
+                        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                        fontSize: 14,
                       ),
-                    )
-                  ],
-                );
-              }),
+                    ),
+                  ),
+                ),
+              );
+            }),
+            const SizedBox(width: 15),
+          ],
+        ),
       ),
     );
   }
+
+  Widget _buildOrderList(hotelOrderList, bool hotelLoading, activitiesOrderList, bool activityLoading) {
+    if (showShimmerScreen) return const OrderShimmerWidget();
+
+    if (selectOrder == 111) {
+      return allOrderModelList.isEmpty
+          ? _buildEmptyState()
+          : ListView.builder(
+              padding: const EdgeInsets.all(15),
+              physics: const BouncingScrollPhysics(),
+              itemCount: allOrderModelList.length,
+              itemBuilder: (context, index) => _buildOrderCard(allOrderModelList[index]),
+            );
+    } else if (selectOrder == 6) {
+      return tourModelList.isEmpty
+          ? _buildEmptyState()
+          : ListView.builder(
+              padding: const EdgeInsets.all(15),
+              physics: const BouncingScrollPhysics(),
+              itemCount: tourModelList.length,
+              itemBuilder: (context, index) => _buildTourCard(tourModelList[index]),
+            );
+    } else if (selectOrder == 12) {
+      return hotelLoading
+          ? const OrderShimmerWidget()
+          : hotelOrderList.isEmpty
+              ? _buildEmptyState()
+              : ListView.builder(
+                  padding: const EdgeInsets.all(15),
+                  itemCount: hotelOrderList.length,
+                  itemBuilder: (context, index) => _buildHotelCard(hotelOrderList[index]),
+                );
+    } else if (selectOrder == 13) {
+      return activityLoading
+          ? const OrderShimmerWidget()
+          : activitiesOrderList.isEmpty
+              ? _buildEmptyState()
+              : ListView.builder(
+                  padding: const EdgeInsets.all(15),
+                  itemCount: activitiesOrderList.length,
+                  itemBuilder: (context, index) => _buildActivityCard(activitiesOrderList[index]),
+                );
+    } else if (selectOrder == 14) {
+      return selfOrderModelList.isEmpty
+          ? _buildEmptyState()
+          : ListView.builder(
+              padding: const EdgeInsets.all(15),
+              itemCount: selfOrderModelList.length,
+              itemBuilder: (context, index) => _buildSelfDriveCard(selfOrderModelList[index]),
+            );
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildEmptyState() {
+    return const NoInternetOrDataScreenWidget(
+      isNoInternet: false,
+      icon: Images.noOrder,
+      message: 'no_order_found',
+    );
+  }
+
+  Widget _buildOrderCard(Recentorder order) {
+    return InkWell(
+      onTap: () {
+        if (order.type == 'pooja') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: MahakalTrackOrder(poojaId: order.orderId, typePooja: 'pooja'),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'chadhava') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: ChadhavaMahakalTrackOrder(poojaId: order.orderId),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'counselling') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: CounsellingTrackOrder(poojaId: order.orderId),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'tour') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: TrackTourDetails(orderId: order.id.toString()),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'event') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: TrackEventDetails(orderId: order.id),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'donate_ads' || order.type == 'donate_trust') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: TrackDonationDetails(donationId: '${order.id}'),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'kundli') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: PdfOrderDetails(orderId: '${order.id}', type: 'kundali'),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'kundli milan') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: PdfOrderDetails(orderId: '${order.id}', type: 'kundali_milan'),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'vip') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: MahakalTrackOrder(poojaId: '${order.orderId}', typePooja: 'vip'),
+                  pageAnimationType: RightToLeftTransition()));
+        } else if (order.type == 'anushthan') {
+          Navigator.push(
+              context,
+              PageAnimationTransition(
+                  page: MahakalTrackOrder(poojaId: '${order.orderId}', typePooja: 'anushthan'),
+                  pageAnimationType: RightToLeftTransition()));
+        }
+      },
+      child: buildOrderDesign(
+        image: '${order.services.thumbnail}',
+        name: '${order.services.name}',
+        color: getStatusColor('${order.status}'),
+        date: '${order.createdAt}',
+        price: '${order.payAmount}',
+        orderId: '${order.orderId}',
+        status: '${order.orderStatus}',
+        type: '${order.type}',
+      ),
+    );
+  }
+
+  Widget _buildTourCard(Tourorderlist tour) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => TrackTourDetails(orderId: '${tour.id}'),
+            ));
+      },
+      child: buildOrderDesign(
+        image: tour.tourImage,
+        name: tour.enTourName,
+        color: tour.refundStatus == 1
+            ? Colors.red
+            : tour.partPayment == 'part'
+                ? Colors.blue
+                : tour.partPayment == 'full'
+                    ? Colors.green
+                    : tour.partPayment == 'custom'
+                        ? Colors.blue
+                        : Colors.grey,
+        date: '${tour.bookingTime}',
+        price: '${tour.payAmount}',
+        orderId: '${tour.orderId}',
+        status: tour.refundStatus == 1
+            ? 'Refunded'
+            : tour.partPayment == 'part'
+                ? 'Partially Paid'
+                : tour.partPayment == 'full'
+                    ? 'Fully Paid'
+                    : tour.partPayment == 'custom'
+                        ? 'Custom'
+                        : (tour.amountStatus == 1 ? 'Success' : 'Failed'),
+      ),
+    );
+  }
+
+  Widget _buildHotelCard(HotelOrders order) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HotelOrderDetailsScreen(
+                      orderId: '${order.code}',
+                    )));
+      },
+      child: buildOrderDesign(
+        image: '',
+        name: order.firstName ?? '',
+        color: order.status == 'paid' ? Colors.green : Colors.red,
+        date: '${order.createdAt}',
+        price: order.paid ?? '',
+        orderId: order.objectModel.toUpperCase(),
+        status: order.status ?? '',
+      ),
+    );
+  }
+
+  Widget _buildActivityCard(ActivitiesOrders order) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TrackActivityDetails(
+              orderId: order.id,
+            ),
+          ),
+        );
+      },
+      child: buildOrderDesign(
+        image: order.eventImage ?? '',
+        name: order.enEventName ?? '',
+        color: Colors.green,
+        date: '${order.eventBookingDate ?? ''}',
+        price: order.amount?.toString() ?? '',
+        orderId: order.id?.toString() ?? '',
+        status: 'Activity',
+      ),
+    );
+  }
+
+  Widget _buildSelfDriveCard(SelfList order) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CabBookingDetailsScreen(
+                      id: order.id.toString(),
+                    )));
+      },
+      child: buildOrderDesign(
+        image: '${order.thumbnail}',
+        name: order.serviceName ?? '',
+        color: getStatusColor('${order.orderStatus}'),
+        date: '',
+        price: '${order.price}',
+        orderId: order.orderId!.toUpperCase(),
+        status: order.orderStatus ?? '',
+      ),
+    );
+  }
+
 
   Widget TabBarKundali(BuildContext context) {
     return DefaultTabController(
@@ -1846,200 +1365,139 @@ class _OrderScreenState extends State<OrderScreen>
       String subscriptionId = '',
       String Ordertype = '',
       String? type}) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: _Palette.cardShadow,
+            blurRadius: 15,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Column(
           children: [
-            /// Image Section
-            Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.amber, width: 1.5),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(7),
-                    child: CachedNetworkImage(
-                      imageUrl: image,
-                      width: 120,
-                      height: 70,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey[300],
-                        width: 120,
-                        height: 70,
-                        child: const Center(
-                            child: Icon(
-                          Icons.image,
-                          color: Colors.blue,
-                        )),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey[300],
-                        width: 120,
-                        height: 70,
-                        child: const Icon(Icons.error, color: Colors.red),
+            Container(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  // Image
+                  Container(
+                    width: 90,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.grey.shade100,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: CachedNetworkImage(
+                        imageUrl: image,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(color: Colors.grey.shade100),
+                        errorWidget: (context, url, error) => const Icon(Icons.image_outlined, color: Colors.grey),
                       ),
                     ),
                   ),
-                ),
-                selectOrder == 111
-                    ? Positioned(
-                        bottom: 10,
-                        left: 0,
-                        right: 0,
-                        child: AnimatedBuilder(
-                          animation: _controller,
-                          builder: (context, child) {
-                            return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 2),
-                              height: 24,
+                  const SizedBox(width: 15),
+                  // Info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: _Palette.textDark,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            if (Ordertype == 'donation' && subscriptionId != 'one_time')
+                              const Icon(Icons.verified_rounded, size: 18, color: Colors.green),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Order #$orderId',
+                          style: const TextStyle(color: _Palette.textMuted, fontSize: 12, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 5),
+                        if (date.isNotEmpty)
+                          Row(
+                            children: [
+                              const Icon(Icons.calendar_today_rounded, size: 12, color: _Palette.textMuted),
+                              const SizedBox(width: 5),
+                              Text(
+                                formatBookingDate(date),
+                                style: const TextStyle(color: _Palette.textMuted, fontSize: 12, fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              price == '0' || price == '0.00' ? 'Free' : '₹$price',
+                              style: const TextStyle(
+                                color: _Palette.primary,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color.lerp(
-                                        Colors.blue,
-                                        Colors.red.withOpacity(0.3),
-                                        sin(_controller.value * pi))!,
-                                    Color.lerp(
-                                        Colors.amber.withOpacity(0.3),
-                                        Colors.red,
-                                        sin(_controller.value * pi))!,
-                                  ],
-                                  stops: const [0.0, 1.0],
-                                  tileMode: TileMode.mirror,
-                                ),
-                                border: const Border(
-                                  top: BorderSide(
-                                      color: Colors.black, width: 1.0),
-                                  bottom: BorderSide(
-                                      color: Colors.black, width: 1.0),
+                                color: color.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                status.toUpperCase(),
+                                style: TextStyle(
+                                  color: color,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 0.5,
                                 ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  '$type'.toUpperCase().replaceAll('_', ' '),
-                                  style: TextStyle(
-                                    color: Colors
-                                        .white, // Ensure contrast with background
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    shadows: [
-                                      Shadow(
-                                        // Add shadow for better visibility
-                                        color: Colors.black.withOpacity(0.5),
-                                        blurRadius: 2,
-                                        offset: const Offset(1, 1),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
-                      )
-                    : const SizedBox.shrink(),
-              ],
-            ),
-            const SizedBox(width: 16),
-
-            /// Text Section
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Name
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          name,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ),
-
-                      // Positioned Subscription Badge
-                      (Ordertype == 'donation' && subscriptionId != 'one_time')
-                          ? Expanded(
-                              flex: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade600,
-                                  borderRadius: BorderRadius.circular(50),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.green.withOpacity(0.4),
-                                      blurRadius: 6,
-                                      offset: const Offset(2, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(Icons.verified,
-                                    size: 18, color: Colors.white),
-                              ),
-                            )
-                          : SizedBox()
-                    ],
-                  ),
-
-                  /// Order ID
-                  Text(
-                    'Order #$orderId',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                  ),
-
-                  /// Date
-                  Text(
-                    'Date: ${formatBookingDate(date)}',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                  ),
-
-                  /// price
-                  Row(
-                    children: [
-                      Text(
-                        price == '0' ? 'Free' : 'Price: ₹$price',
-                        style: const TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-
-                      /// Status Badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: color.withOpacity(0.1),
-                          border: Border.all(color: color),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          status,
-                          style: TextStyle(
-                            color: color,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
+            if (selectOrder == 111 && type != null)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                color: _Palette.primary.withOpacity(0.05),
+                child: Center(
+                  child: Text(
+                    type.toUpperCase().replaceAll('_', ' '),
+                    style: const TextStyle(
+                      color: _Palette.primary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

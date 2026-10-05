@@ -54,6 +54,7 @@ class Data {
   int? pickupStatus;
   int? dropOtp;
   int? dropStatus;
+  String? bookingDate;
   String? bookingPickKm;
   String? bookingReturnKm;
   String? bookingCabAc;
@@ -89,6 +90,7 @@ class Data {
     this.pickupStatus,
     this.dropOtp,
     this.dropStatus,
+    this.bookingDate,
     this.bookingPickKm,
     this.bookingReturnKm,
     this.bookingCabAc,
@@ -125,6 +127,7 @@ class Data {
     pickupStatus: json['pickup_status'],
     dropOtp: json['drop_otp'],
     dropStatus: json['drop_status'],
+    bookingDate: json['booking_date'],
     bookingPickKm: json['booking_pick_km'],
     bookingReturnKm: json['booking_return_km'],
     bookingCabAc: json['booking_cab_ac'],
@@ -161,6 +164,7 @@ class Data {
     'pickup_status': pickupStatus,
     'drop_otp': dropOtp,
     'drop_status': dropStatus,
+    'booking_date': bookingDate,
     'booking_pick_km': bookingPickKm,
     'booking_return_km': bookingReturnKm,
     'booking_cab_ac': bookingCabAc,

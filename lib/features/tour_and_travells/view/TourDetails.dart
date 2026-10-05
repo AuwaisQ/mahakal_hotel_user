@@ -2142,7 +2142,7 @@ DevoteesCountWidget(),
                                                                 BoxShape.circle,
                                                             border: Border.all(
                                                                 color: Colors
-                                                                    .deepOrange,
+                                                                    .blue,
                                                                 width: 2),
                                                             boxShadow: [
                                                               BoxShadow(

@@ -74,6 +74,7 @@ import 'features/tour_and_travells/Controller/tour_lead_controller.dart';
 import 'features/wallet/controllers/wallet_controller.dart';
 import 'features/wishlist/controllers/wishlist_controller.dart';
 import 'localization/controllers/localization_controller.dart';
+import 'features/parking/controller/parking_controller.dart';
 
 final List<SingleChildWidget> providers = [
   // ChangeNotifierProvider(create: (context) => di.sl<CallServiceProvider>()),
@@ -93,6 +94,7 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (context) => di.sl<CheckOrderStatusController>()),
   ChangeNotifierProvider(create: (context) => di.sl<HotelOrderDetailsController>()),
   ChangeNotifierProvider(create: (context) => di.sl<ShareHotelController>()),
+  ChangeNotifierProvider(create: (context) => di.sl<ParkingController>()),
   ChangeNotifierProvider(create: (context) => di.sl<ActivitiesCategoryController>()),
   ChangeNotifierProvider(create: (context) => di.sl<ActivitiesLocationController>()),
   ChangeNotifierProvider(create: (context) => di.sl<ActivitiesListController>()),

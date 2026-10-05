@@ -55,7 +55,7 @@ class PersonCardWidget extends StatelessWidget {
     }
 
     // Color definitions
-    const Color deepOrange = Color(0xFFF05E23);
+    const Color blue = Color(0xFFF05E23);
     const Color darkCharcoal = Color(0xFF2D2D2D);
     const Color lightGray = Color(0xFFF5F5F5);
     const Color mediumGray = Color(0xFFE0E0E0);
@@ -75,7 +75,7 @@ class PersonCardWidget extends StatelessWidget {
             ),
           ],
           border: Border.all(
-            color: isSelected ? deepOrange.withOpacity(0.6) : mediumGray,
+            color: isSelected ? blue.withOpacity(0.6) : mediumGray,
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -86,7 +86,7 @@ class PersonCardWidget extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isSelected ? deepOrange.withOpacity(0.08) : lightGray,
+                color: isSelected ? blue.withOpacity(0.08) : lightGray,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -103,7 +103,7 @@ class PersonCardWidget extends StatelessWidget {
                             horizontal: 16, vertical: 10),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? deepOrange.withOpacity(0.15)
+                              ? blue.withOpacity(0.15)
                               : Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
@@ -144,7 +144,7 @@ class PersonCardWidget extends StatelessWidget {
                       showDescriptionBottomSheet(context, "${isInfoView}");
                     },
                     icon:  Icon(Icons.info_outline,
-                        size: 20, color: isSelected ? deepOrange : Colors.grey),
+                        size: 20, color: isSelected ? blue : Colors.grey),
                   ),
                 ],
               ),
@@ -169,7 +169,7 @@ class PersonCardWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: deepOrange.withOpacity(0.15),
+                        color: blue.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -177,7 +177,7 @@ class PersonCardWidget extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
-                          color: deepOrange,
+                          color: blue,
                         ),
                       ),
                     ),
@@ -224,7 +224,7 @@ class PersonCardWidget extends StatelessWidget {
                         ElevatedButton(
                           onPressed: onAddPressed,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: deepOrange,
+                            backgroundColor: blue,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -232,7 +232,7 @@ class PersonCardWidget extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 12),
                             elevation: 0,
-                            shadowColor: deepOrange.withOpacity(0.3),
+                            shadowColor: blue.withOpacity(0.3),
                           ),
                           child: const Text(
                             "SELECT",
@@ -283,7 +283,7 @@ class PersonCardWidget extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.add, color: deepOrange),
+                                icon: const Icon(Icons.add, color: blue),
                                 onPressed: onIncreasePressed,
                                 splashRadius: 20,
                               ),
